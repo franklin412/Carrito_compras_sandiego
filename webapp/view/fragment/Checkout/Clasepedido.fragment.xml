@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Clase de pedido" liveChange="_handleValueHelpSearchAsignacion" class="sapUiPopupWithPadding"
+		items="{localmodel>/Factura/Asignacion}" search="_handleValueHelpSearchAsignacion" confirm="_handleValueHelpCloseAsignacion"
+		cancel="_handleValueHelpCloseAsignacion">
+		<StandardListItem press="pressFragmentAsignacion" iconDensityAware="false" iconInset="false" title="{localmodel>codigoclasepedido}"
+			description="{localmodel>descripcion}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,65 @@
+[{
+	"CategoryName": "Accesorios",
+	"Category": "AC",
+	"NumberOfProducts": 34
+}, {
+	"CategoryName": "Computadoras de escritorio",
+	"Category": "DC",
+	"NumberOfProducts": 5
+}, {
+	"CategoryName": "Pantallas planas",
+	"Category": "FS",
+	"NumberOfProducts": 3
+}, {
+	"CategoryName": "Teclado",
+	"Category": "KB",
+	"NumberOfProducts": 4
+}, {
+	"CategoryName": "Laptops",
+	"Category": "LT",
+	"NumberOfProducts": 11
+}, {
+	"CategoryName": "Impresoras",
+	"Category": "PR",
+	"NumberOfProducts": 9
+}, {
+	"CategoryName": "Celulares y Tablets",
+	"Category": "ST",
+	"NumberOfProducts": 9
+}, {
+	"CategoryName": "Mouse",
+	"Category": "MI",
+	"NumberOfProducts": 7
+}, {
+	"CategoryName": "Accesorios de computadora",
+	"Category": "CSA",
+	"NumberOfProducts": 7
+}, {
+	"CategoryName": "Tarjeta Gráfica",
+	"Category": "GC",
+	"NumberOfProducts": 4
+}, {
+	"CategoryName": "Scanners",
+	"Category": "SC",
+	"NumberOfProducts": 4
+}, {
+	"CategoryName": "Altavoces",
+	"Category": "SP",
+	"NumberOfProducts": 3
+}, {
+	"CategoryName": "Software",
+	"Category": "SW",
+	"NumberOfProducts": 8
+}, {
+	"CategoryName": "Routers",
+	"Category": "TC",
+	"NumberOfProducts": 3
+}, {
+	"CategoryName": "Servidores",
+	"Category": "SV",
+	"NumberOfProducts": 3
+}, {
+	"CategoryName": "Televisores de pantalla",
+	"Category": "FST",
+	"NumberOfProducts": 3
+}]

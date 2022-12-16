@@ -1,0 +1,93 @@
+<core:FragmentDefinition 
+    
+    xmlns="sap.m" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:pc="zsandiego.carritocompras.control"
+    xmlns:core="sap.ui.core">
+	<Dialog title="Datos cabecera" contentWidth="26em" class="sapUiSizeCompact" afterClose="onCloseCabecera">
+		<l:Grid defaultSpan="L12 M12 S12" width="auto">
+			<l:content>
+				<f:SimpleForm id="SimpleFormChange" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+					labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+					singleContainerFullSize="false">
+					<f:content>
+						<Label required="true" text="Clase de pedido"/>
+                        <pc:InputValueHelp 
+                            id="idfragasignacion"
+                            placeholder="Selecciona una clase de pedido"
+                            value="{cartProducts>/lineaCabeceraDetalle/AsignacionDetalle}"
+                            showValueHelp="true"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSALAYRI_ESART" 
+                            helpDescriptionField="batxt" 
+                            helpKeyField="bsart" 
+                            dialogTitle="{i18n>clasePedido}"
+                            width="100%"
+                        />
+						<Label required="true" text="Organización compras"/>
+                        <pc:InputValueHelp 
+                            id="idOrganizacionCompra"
+                            placeholder="Selecciona una organización de compras"
+                            value="{cartProducts>/lineaCabeceraDetalle/Organizacion}"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSMM_EKORG_TXT" 
+                            helpDescriptionField="ekotx" 
+                            helpKeyField="ekorg" 
+                            dialogTitle="{i18n>checkoutDeliveryTypeText}"
+                            width="100%"
+                        />
+						<!--Grupo Compras-->
+						<Label required="true" text="Grupo compras"/>
+                        <pc:InputValueHelp 
+                            id="idfragGrupoCompra"
+                            placeholder="Selecciona un grupo compras"
+                            value="{cartProducts>/lineaCabeceraDetalle/GrupoCompra}"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSMM_EKGRP_TXT" 
+                            helpDescriptionField="eknam" 
+                            helpKeyField="ekgrp" 
+                            dialogTitle="{i18n>grupoCompras}"
+                            width="100%"
+                        />
+						<!--Sociedad-->
+						<Label required="true" text="Sociedad"/>
+                        <pc:InputValueHelp 
+                            id="idfragSociedad"
+                            placeholder="Selecciona una sociedad"
+                            value="{cartProducts>/lineaCabeceraDetalle/Sociedad}"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSFI_SOCIEDAD_TXT" 
+                            helpDescriptionField="butxt" 
+                            helpKeyField="bukrs" 
+                            dialogTitle="Sociedad"
+                            width="100%"
+                        />
+						<!--Sociedad-->
+						<Label required="true" text="Solicitante"/>
+                        <pc:InputValueHelp 
+                            id="idfragSolicitante"
+                            placeholder="Selecciona un Solicitante"
+                            value="{cartProducts>/lineaCabeceraDetalle/Solicitante}"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSMM_IDNLF_TXT" 
+                            helpDescriptionField="descripcion" 
+                            helpKeyField="cod_area_solic" 
+                            dialogTitle="Solicitante"
+                            width="100%"
+                        />                        
+					</f:content>
+				</f:SimpleForm>
+			</l:content>
+		</l:Grid>
+		<buttons>
+			<Button type="Transparent" icon="sap-icon://accept" text="Aceptar" press="onAceptarCabecera"/>
+			<Button type="Transparent" icon="sap-icon://decline" text="Cancelar" press="onCancelarCabecera"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

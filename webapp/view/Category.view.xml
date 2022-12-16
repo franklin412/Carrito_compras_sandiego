@@ -1,0 +1,66 @@
+<mvc:View controllerName="zsandiego.carritocompras.controller.Category" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+	<Page id="page" title="{catalogo>Caktx}" backgroundDesign="Solid" showNavButton="true" navButtonPress=".onBack">
+		<landmarkInfo>
+			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Category_rootLabel}" contentRole="Main"
+				contentLabel="{i18n>Category_contentLabel}" footerRole="Region" footerLabel="{i18n>Category_footerLabel}" headerRole="Region"
+				headerLabel="{i18n>Category_headerLabel}"/>
+		</landmarkInfo>
+		<headerContent>
+			<Button id="masterListFilterButton" icon="sap-icon://filter" press=".onFilter"/>
+		</headerContent>
+		<subHeader>
+			<!--Aldave!-->
+			<Toolbar id="searchBar333433">
+				<SearchField id="searchField1" liveChange="onBuscarCategory" placeholder="{i18n>homeSearchPlaceholder}" tooltip="{i18n>homeSearchTooltip}"
+					width="100%"></SearchField>
+			</Toolbar>
+			<!--Aldave!-->
+		</subHeader>
+		<content>
+			<List id="productList" growing="true" growingThreshold="10" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+				items="{ path : 'catalogo>detallecatalogos', 
+                         filters: [
+                            {
+                                path: 'Status', 
+                                operator: 'EQ', 
+                                value1: 'A'
+                            }
+                         ], 
+                         sorter : { path : 'Itetx', descending : false } }"
+                selectionChange=".onProductDetails" noDataText="{i18n>categoryNoData}" busyIndicatorDelay="0">
+				<infoToolbar>
+					<Toolbar id="categoryInfoToolbar" visible="false">
+						<content>
+							<Title id="categoryInfoToolbarTitle"/>
+						</content>
+					</Toolbar>
+				</infoToolbar>
+				<items>
+                    
+					<ObjectListItem type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}" icon="{= ${catalogo>Url_Imagen} !== '' ? ${catalogo>Url_Imagen} : ${localmodel>/placeholder}}" title="{catalogo>Itetx}"
+						number="{ path : 'catalogo>Precio_Unit', formatter : '.formatter.price' }" numberUnit="{catalogo>Waers}" press=".onProductDetails" iconDensityAware="false"
+						tooltip="{i18n>openProductDetails} {catalogo>Itetx}">
+						<attributes>
+                            <ObjectAttribute visible="true" text="{i18n>codigo}: {catalogo>Item}"/>
+							<ObjectAttribute visible="true" text="{i18n>productSupplierAttributeText}: {catalogo>Razon_Social}"/>
+                            <ObjectAttribute visible="true" text="{i18n>cantidadMinima}: { path : 'catalogo>Cant_Min', formatter : '.formatter.cantidad' }"/>
+                            <ObjectAttribute visible="true" text="{i18n>precio}: { parts: [
+                                                                {path : 'catalogo>Precio_Unit'},
+                                                                {path : 'catalogo>Kursf'}
+                                                            ], formatter : '.formatter.priceTipoCambio' } {catalogo>Waers_Bukrs}"/>
+							<ObjectAttribute visible="true" text="{i18n>diasEntrega}: {catalogo>Dias_Entrega}"/>
+                            <ObjectAttribute visible="{device>/system/desktop}" active="true" text="{i18n>CompareWith}" press=".compareProducts"/>
+
+                        </attributes>
+                        <!--
+						<firstStatus>
+							<ObjectStatus text="{ path : 'Status', formatter : '.formatter.statusText' }"
+								state="{ path : 'Status', formatter : '.formatter.statusState' }"/>
+						</firstStatus>
+                        -->
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+	</Page>
+</mvc:View>

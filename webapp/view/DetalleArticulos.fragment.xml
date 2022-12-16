@@ -1,0 +1,117 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:pc="zsandiego.carritocompras.control"
+    xmlns:core="sap.ui.core">
+	<Dialog id="DetalleArticuloDialog" title="Detalle del Material - {cartEntry>Itetx}">
+		<l:Grid defaultSpan="L12 M12 S12" width="auto" id="idGrid">
+			<l:content>
+				<f:SimpleForm id="formDetalle" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+					labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+					singleContainerFullSize="false">
+					<f:content>
+						<Label required="true" text="Clase de pedido"/>
+						<Input id="idClasepedidoDetalle" enabled="false" value="{cartProducts>/lineaCabeceraDetalle/AsignacionDetalle}"/>
+						<Label  text="{i18n>cantidad}"/>
+                        <StepInput
+                                id="sInpQuantity"
+                                min="{= parseInt(${cartEntry>Cant_Min})}"
+                                value="{cartEntry>Quantity}"
+                                valueStateText="Ingrese la cantidad a añadir"
+                                valueState="Information">
+                        </StepInput>                        
+                        <Label  text="{i18n>centro}"/>
+                        <pc:InputValueHelp 
+                            id="idfragcentro"
+                            placeholder="Selecciona un centro"
+                            value="{cartEntry>Werks}"
+                            showValueHelp="true"
+                            afterChange="imputacionChange"
+                            showSuggestion="true"
+                            helpModel="localmodel" 
+                            helpEntitySet="ZCDSMM_WERKS_TXT" 
+                            helpDescriptionField="name1" 
+                            helpKeyField="werks"
+                            dialogTitle="{i18n>centro}"
+                        />
+              
+                        <Label  text="Tipo de Imputación"/>
+						<ComboBox id="cbTipoImputacion" change="imputacionChange" selectedKey="{cartEntry>Knttp}"
+							items="{
+								path: 'localmodel>/ZCDSMM_KNTTP_TXT'
+							}">
+							<core:Item key="{localmodel>knttp}" text="{localmodel>knttx}" />
+						</ComboBox>
+						<Label text="Centro de costo"/>
+                        <pc:InputValueHelp 
+                            enabled="{= ${cartEntry>Knttp} === 'K'}"
+                            id="idfragcentro2"
+                            placeholder="Selecciona un centro de costo"
+                            value="{cartEntry>Kostl}"
+                            showValueHelp="true"
+                            showSuggestion="true"
+                            helpModel="matchcode" 
+                            helpEntitySet="ZCDSFI_CECO_TXT" 
+                            helpDescriptionField="ltext" 
+                            helpKeyField="kostl" 
+                            text="{cartEntry>Kostl_Text}"
+                            dialogTitle="{i18n>centroCosto}"
+                        />
+
+						<!--<Input enabled="true" id="idfragorden" type="Number" value="{localmodel>/lineafragmento/OrdenDetalle}"/>!-->
+						<Label text="Cuenta"/>
+                        <pc:InputValueHelp 
+                            enabled="{= ${cartEntry>Knttp} === 'K' || ${cartEntry>Knttp} === 'F'}"
+                            id="idfragcuenta"
+                            placeholder="Selecciona una cuenta"
+                            value="{cartEntry>Saknr}"
+                            showValueHelp="true"
+                            showSuggestion="true"
+                            helpModel="matchcode" 
+                            helpEntitySet="ZCDSFI_CUENTA_TXT" 
+                            helpDescriptionField="txt20" 
+                            helpKeyField="saknr" 
+                            dialogTitle="{i18n>cuenta}"
+                        />
+						<Label text="Número de orden"/>
+                        <pc:InputValueHelp 
+                            enabled="{= ${cartEntry>Knttp} === 'F'}"
+                            id="idNumOrden"
+                            placeholder="Selecciona una orden"
+                            value="{cartEntry>Aufk}"
+                            showValueHelp="true"
+                            showSuggestion="true"
+                            helpModel="matchcode" 
+                            helpEntitySet="ZCDSMM_AUFK_TXT"
+                            helpKeyField="aufnr"
+                            dialogTitle="{i18n>orden}"
+                        />                      
+						<Label text="{i18n>activoFijo}"/>
+                        <pc:InputValueHelp 
+                            enabled="{= ${cartEntry>Knttp} === 'A'}"
+                            id="idNumProyecto"
+                            placeholder="Selecciona un proyecto"
+                            value="{cartEntry>Anla}"
+                            showValueHelp="true"
+                            showSuggestion="true"
+                            helpModel="matchcode" 
+                            helpEntitySet="ZCDSMM_ANLA_TXT"
+                            helpKeyField="anln1"
+                            helpDescriptionField="mcoa1"
+                            dialogTitle="{i18n>activoFijo}"
+                        />   
+						<Label text="Comentario"/>
+						<TextArea enabled="true" id="idfragcomentario" value="{cartEntry>Comentarios}" placeholder="Ingresa un comentario"
+							growing="false" growingMaxLines="1" height="65px" width="100%"/>
+					</f:content>
+				</f:SimpleForm>
+			</l:content>
+		</l:Grid>
+		<buttons>
+			<Button id="idActualizar" visible="false" icon="sap-icon://accept" type="Transparent" text="Actualizar" press="pressActualizar"/>
+			<Button id="idAsignar" type="Transparent" icon="sap-icon://accept" text="Asignar" press="pressDetalleAsignar"/>
+			<Button id="idCancelar" type="Transparent" icon="sap-icon://decline" text="Cancelar" press="pressDetalleCancelar"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
