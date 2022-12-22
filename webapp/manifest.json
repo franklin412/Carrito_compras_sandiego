@@ -40,7 +40,22 @@
                 "localUri": "localService/metadata.xml"
             }
             }
-        }
+        },
+        "crossNavigation": {
+          "inbounds": {
+              "zsandiego-carritocompras-inbound": {
+                  "signature": {
+                      "parameters": {},
+                      "additionalParameters": "allowed"
+                  },
+                  "semanticObject": "zsandiego",
+                  "action": "display",
+                  "title": "Carrito compras",
+                  "subTitle": "Carrito",
+                  "icon": "sap-icon://activity-items"
+              }
+          }
+      }
     },
     "sap.ui": {
         "fullWidth": true,

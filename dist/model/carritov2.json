@@ -1,0 +1,21 @@
+{
+	"Factura": {
+		"Asignacion": [{
+			"id": 1,
+			"descripcion": "Pedido de vendedor",
+			"CentroCosto": {
+				"id": 1,
+				"descripcion": "001  Ventas  Gerencia de Ventas"
+			}
+		}, {
+			"id": 2,
+			"descripcion": "Pedido dummy",
+			"CentroCosto": {
+				"id": 2,
+				"descripcion": "002  Ventas  Capital"
+			}
+		}]
+
+	}
+
+}

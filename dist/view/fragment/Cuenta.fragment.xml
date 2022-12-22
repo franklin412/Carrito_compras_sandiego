@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Cuenta" class="sapUiPopupWithPadding" items="{matchcode>/ZCDSFI_CUENTA_TXT}" search="_handleValueHelpSearchCuenta"
+		liveChange="_handleValueHelpSearchCuenta" confirm="_handleValueHelpCloseCuenta" cancel="_handleValueHelpCloseCuenta">
+		<StandardListItem iconDensityAware="false" iconInset="false" title="{matchcode>saknr}" description="{matchcode>txt20}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+	<Panel height="100%">
+		<headerToolbar>
+			<Toolbar>
+				<Text text="{catalogo>Itetx} - {catalogo>Item}"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://sys-cancel" press=".onRemoveComparison"/>
+			</Toolbar>
+		</headerToolbar>
+		<HBox class="comparebox">
+			<VBox>
+				<Image src="{= ${catalogo>Url_Imagen} !== '' ? ${catalogo>Url_Imagen} : ${localmodel>/placeholder}}" decorative="true" densityAware="false" class="sapUiSmallMarginTop" width="100%" height="100%">
+					<detailBox>
+						<LightBox>
+							<imageContent>
+								<LightBoxItem imageSrc="{= ${catalogo>Url_Imagen} !== '' ? ${catalogo>Url_Imagen} : ${localmodel>/placeholder}}" title="{catalogo>Itetx}"/>
+							</imageContent>
+						</LightBox>
+					</detailBox>
+				</Image>
+			</VBox>
+			<VBox alignItems="End">
+				<ObjectListItem class="productPrice welcomePrice" number="{ path : 'Price', formatter : '.formatter.price' }" numberUnit="USD"></ObjectListItem>
+				<ObjectStatus class="sapUiSmallMarginBottom" text="{ path : 'Status', formatter : '.formatter.statusText' }"
+					state="{ path : 'Status', formatter : '.formatter.statusState' }"/>
+				<Button text="{i18n>addToCartShort}" type="Emphasized" press=".onAddToCart"/>
+			</VBox>
+		</HBox>
+		<form:Form editable="false">
+			<form:layout>
+				<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4"
+					emptySpanL="4" emptySpanM="4" emptySpanS="0" singleContainerFullSize="false"/>
+			</form:layout>
+			<form:formContainers>
+				<form:FormContainer>
+
+					<form:FormElement label="{i18n>productSupplierAttributeText}">
+						<form:fields>
+							<Text text="{catalogo>Razon_Social}"/>
+						</form:fields>
+					</form:FormElement>
+					<form:FormElement label="{i18n>cantidadMinima}">
+						<form:fields>
+							<Text text="{ path : 'catalogo>Cant_Min', formatter : '.formatter.cantidad' }"/>
+						</form:fields>
+					</form:FormElement>
+					<form:FormElement label="{i18n>precio}">
+						<form:fields>
+							<Text text="{ path : 'catalogo>Precio_Unit', formatter : '.formatter.price' } {catalogo>Waers}"/>
+							<Text text="{ path : 'catalogo>Precio_Unit_Bukrs', formatter : '.formatter.price' } {catalogo>Waers_Bukrs}"/>
+
+						</form:fields>
+					</form:FormElement>
+
+				</form:FormContainer>
+			</form:formContainers>
+		</form:Form>
+	</Panel>
+</core:FragmentDefinition>
