@@ -1,8 +1,0 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Número de Proyecto" liveChange="_handleValueHelpSearchNumProyecto" class="sapUiPopupWithPadding"
-		items="{matchcode>/ZCDSMM_ANLA_TXT}" search="_handleValueHelpSearchNumProyecto" confirm="_handleValueHelpCloseNumProyecto"
-		cancel="_handleValueHelpCloseNumProyecto">
-		<StandardListItem press="pressFragmentAsignacion" iconDensityAware="false" iconInset="false" title="{matchcode>anln1}"
-			description="{matchcode>mcoa1}"/>
-	</SelectDialog>
-</core:FragmentDefinition>

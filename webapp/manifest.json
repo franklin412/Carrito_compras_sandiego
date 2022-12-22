@@ -50,8 +50,8 @@
                   },
                   "semanticObject": "zsandiego",
                   "action": "display",
-                  "title": "Carrito compras",
-                  "subTitle": "Carrito",
+                  "title": "Registro de reserva",
+                  "subTitle": "Reserva",
                   "icon": "sap-icon://activity-items"
               }
           }

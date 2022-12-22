@@ -15,7 +15,7 @@
 				</contentMiddle>
 				<contentRight>
 					<!-- <Button icon="sap-icon://header" press=".onAvatarPress" tooltip="{i18n>avatarButtonTooltip}"/> -->
-					<ToggleButton icon="sap-icon://cart" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
+					<ToggleButton icon="sap-icon://activity-items" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
                         text="{ path: 'cartProducts>/cartEntries', formatter: '.formatter.countItems' }"
 						press=".onToggleCart"></ToggleButton>
 				</contentRight>

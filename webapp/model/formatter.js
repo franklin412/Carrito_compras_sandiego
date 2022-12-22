@@ -95,7 +95,7 @@ sap.ui.define([
 			var localmodel = this.getOwnerComponent().getModel("localmodel");
 			var oBundle = this.getResourceBundle(),
                 fTotalPrice = 0;
-			Object.keys(oCartEntries).forEach(function (sProductId) {
+			(oCartEntries).forEach(function (sProductId) {
 				var oProduct = oCartEntries[sProductId];
 				fTotalPrice += (parseFloat(oProduct.Precio_Unit) * parseFloat(oProduct.Kursf ? oProduct.Kursf : 1)) * oProduct.Quantity;
 			});
@@ -150,7 +150,7 @@ sap.ui.define([
 		footerTextForCart: function (oSavedForLaterEntries) {
 			var oBundle = this.getResourceBundle();
 
-			if (Object.keys(oSavedForLaterEntries).length === 0) {
+			if ((oSavedForLaterEntries).length === 0) {
 				return "";
 			}
 			return oBundle.getText("cartSavedForLaterFooterText");

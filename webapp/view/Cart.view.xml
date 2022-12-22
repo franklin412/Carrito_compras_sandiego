@@ -13,9 +13,9 @@
 		<content>
 			
 
-			<List id="entryList" class="sapUiSizeCompact" footerText="{ path : 'cartProducts>/savedForLaterEntries', formatter : '.formatter.footerTextForCart' }"
-				mode="{cfg>/listMode}" delete=".onCartEntriesDelete" selectionChange=".onEntryListSelect" noDataText="{i18n>cartNoData}"
-				items="{ path : 'cartProducts>/cartEntries', sorter : { path : 'Itetx', descending : false } }">
+			<List id="entryList" class="sapUiSizeCompact" 
+				 delete=".onCartEntriesDelete" selectionChange=".onEntryListSelect" noDataText="{i18n>cartNoData}"
+				items="{cartProducts>/cartEntries}">
 				<items>
                     <CustomListItem press=".onEntryListPress" type="{cfg>/listItemType}" >
 
@@ -45,7 +45,7 @@
 					unit="SOL"
 					state="Information" /> -->
 				<ToolbarSpacer/>
-				<Button icon="sap-icon://cart-approval" id="proceedButton" type="Emphasized" text="{i18n>cartProceedButtonText}"
+				<Button icon="sap-icon://activity-items" id="proceedButton" type="Emphasized" text="{i18n>cartProceedButtonText}"
 					enabled="{ path: 'cartProducts>/cartEntries', formatter: '.formatter.hasItems' }" visible="{cfg>/notInDelete}" press=".onProceedButtonPress"/>
 				<Button id="doneButton" text="{i18n>cartDoneButtonText}" enabled="true" visible="{cfg>/inDelete}" press=".onEditOrDoneButtonPress"/>
 			</Toolbar>

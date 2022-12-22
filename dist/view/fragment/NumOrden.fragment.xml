@@ -1,8 +1,0 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Número de orden" liveChange="_handleValueHelpSearchNumOrden" class="sapUiPopupWithPadding"
-		items="{matchcode>/ZCDSMM_AUFK_TXT}" search="_handleValueHelpSearchNumOrden" confirm="_handleValueHelpCloseNumOrden"
-		cancel="_handleValueHelpCloseNumOrden">
-		<StandardListItem press="pressFragmentAsignacion" iconDensityAware="false" iconInset="false" title="{matchcode>aufnr}"
-			/>
-	</SelectDialog>
-</core:FragmentDefinition>

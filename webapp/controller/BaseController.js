@@ -143,7 +143,7 @@ sap.ui.define([
 			var oCartModel = this.getModel("cartProducts");
 			var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
 			cart.addToCart(oResourceBundle, oProduct, oCartModel, iQuantity, DatosCabecera);
-			this.cantidad_productos = Object.keys(oCartModel.getProperty("/cartEntries")).length;
+			this.cantidad_productos = (oCartModel.getProperty("/cartEntries")).length;
 			this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", this.cantidad_productos);
 			this.onCancelQuantity();
         },

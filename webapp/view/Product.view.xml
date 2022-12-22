@@ -16,7 +16,7 @@
 				</contentMiddle>
 				<contentRight>
 					<!-- <Button icon="sap-icon://header" press=".onAvatarPress" tooltip="{i18n>avatarButtonTooltip}"/> -->
-					<ToggleButton icon="sap-icon://cart" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
+					<ToggleButton icon="sap-icon://activity-items" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
 						press=".onToggleCart" text="{ path: 'cartProducts>/cartEntries', formatter: '.formatter.countItems' }"></ToggleButton>
                     
 				</contentRight>
@@ -52,7 +52,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://cart" type="Emphasized" press=".onAddToCart"/>
+				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
 			</Toolbar>
 		</footer>
 	</Page>

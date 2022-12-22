@@ -64,7 +64,7 @@ sap.ui.define([
 			this.openIngresar = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.IngresarCantidad", this);
 			this.getView().addDependent(this.openIngresar);
 			this._oCart = this.getOwnerComponent().getModel("cartProducts");
-			var cantidadlista = Object.keys(this._oCart.getProperty("/cartEntries")).length;
+			var cantidadlista = (this._oCart.getProperty("/cartEntries")).length;
 			this.localmodel.setProperty("/listaProductosCantidad/value", cantidadlista);
 			var proveedores = this._oCart.getProperty("/cartEntries");
 			var tday = new Date();
@@ -493,37 +493,65 @@ sap.ui.define([
 					MessageBox.Action.NO
 				],
 				onClose: function (oAction) {
-					oEntries.forEach( function(product){
-						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+					if(oAction === "YES"){
+						var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
+						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var dataDraft = {
-							"Comments": "Nueva Reserva",
+							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "67",
-							"StockTransferLines": [
-								{
-									"ItemCode": product.ItemCode,
-									"Quantity": product.Quantity,
-									"WarehouseCode": product.WarehouseCode,
-									"StockTransferLinesBinAllocations": []
-								}
-							]
+							"SalesPersonCode": comboselectedkey,
+							"StockTransferLines": []
 						};
+
+						oEntries.forEach( function(product){
+							var stockstransferline = {
+								"ItemCode": product.ItemCode,
+								"Quantity": product.Quantity,
+								"WarehouseCode": product.WarehouseCode,
+								"StockTransferLinesBinAllocations": []
+							}
+							dataDraft.StockTransferLines.push(stockstransferline);
+						})
+						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 						return new Promise(function (resolve, reject) {
 							var uri = baseuri+"sb1sl/StockTransferDrafts";
-							// url: oManifestObject.resolveUri(uri),
 							$.ajax({
-								type: "GET",
+								type: "POST",
 								dataType: "json",
 								url: uri,
 								data: JSON.stringify(dataDraft),
 								success: function (result) {
+									MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
 									resolve(result.value);
 								},
 								error: function (errMsg) {
+									MessageBox.error("Ha sucedido un error al realizar la reserva");
 									reject(errMsg.responseJSON);
 								}
 							});
 						});
-					})
+					}
+					// oEntries.forEach( function(product){
+					// 	var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+					// 	return new Promise(function (resolve, reject) {
+					// 		var uri = baseuri+"sb1sl/StockTransferDrafts";
+					// 		$.ajax({
+					// 			type: "GET",
+					// 			dataType: "json",
+					// 			url: uri,
+					// 			data: JSON.stringify(dataDraft),
+					// 			success: function (result) {
+					// 				resolve(result.value);
+					// 			},
+					// 			error: function (errMsg) {
+					// 				reject(errMsg.responseJSON);
+					// 			}
+					// 		});
+					// 	});
+					// })
+
+
+
 				// 	return new Promise( function (resolve, reject) {
 				// 		oThat.getBmpToken().then(oToken => {
 				// 	   $.ajax({
@@ -1367,12 +1395,12 @@ sap.ui.define([
 				this.closeIngresarCantidad();
 				return;
 			}
-			oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
+			// oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
 			oCartModel.refresh(true);
 			this.closeIngresarCantidad();
 			/*var datos = this.getOwnerComponent();
 			var localmodel = datos.getModel("localmodel");*/
-			var cantidadlista = Object.keys(this._oCart.getProperty("/cartEntries")).length;
+			var cantidadlista = (this._oCart.getProperty("/cartEntries")).length;
 			this.localmodel.setProperty("/listaProductosCantidad/value", cantidadlista);
 
 			MessageToast.show("Se actualizo la cantidad del material");
@@ -1554,7 +1582,7 @@ sap.ui.define([
                 ],
                 onClose: function (oAction) {
                     if (oAction === MessageBox.Action.YES) {
-                        this._oCart.setProperty("/cartEntries", {})
+                        this._oCart.setProperty("/cartEntries", [])
                         this._setLayout("Two");
                         this.getRouter().navTo("home");            
                     }

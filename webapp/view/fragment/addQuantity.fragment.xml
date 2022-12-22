@@ -31,7 +31,7 @@
 			</f:Form>
 		</content>
 		<beginButton>
-			<Button text="Agregar" press="onAddQuantity" type="Emphasized" icon="sap-icon://cart" class="sapUiSizeCompact"/>
+			<Button text="Agregar" press="onAddQuantity" type="Emphasized" icon="sap-icon://activity-items" class="sapUiSizeCompact"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancelar" press="onCancelQuantity" icon="sap-icon://decline" class="sapUiSizeCompact"/>

@@ -52,7 +52,7 @@ sap.ui.define([
 			var oCartModel = this.getModel("cartProducts");
 			var oCartEntries = oCartModel.getProperty("/cartEntries");
 			//enables the proceed and edit buttons if the cart has entries
-			if (Object.keys(oCartEntries).length > 0) {
+			if ((oCartEntries).length > 0) {
 				oCartModel.setProperty("/showProceedButton", true);
 				oCartModel.setProperty("/showEditButton", true);
 			}
@@ -211,7 +211,7 @@ sap.ui.define([
 		 */
 		onProceedButtonPress: function () {
 			var oCartModel = this.getModel("cartProducts");
-			var cantidadMateriales = Object.keys(oCartModel.getProperty("/cartEntries")).length;
+			var cantidadMateriales = (oCartModel.getProperty("/cartEntries")).length;
 			this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", cantidadMateriales);
 			this.getRouter().navTo("checkout");
 		}

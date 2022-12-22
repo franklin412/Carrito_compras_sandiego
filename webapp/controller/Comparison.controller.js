@@ -167,7 +167,7 @@ sap.ui.define([
 				"ProductID": serieMaterial 
 			};*/
 			//this.cartProducts.getProperty("/cartEntries").push(datos);
-			var cantidadMateriales = Object.keys(oCartModel.getProperty("/cartEntries")).length;
+			var cantidadMateriales = (oCartModel.getProperty("/cartEntries")).length;
 			this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", cantidadMateriales);
 			var serieMaterial = cantidadMateriales + 1;
 			var datos = {
@@ -195,7 +195,7 @@ sap.ui.define([
 
 			//var oCollectionEntries = Object.assign({});
 			var cantidad = sap.ui.getCore().byId("_idCantidadSPOT").getValue();
-			var oCollectionEntries = Object.assign({}, oCartModel.getData()["cartEntries"]);
+			var oCollectionEntries = Object.assign([], oCartModel.getData()["cartEntries"]);
 			var oCartEntry = oCollectionEntries[oProductToBeAdded.ProductId];
 
 			if (oCartEntry === undefined) {
@@ -208,7 +208,7 @@ sap.ui.define([
 				oCartEntry.Quantity = cantidad;
 			}
 			//update the cart model
-			oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
+			// oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
 			//oCartModel.getProperty("/cartEntries").push(oCollectionEntries);
 			oCartModel.refresh(true);
 			MessageToast.show(oBundle.getText("productMsgAddedToCart", [oProductToBeAdded.Name]));

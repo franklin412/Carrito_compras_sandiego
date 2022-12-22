@@ -16,6 +16,13 @@
       "csrfProtection": false
     },
     {
+      "source": "^/sb1sl/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "TestB1SL",
+      "csrfProtection": false
+    },
+    {
       "source": "^/resources/(.*)$",
       "target": "/resources/$1",
       "authenticationType": "none",

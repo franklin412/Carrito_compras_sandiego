@@ -43,7 +43,7 @@
                                             dialogTitle="{i18n>clasePedido}"
                                             width="{= ${device>/system/phone} ? '100%' : '22rem'}"
                                         /> -->
-                                        <ComboBox width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione un empleado">
+                                        <ComboBox id="comboSalesPerson" width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione un empleado">
                                             <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
                                         </ComboBox>
 										<Label labelFor="idfragOrgCompra23" text="Fecha Documento"/>
@@ -105,7 +105,7 @@
 							</WizardStep>
 
 							<!--punto 5 materiales!-->
-							<WizardStep id="contentsStep" nextStep="comentarioStep" title="{i18n>checkoutContentsTitle}" icon="sap-icon://cart">
+							<WizardStep id="contentsStep" nextStep="comentarioStep" title="{i18n>checkoutContentsTitle}" icon="sap-icon://activity-items">
 								<List headerText="Lista de Materiales ({= ${localmodel>/listaProductosCantidad/value}})" showNoData="false"></List>
 								<ScrollContainer vertical="true" focusable="true" height="25rem">
                                 <Table id="idProductsTable"

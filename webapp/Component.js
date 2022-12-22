@@ -23,7 +23,7 @@ sap.ui.define([
 			//create and set cart model
 			var oCartModel = new LocalStorageModel("SHOPPING_CART_3", {
 				Url_Imagen: 'zsandiego/carritocompras/img/almacen.jpg',
-				cartEntries: {},
+				cartEntries: [],
                 savedForLaterEntries: {},
                 lineaCabeceraDetalle: {
                     AsignacionDetalle: null,

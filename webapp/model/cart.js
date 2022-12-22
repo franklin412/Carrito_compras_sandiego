@@ -55,21 +55,23 @@ sap.ui.define([
 
 		_updateCartItem: function (oBundle, oProductToBeAdded, oCartModel, iQuantity, DatosCabecera) {
 			// find existing entry for product
-			var oCollectionEntries = Object.assign({}, oCartModel.getData()["cartEntries"]);
-			var oCartEntry = oCollectionEntries[oProductToBeAdded.WarehouseCode];
+			var oCollectionEntries = Object.assign([], oCartModel.getData()["cartEntries"]);
+			var oCartEntry = oCollectionEntries.find(e=>e.WarehouseCode === oProductToBeAdded.WarehouseCode && e.ItemCode === oProductToBeAdded.ItemCode );
+			// var oCartEntry = oCollectionEntries[oProductToBeAdded.WarehouseCode];
 
-			if (oCartEntry === undefined) {
+			if (!oCartEntry) {
 				// create new entry
 				oCartEntry = Object.assign({}, oProductToBeAdded);
 				oCartEntry.Quantity = iQuantity;
 				oCartEntry.DatosCabeceraV2 = DatosCabecera;
-				oCollectionEntries[oProductToBeAdded.ItemCode] = oCartEntry;
+				// oCollectionEntries[oProductToBeAdded.ItemCode] = oCartEntry;
+				oCartModel.getProperty("/cartEntries").push(oCartEntry);
 			} else {
 				// update existing entry
 				oCartEntry.Quantity += iQuantity;
 			}
 			//update the cart model
-			oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
+			// oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
 			oCartModel.refresh(true);
 			MessageToast.show(oBundle.getText("productMsgAddedToCart", [oProductToBeAdded.ItemCode]));
 		}
