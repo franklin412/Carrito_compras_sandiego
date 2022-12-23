@@ -1,19 +1,12 @@
 {
   "welcomeFile": "/index.html",
-  "authenticationMethod": "none",
+  "authenticationMethod": "route",
   "routes": [{
 		"source": "^/bpmworkflowruntime/(.*)$",
 		"target": "/$1",
 		"service": "com.sap.bpm.workflow",
 		"endpoint": "workflow_rest_url",
 		"authenticationType": "xsuaa"
-    },
-    {
-      "source": "^/sb1sl/(.*)$",
-      "target": "$1",
-      "authenticationType": "none",
-      "destination": "TestB1SL",
-      "csrfProtection": false
     },
     {
       "source": "^/sb1sl/(.*)$",

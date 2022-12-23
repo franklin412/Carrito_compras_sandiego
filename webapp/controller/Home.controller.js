@@ -18,6 +18,7 @@ sap.ui.define([
 			this._router.getRoute("categories").attachMatched(this._onRouteMatched, this);
             this._catalogo = this.getOwnerComponent().getModel("catalogo");
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
+			this.getBmpToken();
             
             var that = this;
             var filter = new Filter("Status", FilterOperator.EQ, "A");
@@ -44,6 +45,29 @@ sap.ui.define([
             
 
 		},       
+		getBmpToken: function () {
+			var that = this;
+			var oManifestObject = that.getOwnerComponent().getManifestObject();
+			var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+			var appPath = appId.replaceAll(".", "/");
+			var appModulePath = jQuery.sap.getModulePath(appPath);
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
+                    method: "GET",
+					async: false,
+                    headers: {
+                        "X-CSRF-Token": "Fetch"
+                    },
+                    success: function (result, xhr, data) {
+                        var token = data.getResponseHeader("X-CSRF-Token");
+                        if (token === null) return;
+                    
+                    }
+                });
+            });
+        },
 		onGetItemServiceLayer: function(){
 			var that = this;
 			let oManifestObject = this.getOwnerComponent().getManifestObject();

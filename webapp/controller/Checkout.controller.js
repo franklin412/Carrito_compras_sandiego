@@ -508,13 +508,15 @@ sap.ui.define([
 								"ItemCode": product.ItemCode,
 								"Quantity": product.Quantity,
 								"WarehouseCode": product.WarehouseCode,
+								// "CostingCode2": "oInventoryGenExit",
+								// "U_ClaveLabor": "oInventoryGenExit",
 								"StockTransferLinesBinAllocations": []
 							}
 							dataDraft.StockTransferLines.push(stockstransferline);
 						})
 						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 						return new Promise(function (resolve, reject) {
-							var uri = baseuri+"sb1sl/StockTransferDrafts";
+							var uri = baseuri+"sb1sl/Drafts";
 							$.ajax({
 								type: "POST",
 								dataType: "json",

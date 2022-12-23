@@ -14,8 +14,9 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function () {
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oViewModel = new JSONModel({
-				Url_Imagen: 'img/almacen02.png',
+				Url_Imagen: baseuri+'img/almacen02.png',
 				welcomeCarouselSlider2: 'zsandiego/carritocompras/img/slider2.png',
 				Promoted: [],
 				Viewed: [],
