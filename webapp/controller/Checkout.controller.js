@@ -495,6 +495,7 @@ sap.ui.define([
 				onClose: function (oAction) {
 					if(oAction === "YES"){
 						var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
+						var comboCentroCosto = parseInt(this.getView().byId("comboCentroCosto").getSelectedKey());
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
@@ -508,15 +509,18 @@ sap.ui.define([
 								"ItemCode": product.ItemCode,
 								"Quantity": product.Quantity,
 								"WarehouseCode": product.WarehouseCode,
-								// "CostingCode2": "oInventoryGenExit",
+								// "CostingCode2": comboCentroCosto,
 								// "U_ClaveLabor": "oInventoryGenExit",
 								"StockTransferLinesBinAllocations": []
 							}
 							dataDraft.StockTransferLines.push(stockstransferline);
 						})
+
+						// oThat.postWorkflowInstance(dataDraft);
+						
 						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 						return new Promise(function (resolve, reject) {
-							var uri = baseuri+"sb1sl/Drafts";
+							var uri = baseuri+"sb1sl/StockTransferDrafts";
 							$.ajax({
 								type: "POST",
 								dataType: "json",
@@ -524,6 +528,8 @@ sap.ui.define([
 								data: JSON.stringify(dataDraft),
 								success: function (result) {
 									MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
+									dataDraft.DocEntry =result.DocEntry;
+									oThat.postWorkflowInstance(dataDraft);
 									resolve(result.value);
 								},
 								error: function (errMsg) {
@@ -698,25 +704,82 @@ sap.ui.define([
 				}.bind(this)
 			});
 		},
-		getBmpToken: function () {
+		// getBmpToken: function () {
+		// 	var that = this;
+		// 	var oManifestObject = that.getOwnerComponent().getManifestObject();
+		// 	var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+		// 	var appPath = appId.replaceAll(".", "/");
+		// 	var appModulePath = jQuery.sap.getModulePath(appPath);
+        //     return new Promise(function (resolve, reject) {
+        //         $.ajax({
+        //             url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
+        //             method: "GET",
+        //             headers: {
+        //                 "X-CSRF-Token": "Fetch"
+        //             },
+        //             success: function (result, xhr, data) {
+        //                 var token = data.getResponseHeader("X-CSRF-Token");
+        //                 if (token === null) return;
+                    
+        //             }
+        //         });
+        //     });
+        // },
+		postWorkflowInstance: function (dataDraft) {
 			var that = this;
-			var oManifestObject = that.getOwnerComponent().getManifestObject();
+			// var oManifestObject = that.getOwnerComponent().getManifestObject();
 			var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
 			var appPath = appId.replaceAll(".", "/");
 			var appModulePath = jQuery.sap.getModulePath(appPath);
+			var dataPost = {
+				"definitionId": "workflowmodulev1.myworkflowapproval",
+				"context": dataDraft
+			  };
             return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
-                    method: "GET",
-                    headers: {
-                        "X-CSRF-Token": "Fetch"
-                    },
-                    success: function (result, xhr, data) {
-                        var token = data.getResponseHeader("X-CSRF-Token");
-                        if (token === null) return;
+                // $.ajax({
+                //     url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/workflow-instances",
+                //     method: "GET",
+				// 	async: false,
+				// 	contentType: "application/json",
+				// 	data: JSON.stringify(data),
+                //     headers: {
+                //         "X-CSRF-Token": "Fetch"
+                //     },
+                //     success: function (result, xhr, data) {
+                //         var token = data.getResponseHeader("X-CSRF-Token");
+                //         if (token === null) return;
                     
-                    }
-                });
+                //     }
+                // });
+				// $.ajax({
+                //     url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
+                //     method: "GET",
+                //     headers: {
+                //         "X-CSRF-Token": "Fetch"
+                //     },
+                //     success: function (result, xhr, data) {
+                //         var token = data.getResponseHeader("X-CSRF-Token");
+                //         // if (token === null) return;
+                    
+                        $.ajax({
+                            url: appModulePath+"/wfrest/v1/workflow-instances",
+                            type: "POST",
+							data: JSON.stringify(dataPost),
+							contentType: "application/json",
+                            headers: {
+                                "X-CSRF-Token": token
+                            },
+                            async: false,
+                            success: function (data) {
+                                // MessageBox.information("The workflow has successfully started");
+								resolve(data);
+                            },
+                            error: function (data) {
+								resolve(data);
+                            }
+                        });
+                //     }
+                // });
             });
         },
 

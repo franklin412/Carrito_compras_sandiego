@@ -46,6 +46,17 @@
                                         <ComboBox id="comboSalesPerson" width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione un empleado">
                                             <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
                                         </ComboBox>
+
+                                        <Label labelFor="idfragasignacion2_" text="Centro de Costo"/>
+                                        <ComboBox id="comboCentroCosto" width="25em" items="{localmodel>/CentrosCosto}"  placeholder="Seleccione un centro de costo">
+                                            <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterName}" />
+                                        </ComboBox>
+
+                                        <Label labelFor="idfragasignacion3_" text="Norma de Reparto"/>
+                                        <ComboBox id="combo2" width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione una norma de reparto">
+                                            <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
+                                        </ComboBox>
+
 										<Label labelFor="idfragOrgCompra23" text="Fecha Documento"/>
                                         <!-- <pc:InputValueHelp 
                                             id="idfragOrgCompra"

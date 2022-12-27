@@ -16,6 +16,13 @@
       "csrfProtection": false
     },
     {
+      "source": "^/wfrest/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "WorkflowRESTAPI",
+      "csrfProtection": false
+    },
+    {
       "source": "^/resources/(.*)$",
       "target": "/resources/$1",
       "authenticationType": "none",

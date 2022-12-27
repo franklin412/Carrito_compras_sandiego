@@ -18,7 +18,9 @@ sap.ui.define([
 			this._router.getRoute("categories").attachMatched(this._onRouteMatched, this);
             this._catalogo = this.getOwnerComponent().getModel("catalogo");
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
-			this.getBmpToken();
+			this.getWFInstances();
+			this.getBmpTokenInstance();
+			this.getBmpTokeninstancev2();
             
             var that = this;
             var filter = new Filter("Status", FilterOperator.EQ, "A");
@@ -35,6 +37,7 @@ sap.ui.define([
 
 			this.onGetItemServiceLayer();
 			this.consultaEmpleados();
+			this.onCentrosDeCosto();
 
             var sAppModulePath = "zsandiego.carritocompras";    
             this.localmodel.setProperty("/localmodel/lineafragmento", {});
@@ -45,16 +48,16 @@ sap.ui.define([
             
 
 		},       
-		getBmpToken: function () {
+		getWFInstances: function () {
 			var that = this;
 			var oManifestObject = that.getOwnerComponent().getManifestObject();
 			var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
-			var appPath = appId.replaceAll(".", "/");
-			var appModulePath = jQuery.sap.getModulePath(appPath);
+            var appPath = appId.replaceAll(".", "/");
+            var appModulePath = jQuery.sap.getModulePath(appPath);
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
+                    url: appModulePath+"/wfrest/v1/workflow-instances",
                     method: "GET",
 					async: false,
                     headers: {
@@ -111,6 +114,25 @@ sap.ui.define([
 					url: uri,
 					success: function (result) {
 						that.localmodel.setProperty("/empleados", result.value);
+						resolve(result.value);
+					},
+					error: function (errMsg) {
+						reject(errMsg.responseJSON);
+					}
+				});
+			});
+		},
+		onCentrosDeCosto: function () {
+			var that = this;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise( function (resolve, reject) {
+				var uri = baseuri+"sb1sl/ProfitCenters";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					success: function (result) {
+						that.localmodel.setProperty("/CentrosCosto", result.value);
 						resolve(result.value);
 					},
 					error: function (errMsg) {
