@@ -46,9 +46,9 @@ sap.ui.define([
 			var aFilters = [];
 			var sQuery = oEvent.getSource().getValue();
 			if (sQuery && sQuery.length > 0) {
-				aFilters.push(new Filter("Itetx", FilterOperator.Contains, sQuery.toUpperCase()));
-                aFilters.push(new Filter("Item", FilterOperator.Contains, sQuery.toUpperCase()));
-                aFilters.push(new Filter("Razon_Social", FilterOperator.Contains, sQuery.toUpperCase()));
+				aFilters.push(new Filter("ItemCode", FilterOperator.Contains, sQuery.toUpperCase()));
+                aFilters.push(new Filter("WarehouseCode", FilterOperator.Contains, sQuery.toUpperCase()));
+                // aFilters.push(new Filter("Razon_SociaonBuscarCategoryl", FilterOperator.Contains, sQuery.toUpperCase()));
 			}
 			// update list binding
 			var oList = this.byId("productList");

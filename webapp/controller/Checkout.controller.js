@@ -420,6 +420,112 @@ sap.ui.define([
             
       
 		},
+		onClearCentroCosto: function(){
+			var oThat = this;
+			oThat.localmodel.setProperty("/CentrosCosto",[]);
+			var aCentroCosto = oThat._oCart.getProperty("/cartEntries");
+			aCentroCosto.forEach( function(element){
+				element.CentroCostoValue 	= null;
+				element.CentroCostoSelected = null;
+			})
+			oThat._oCart.refresh(true);
+			oThat.localmodel.refresh(true);
+		},
+		onClearClaveLabor: function(){
+			var oThat = this;
+			var aClvLabor = oThat._oCart.getProperty("/cartEntries");
+			aClvLabor.forEach( function(element){
+				element.ClaveLabor 			= [];
+				element.ClaveLaborValue 	= null;
+				element.ClaveLaborSelected 	= null;
+			})
+			oThat._oCart.refresh(true);
+		},
+
+		onSelectSolicitante: function(oEvent){
+			var that = this;
+			this.onClearCentroCosto();
+			this.onClearClaveLabor();
+			this.showBusyIndicator();
+			var solicitanteKey = oEvent.getSource().getSelectedKey();
+			this.localmodel.setProperty("/CentrosCosto",[]);
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise( function (resolve, reject) {
+				var uri = baseuri+"sb1sl/Area('"+ solicitanteKey + "')";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					success: function (result) {
+						that.localmodel.setProperty("/ClaveLabor", []);
+						// resolve(result.value);
+						result.AREADCollection.forEach( function(instances){
+							that.getCentrosCosto(instances.U_Area);
+						})
+					},
+					error: function (errMsg) {
+						reject(errMsg.responseJSON);
+					}
+				});
+			});
+		},
+
+		getCentrosCosto: function(areaId){
+			var that = this;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise(function (resolve, reject) {
+				var uri = baseuri+"sb1sl/ProfitCenters?$filter= U_Area eq '"+areaId+"'";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					success: function (data) {
+						var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
+						that.localmodel.setProperty("/CentrosCosto",concatValues);
+						that.localmodel.refresh(true);
+						that.hideBusyIndicator();
+						resolve(data);
+					},
+					error: function (data) {
+						resolve(data);
+					}
+				});
+			});
+		},
+
+		onSelectCentro: function(oEvent){
+			var that = this;
+			this.showBusyIndicator();
+			var selectedCentro = oEvent.getSource().getSelectedKey();
+			var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+			selectedObject.getObject().CentroCostoSelected 		= selectedCentro;
+			selectedObject.getObject().ClaveLaborValue 			= null;
+			selectedObject.getObject().ClaveLaborSelected 		= null;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise( function (resolve, reject) {
+				var uri = baseuri+"sb1sl/Mapeo?$filter=U_CeCo eq '"+selectedCentro+"'";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					success: function (result) {
+						that._oCart.setProperty(selectedObject.getPath()+"/ClaveLabor",result.value);
+						that._oCart.refresh(true);
+						resolve(result);
+						that.hideBusyIndicator();
+					},
+					error: function (errMsg) {
+						reject(errMsg.responseJSON);
+					}
+				});
+			});
+		},
+		onSelectClaveLabor: function(oEvent){
+			var that = this;
+			var selectedClvLabor = oEvent.getSource().getSelectedKey();
+			var selectedObjectClvLabor = oEvent.getSource().getBindingContext("cartProducts");
+			selectedObjectClvLabor.getObject().ClaveLaborSelected = selectedClvLabor;
+		},
 
 		/**
 		 * navigates to "home" for further shopping
@@ -495,12 +601,11 @@ sap.ui.define([
 				onClose: function (oAction) {
 					if(oAction === "YES"){
 						var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
-						var comboCentroCosto = parseInt(this.getView().byId("comboCentroCosto").getSelectedKey());
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "67",
-							"SalesPersonCode": comboselectedkey,
+							"U_SOLICITANTE": comboselectedkey,
 							"StockTransferLines": []
 						};
 
@@ -509,8 +614,8 @@ sap.ui.define([
 								"ItemCode": product.ItemCode,
 								"Quantity": product.Quantity,
 								"WarehouseCode": product.WarehouseCode,
-								// "CostingCode2": comboCentroCosto,
-								// "U_ClaveLabor": "oInventoryGenExit",
+								"CostingCode2": product.CentroCostoSelected,
+								"U_ClaveLabor": product.ClaveLaborSelected,
 								"StockTransferLinesBinAllocations": []
 							}
 							dataDraft.StockTransferLines.push(stockstransferline);
@@ -520,15 +625,17 @@ sap.ui.define([
 						
 						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 						return new Promise(function (resolve, reject) {
-							var uri = baseuri+"sb1sl/StockTransferDrafts";
+							var uri = baseuri+"sb1sl/Drafts";
 							$.ajax({
 								type: "POST",
 								dataType: "json",
 								url: uri,
 								data: JSON.stringify(dataDraft),
 								success: function (result) {
+									var comboselectedNombre = oThat.getView().byId("comboSalesPerson").getValue();
 									MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
-									dataDraft.DocEntry =result.DocEntry;
+									dataDraft.DocEntry 			= result.DocEntry;
+									dataDraft.UsuarioRegistro 	= comboselectedNombre;
 									oThat.postWorkflowInstance(dataDraft);
 									resolve(result.value);
 								},
@@ -704,27 +811,6 @@ sap.ui.define([
 				}.bind(this)
 			});
 		},
-		// getBmpToken: function () {
-		// 	var that = this;
-		// 	var oManifestObject = that.getOwnerComponent().getManifestObject();
-		// 	var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
-		// 	var appPath = appId.replaceAll(".", "/");
-		// 	var appModulePath = jQuery.sap.getModulePath(appPath);
-        //     return new Promise(function (resolve, reject) {
-        //         $.ajax({
-        //             url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
-        //             method: "GET",
-        //             headers: {
-        //                 "X-CSRF-Token": "Fetch"
-        //             },
-        //             success: function (result, xhr, data) {
-        //                 var token = data.getResponseHeader("X-CSRF-Token");
-        //                 if (token === null) return;
-                    
-        //             }
-        //         });
-        //     });
-        // },
 		postWorkflowInstance: function (dataDraft) {
 			var that = this;
 			// var oManifestObject = that.getOwnerComponent().getManifestObject();
@@ -736,39 +822,14 @@ sap.ui.define([
 				"context": dataDraft
 			  };
             return new Promise(function (resolve, reject) {
-                // $.ajax({
-                //     url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/workflow-instances",
-                //     method: "GET",
-				// 	async: false,
-				// 	contentType: "application/json",
-				// 	data: JSON.stringify(data),
-                //     headers: {
-                //         "X-CSRF-Token": "Fetch"
-                //     },
-                //     success: function (result, xhr, data) {
-                //         var token = data.getResponseHeader("X-CSRF-Token");
-                //         if (token === null) return;
-                    
-                //     }
-                // });
-				// $.ajax({
-                //     url: "/zsandiegocarritocompras/bpmworkflowruntime/v1/xsrf-token",
-                //     method: "GET",
-                //     headers: {
-                //         "X-CSRF-Token": "Fetch"
-                //     },
-                //     success: function (result, xhr, data) {
-                //         var token = data.getResponseHeader("X-CSRF-Token");
-                //         // if (token === null) return;
-                    
                         $.ajax({
                             url: appModulePath+"/wfrest/v1/workflow-instances",
                             type: "POST",
 							data: JSON.stringify(dataPost),
 							contentType: "application/json",
-                            headers: {
-                                "X-CSRF-Token": token
-                            },
+                            // headers: {
+                            //     "X-CSRF-Token": token
+                            // },
                             async: false,
                             success: function (data) {
                                 // MessageBox.information("The workflow has successfully started");

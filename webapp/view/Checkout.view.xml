@@ -43,11 +43,11 @@
                                             dialogTitle="{i18n>clasePedido}"
                                             width="{= ${device>/system/phone} ? '100%' : '22rem'}"
                                         /> -->
-                                        <ComboBox id="comboSalesPerson" width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione un empleado">
-                                            <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
+                                        <ComboBox id="comboSalesPerson" required="true" width="25em" selectionChange="onSelectSolicitante" items="{localmodel>/empleados}"  placeholder="Seleccione un empleado">
+                                            <core:Item key="{localmodel>U_Areas}" text="{localmodel>FirstName} {localmodel>MiddleName} {localmodel>LastName}" />
                                         </ComboBox>
 
-                                        <Label labelFor="idfragasignacion2_" text="Centro de Costo"/>
+                                        <!-- <Label labelFor="idfragasignacion2_" text="Centro de Costo"/>
                                         <ComboBox id="comboCentroCosto" width="25em" items="{localmodel>/CentrosCosto}"  placeholder="Seleccione un centro de costo">
                                             <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterName}" />
                                         </ComboBox>
@@ -55,7 +55,7 @@
                                         <Label labelFor="idfragasignacion3_" text="Norma de Reparto"/>
                                         <ComboBox id="combo2" width="25em" items="{localmodel>/empleados}"  placeholder="Seleccione una norma de reparto">
                                             <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
-                                        </ComboBox>
+                                        </ComboBox> -->
 
 										<Label labelFor="idfragOrgCompra23" text="Fecha Documento"/>
                                         <!-- <pc:InputValueHelp 
@@ -70,7 +70,7 @@
                                             dialogTitle="{i18n>checkoutDeliveryTypeText}"
                                             width="{= ${device>/system/phone} ? '100%' : '22rem'}"
                                         /> -->
-                                        <DatePicker value="{cartProducts>/TodayDate}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" width="{= ${device>/system/phone} ? '100%' : '22rem'}" enabled="false"/>
+                                        <DatePicker value="{cartProducts>/TodayDate}" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" width="{= ${device>/system/phone} ? '100%' : '25em'}" enabled="false"/>
 										<!-- <Label required="true" labelFor="idfragGrupoCompra" text="Grupo de compras"/>
                                         <pc:InputValueHelp 
                                             id="idfragGrupoCompra"
@@ -141,28 +141,28 @@
                                         </Column>                                         -->
                                         <Column
                                             visible="{device>/system/phone}" hAlign="Center"
-                                            width="30%">
+                                            width="20%">
                                             <Text text="{i18n>material}" />
                                         </Column>                                                                           
                                         <Column hAlign="Center"
                                             visible="{=!${device>/system/phone}}"
-                                            width="30%">
+                                            width="20%">
                                             <Text text="{i18n>material}" />
                                         </Column>
                                         <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
-                                            width="15%">
+                                            width="8%">
                                             <Text text="{i18n>um}" />
                                         </Column>
                                         
                                         <Column 
                                             visible="{=!${device>/system/phone}}" hAlign="Center"
-                                            width="10%">
+                                            width="8%">
                                             <Text text="{i18n>proveedor}" />
                                         </Column>                                          
                                         <Column 
                                             demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
                                             visible="{device>/system/phone}"
-                                            width="10%">
+                                            width="8%">
                                             <Text text="{i18n>proveedor}" />
                                         </Column>                                          
                                       
@@ -176,32 +176,25 @@
                                             <Text text="{i18n>cantidad}" />
                                         </Column>                 
                                         <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
-                                            width="12%">
+                                            width="10%">
                                             <Text text="{i18n>centro}" />
                                         </Column>        
-                                        <!-- <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline"
-                                            width="5%">
-                                            <Text text="{i18n>imputacion}" />
-                                        </Column>         -->
-                                        <!-- <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline"
-                                            width="10%">
-                                            <Text text="{i18n>comentarios}" />
-                                        </Column>                                                                                                                                                                                                                   
                                         <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline"
+                                            width="12%">
+                                            <Text text="{i18n>imputacion}" />
+                                        </Column>        
+                                        <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline"
+                                            width="12%">
+                                            <Text text="{i18n>ClvLabor}" />
+                                        </Column>                                                                                                                                                                                                                   
+                                        <!-- <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline"
                                             width="10%">
                                             <Text text="{i18n>total}" />
                                         </Column>                                                                                                     -->
 
                                     </columns>
                                     <items>
-                                        <ColumnListItem 
-                                                    highlight="{ parts: [{path : 'cartProducts>Knttp'},
-                                                                         {path : 'cartProducts>Werks'},
-                                                                         {path : 'cartProducts>Kostl'},
-                                                                         {path : 'cartProducts>Saknr'},
-                                                                         {path : 'cartProducts>Aufk'},
-                                                                         {path : 'cartProducts>Anla'}
-                                                            ], formatter : '.formatter.highlight' }"  press=".onEntryListPress" type="Active">
+                                        <ColumnListItem >
                                             <cells>
                                                 
                                                 <!-- <Image width="100%" src="{= ${cartProducts>Url_Imagen} !== '' ? ${cartProducts>Url_Imagen} : ${localmodel>/placeholder}}" />
@@ -225,6 +218,12 @@
                                                     text="{cartProducts>WarehouseCode}" />
                                                 <Text
                                                     text="{cartProducts>DatosCabeceraV2/InventoryUOM}" />
+                                                <ComboBox  width="25em" required="true" value="{cartProducts>CentroCostoValue}" selectionChange="onSelectCentro" enabled="{=${localmodel>/CentrosCosto}.length > 0}" items="{localmodel>/CentrosCosto}"  placeholder="Seleccione un centro de costo">
+                                                    <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterName}" />
+                                                </ComboBox>
+                                                <ComboBox  width="25em" required="true" value="{cartProducts>ClaveLaborValue}" selectionChange="onSelectClaveLabor" enabled="{=${cartProducts>ClaveLabor}.length > 0}" items="{cartProducts>ClaveLabor}"  placeholder="Seleccione clave labor">
+                                                    <core:Item key="{cartProducts>U_Clave}" text="{cartProducts>U_ClaveN}" />
+                                                </ComboBox>
                                                 <!-- <Text
                                                     text="{cartProducts>Knttp}" /> -->
                                                 <!-- <Text

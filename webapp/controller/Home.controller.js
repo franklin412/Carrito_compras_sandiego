@@ -19,8 +19,6 @@ sap.ui.define([
             this._catalogo = this.getOwnerComponent().getModel("catalogo");
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
 			this.getWFInstances();
-			this.getBmpTokenInstance();
-			this.getBmpTokeninstancev2();
             
             var that = this;
             var filter = new Filter("Status", FilterOperator.EQ, "A");
@@ -37,10 +35,11 @@ sap.ui.define([
 
 			this.onGetItemServiceLayer();
 			this.consultaEmpleados();
-			this.onCentrosDeCosto();
+			// this.onCentrosDeCosto();
 
             var sAppModulePath = "zsandiego.carritocompras";    
             this.localmodel.setProperty("/localmodel/lineafragmento", {});
+            this.localmodel.setProperty("/CentrosCosto", []);
             this.localmodel.setProperty("/placeholder", jQuery.sap.getModulePath(sAppModulePath) + "/img/11030-200.png");
           
         },
@@ -64,8 +63,7 @@ sap.ui.define([
                         "X-CSRF-Token": "Fetch"
                     },
                     success: function (result, xhr, data) {
-                        var token = data.getResponseHeader("X-CSRF-Token");
-                        if (token === null) return;
+                        resolve(result);
                     
                     }
                 });
@@ -107,7 +105,7 @@ sap.ui.define([
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			return new Promise( function (resolve, reject) {
-				var uri = baseuri+"sb1sl/SalesPersons";
+				var uri = baseuri+"sb1sl/EmployeesInfo";
 				$.ajax({
 					type: "GET",
 					dataType: "json",
@@ -182,8 +180,8 @@ sap.ui.define([
 			var aFilters = [];
 			var sQuery = oEvent.getSource().getValue();
 			if (sQuery && sQuery.length > 0) {
-                aFilters.push(new Filter("Catnr", FilterOperator.Contains, sQuery.toUpperCase()))
-                aFilters.push(new Filter("Caktx", FilterOperator.Contains, sQuery.toUpperCase()));
+                aFilters.push(new Filter("ItemCode", FilterOperator.Contains, sQuery))
+                aFilters.push(new Filter("ItemName", FilterOperator.Contains, sQuery));
             }
 
             var oList = this.byId("categoryList");

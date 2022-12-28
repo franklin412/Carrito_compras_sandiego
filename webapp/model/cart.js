@@ -64,6 +64,9 @@ sap.ui.define([
 				oCartEntry = Object.assign({}, oProductToBeAdded);
 				oCartEntry.Quantity = iQuantity;
 				oCartEntry.DatosCabeceraV2 = DatosCabecera;
+				oCartEntry.ClaveLabor = [];
+				oCartEntry.ClaveLaborSelected = "";
+				oCartEntry.CentroCostoSelected = "";
 				// oCollectionEntries[oProductToBeAdded.ItemCode] = oCartEntry;
 				oCartModel.getProperty("/cartEntries").push(oCartEntry);
 			} else {
