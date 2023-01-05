@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Grupo compras" liveChange="_handleValueHelpSearchGrupo" class="sapUiPopupWithPadding"
+		items="{ path: 'matchcode>/ZCDSMM_EKGRP_TXT' }" search="_handleValueHelpSearchGrupo" confirm="_handleValueHelpCloseGrupo"
+		cancel="_handleValueHelpCloseGrupo">
+		<StandardListItem title="{matchcode>ekgrp}" description="{matchcode>eknam}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

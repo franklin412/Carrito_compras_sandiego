@@ -1,0 +1,735 @@
+ {
+ 	"centroCostoPrice": {
+ 		"value": 10000,
+ 		"value1": "",
+ 		"menos": "",
+ 		"igual": "",
+ 		"resultado": "",
+ 		"resultado1": "",
+ 		"acumulado1": ""
+ 	},
+ 	"grupoArticulo": [{
+ 		"id": 1,
+ 		"grupoArticulotext": "Grupo artículo 001"
+ 	}, {
+ 		"id": 2,
+ 		"grupoArticulotext": "Grupo artículo 002"
+ 	}, {
+ 		"id": 3,
+ 		"grupoArticulotext": "Grupo artículo 003"
+ 	}],
+
+ 	"unidadMedida": [{
+ 		"id": 1,
+ 		"unidad": "KG"
+ 	}, {
+ 		"id": 2,
+ 		"unidad": "M"
+ 	}, {
+ 		"id": 3,
+ 		"unidad": "CM"
+ 	}, {
+ 		"id": 4,
+ 		"unidad": "UND"
+ 	}],
+ 	"NumRequisicion": [],
+ 	"textoRequisicion": {
+ 		"value": ""
+ 	},
+ 	"pruebav1": [],
+ 	"linearequisicion": {},
+ 	"requisiciones": [],
+ 	"OrganizacionCompra": [{
+ 		"id": 1,
+ 		"descripcionOrganizacion": "Nacional"
+ 	}, {
+ 		"id": 2,
+ 		"descripcionOrganizacion": "Importación"
+ 	}],
+ 	"lineaCabeceraDetalle": {},
+ 	"lineafragmento": {},
+ 	"lineacuenta": {
+ 		"value": ""
+ 	},
+ 	"listaProductosCantidad": {
+ 		"value": ""
+ 	},
+
+ 	"Proveedor": [{
+ 		"id": 1,
+ 		"descripcionProv": "Alpha Printers"
+ 	}, {
+ 		"id": 2,
+ 		"descripcionProv": "Brainsoft"
+ 	}, {
+ 		"id": 3,
+ 		"descripcionProv": "Fasttech"
+ 	}, {
+ 		"id": 4,
+ 		"descripcionProv": "Oxynum"
+ 	}, {
+ 		"id": 5,
+ 		"descripcionProv": "Printer for All"
+ 	}, {
+ 		"id": 6,
+ 		"descripcionProv": "Red Point Stores"
+ 	}, {
+ 		"id": 7,
+ 		"descripcionProv": "Smartcards"
+ 	}, {
+ 		"id": 8,
+ 		"descripcionProv": "Speaker Experts"
+ 	}, {
+ 		"id": 9,
+ 		"descripcionProv": "Technocom"
+ 	}, {
+ 		"id": 10,
+ 		"descripcionProv": "Titanium"
+ 	}, {
+ 		"id": 11,
+ 		"descripcionProv": "Ultrasonic United"
+ 	}, {
+ 		"id": 12,
+ 		"descripcionProv": "Very Best Screens"
+ 	}],
+ 	"NumOrden": [{
+ 		"id": 1,
+ 		"descripcionNumOrden": "1001"
+ 	}, {
+ 		"id": 2,
+ 		"descripcionNumOrden": "1002"
+ 	}, {
+ 		"id": 3,
+ 		"descripcionNumOrden": "1003"
+ 	}, {
+ 		"id": 4,
+ 		"descripcionNumOrden": "1004"
+ 	}, {
+ 		"id": 5,
+ 		"descripcionNumOrden": "1005"
+ 	}, {
+ 		"id": 6,
+ 		"descripcionNumOrden": "1006"
+ 	}, {
+ 		"id": 7,
+ 		"descripcionNumOrden": "1007"
+ 	}, {
+ 		"id": 8,
+ 		"descripcionNumOrden": "1008"
+ 	}, {
+ 		"id": 9,
+ 		"descripcionNumOrden": "1009"
+ 	}, {
+ 		"id": 10,
+ 		"descripcionNumOrden": "1010"
+	 }],
+	"NumProyecto": [{
+		"id": 1,
+		"descripcionNumProyecto": "11001"
+	}, {
+		"id": 2,
+		"descripcionNumProyecto": "11002"
+	}, {
+		"id": 3,
+		"descripcionNumProyecto": "11003"
+	}, {
+		"id": 4,
+		"descripcionNumProyecto": "11004"
+	}, {
+		"id": 5,
+		"descripcionNumProyecto": "11005"
+	}, {
+		"id": 6,
+		"descripcionNumProyecto": "11006"
+	}, {
+		"id": 7,
+		"descripcionNumProyecto": "11007"
+	}, {
+		"id": 8,
+		"descripcionNumProyecto": "11008"
+	}, {
+		"id": 9,
+		"descripcionNumProyecto": "11009"
+	}, {
+		"id": 10,
+		"descripcionNumProyecto": "11010"
+	}],
+	"TipoImputacion": [{
+		"id": 1,
+		"descripcionTipoImp": "Tipo 01"
+	},
+	{
+		"id": 2,
+		"descripcionTipoImp": "Tipo 02"
+	},
+	{
+		"id": 3,
+		"descripcionTipoImp": "Tipo 03"
+	}],
+ 	"Sociedad": [{
+ 		"id": 1,
+ 		"codigosociedad": "1001 - Sociedad 1",
+ 		"descripcionSociedad": "Sociedad 1"
+ 	}, {
+ 		"id": 2,
+ 		"codigosociedad": "1002 - Sociedad 2",
+ 		"descripcionSociedad": "Sociedad 2"
+ 	}, {
+ 		"id": 3,
+ 		"codigosociedad": "1003 - Sociedad 3",
+ 		"descripcionSociedad": "Sociedad 3"
+ 	}, {
+ 		"id": 4,
+ 		"codigosociedad": "1004 - Sociedad 4",
+ 		"descripcionSociedad": "Sociedad 4"
+ 	}, {
+ 		"id": 5,
+ 		"codigosociedad": "1005 - Sociedad 5",
+ 		"descripcionSociedad": "Sociedad 5"
+ 	}, {
+ 		"id": 6,
+ 		"codigosociedad": "1006 - Sociedad 6",
+ 		"descripcionSociedad": "Sociedad 6"
+ 	}, {
+ 		"id": 7,
+ 		"codigosociedad": "1007 - Sociedad 7",
+ 		"descripcionSociedad": "Sociedad 7"
+ 	}, {
+ 		"id": 8,
+ 		"codigosociedad": "1008 - Sociedad 8",
+ 		"descripcionSociedad": "Sociedad 8"
+ 	}, {
+ 		"id": 9,
+ 		"codigosociedad": "1009 - Sociedad 9",
+ 		"descripcionSociedad": "Sociedad 9"
+ 	}, {
+ 		"id": 10,
+ 		"codigosociedad": "1010 - Sociedad 10",
+ 		"descripcionSociedad": "Sociedad 10"
+ 	}],
+ 	"GrupoCompras": [{
+ 		"id": 1,
+ 		"codigogrupo": "100 - Compras productivas",
+ 		"descripcionGrupo": "Compras productivas"
+ 	}, {
+ 		"id": 2,
+ 		"codigogrupo": "101 - Compras no productivas",
+ 		"descripcionGrupo": "Compras no productivas"
+ 	}, {
+ 		"id": 3,
+ 		"codigogrupo": "102 - Traslados",
+ 		"descripcionGrupo": "Traslados"
+ 	}, {
+ 		"id": 4,
+ 		"codigogrupo": "103 - Servicios",
+ 		"descripcionGrupo": "Servicios"
+ 	}],
+ 	"lineacentrocosto": [],
+ 	"Factura": {
+ 		"Asignacion": [{
+ 			"id": 1,
+ 			"codigoclasepedido": "ZPVD - Pedido de vendedor",
+ 			"descripcion": "Pedido de vendedor",
+ 			"CentroCosto": [{
+ 				"id": 1,
+ 				"descripcioncentro": "001  Centro Costo 1"
+ 			}, {
+ 				"id": 2,
+ 				"descripcioncentro": "002  Centro Costo 2"
+ 			}, {
+ 				"id": 2,
+ 				"descripcioncentro": "003  Centro Costo 3"
+ 			}]
+ 		}, {
+ 			"id": 2,
+ 			"codigoclasepedido": "DB - Pedido dummy",
+ 			"descripcion": "Pedido dummy",
+ 			"CentroCosto": [{
+ 				"id": 4,
+ 				"descripcioncentro": "004  Centro Costo 4"
+ 			}, {
+ 				"id": 5,
+ 				"descripcioncentro": "005  Centro Costo 5"
+ 			}, {
+ 				"id": 6,
+ 				"descripcioncentro": "006  Centro Costo 6"
+ 			}]
+ 		}, {
+ 			"id": 3,
+ 			"codigoclasepedido": "NB - Pedido estándar",
+ 			"descripcion": "Pedido estándar",
+ 			"CentroCosto": [{
+ 				"id": 7,
+ 				"descripcioncentro": "007  Centro Costo 7"
+ 			}, {
+ 				"id": 8,
+ 				"descripcioncentro": "008  Centro Costo 8"
+ 			}, {
+ 				"id": 9,
+ 				"descripcioncentro": "009  Centro Costo 9"
+ 			}]
+ 		}, {
+ 			"id": 4,
+ 			"codigoclasepedido": "ZIMP - Pedido importación",
+ 			"descripcion": "Pedido importación",
+ 			"CentroCosto": [{
+ 				"id": 10,
+ 				"descripcioncentro": "010  Centro Costo 10"
+ 			}, {
+ 				"id": 11,
+ 				"descripcioncentro": "011  Centro Costo 11"
+ 			}, {
+ 				"id": 12,
+ 				"descripcioncentro": "012  Centro Costo 12"
+ 			}]
+ 		}, {
+ 			"id": 5,
+ 			"codigoclasepedido": "ZMAN - Pedido mantenimiento",
+ 			"descripcion": "Pedido mantenimiento",
+ 			"CentroCosto": [{
+ 				"id": 13,
+ 				"descripcioncentro": "013  Centro Costo 13"
+ 			}, {
+ 				"id": 14,
+ 				"descripcioncentro": "014  Centro Costo 14"
+ 			}, {
+ 				"id": 15,
+ 				"descripcioncentro": "015  Centro Costo 15"
+ 			}]
+ 		}, {
+ 			"id": 6,
+ 			"codigoclasepedido": "FO - Pedido marco",
+ 			"descripcion": "Pedido marco",
+ 			"CentroCosto": [{
+ 				"id": 16,
+ 				"descripcioncentro": "016  Centro Costo 16"
+ 			}, {
+ 				"id": 17,
+ 				"descripcioncentro": "017  Centro Costo 17"
+ 			}, {
+ 				"id": 18,
+ 				"descripcioncentro": "018  Centro Costo 18"
+ 			}]
+ 		}, {
+ 			"id": 7,
+ 			"codigoclasepedido": "ENB - Pedido normal DFPS",
+ 			"descripcion": "Pedido normal DFPS",
+ 			"CentroCosto": [{
+ 				"id": 19,
+ 				"descripcioncentro": "019  Centro Costo 19"
+ 			}, {
+ 				"id": 20,
+ 				"descripcioncentro": "020  Centro Costo 20"
+ 			}, {
+ 				"id": 21,
+ 				"descripcioncentro": "021  Centro Costo 21"
+ 			}]
+ 		}, {
+ 			"id": 8,
+ 			"codigoclasepedido": "ZSER - Pedido servicio",
+ 			"descripcion": "Pedido servicio",
+ 			"CentroCosto": [{
+ 				"id": 22,
+ 				"descripcioncentro": "022  Centro Costo 22"
+ 			}, {
+ 				"id": 23,
+ 				"descripcioncentro": "023  Centro Costo 23"
+ 			}, {
+ 				"id": 24,
+ 				"descripcioncentro": "024  Centro Costo 24"
+ 			}]
+ 		}],
+
+ 		"Cuenta": [{
+ 			"id": 1,
+ 			"descripcion": "1000000001  Cuenta 1"
+ 		}, {
+ 			"id": 2,
+ 			"descripcion": "1000000002  Cuenta 2"
+ 		}, {
+ 			"id": 3,
+ 			"descripcion": "1000000003  Cuenta 3"
+ 		}, {
+ 			"id": 4,
+ 			"descripcion": "1000000004  Cuenta 4"
+ 		}, {
+ 			"id": 5,
+ 			"descripcion": "1000000005  Cuenta 5"
+ 		}, {
+ 			"id": 6,
+ 			"descripcion": "1000000006  Cuenta 6"
+ 		}, {
+ 			"id": 7,
+ 			"descripcion": "1000000007  Cuenta 7"
+ 		}, {
+ 			"id": 8,
+ 			"descripcion": "1000000008  Cuenta 8"
+ 		}, {
+ 			"id": 9,
+ 			"descripcion": "1000000009  Cuenta 9"
+ 		}, {
+ 			"id": 10,
+ 			"descripcion": "1000000010  Cuenta 10"
+ 		}]
+ 	},
+ 	"comentarios": {},
+ 	"lineasucursal": {},
+ 	"lineafactura": {},
+ 	"lineadireccion": {},
+
+ 	"DireccionEnvio": [{
+ 		"key": 1,
+ 		"datos": "Dirección de envío 1",
+ 		"linea1": "Av. Lima 1210",
+ 		"linea2": "",
+ 		"ciudad": "Lima",
+ 		"estado": "Estado 1",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 2,
+ 		"datos": "Dirección de envío 2",
+ 		"linea1": "Av. Chiclayo 1198",
+ 		"linea2": "",
+ 		"ciudad": "Chiclayo",
+ 		"estado": "Estado 2",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 3,
+ 		"datos": "Dirección de envío 3",
+ 		"linea1": "Av. Ayacucho 120",
+ 		"linea2": "",
+ 		"ciudad": "Ayacucho",
+ 		"estado": "Estado 3",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 4,
+ 		"datos": "Dirección de envío 4",
+ 		"linea1": "Av. Tumbes 1402",
+ 		"linea2": "",
+ 		"ciudad": "Tumbes",
+ 		"estado": "Estado 4",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 5,
+ 		"datos": "Dirección de envío 5",
+ 		"linea1": "Av. Tacna 202",
+ 		"linea2": "",
+ 		"ciudad": "Tacna",
+ 		"estado": "Estado 5",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 6,
+ 		"datos": "Dirección de envío 6",
+ 		"linea1": "Av. Trujillo 230",
+ 		"linea2": "",
+ 		"ciudad": "Trujilo",
+ 		"estado": "Estado 6",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 7,
+ 		"datos": "Dirección de envío 7",
+ 		"linea1": "Av. Piura 230",
+ 		"linea2": "",
+ 		"ciudad": "Piura",
+ 		"estado": "Estado 7",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 8,
+ 		"datos": "Dirección de envío 8",
+ 		"linea1": "Av. Chimbote 293",
+ 		"linea2": "",
+ 		"ciudad": "Chimbote",
+ 		"estado": "Estado 8",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 9,
+ 		"datos": "Dirección de envío 9",
+ 		"linea1": "Av. Arequipa 220",
+ 		"linea2": "",
+ 		"ciudad": "Arequipa",
+ 		"estado": "Estado 9",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 10,
+ 		"datos": "Dirección de envío 10",
+ 		"linea1": "Av. Cusco 242",
+ 		"linea2": "",
+ 		"ciudad": "Cusco",
+ 		"estado": "Estado 10",
+ 		"codigopostal": 51,
+ 		"pais": "Perú"
+ 	}],
+ 	"datosFacturacion": [{
+ 		"key": 1,
+ 		"datos": "Datos de Facturación 1",
+ 		"Receptor": "Arturo Aldave",
+ 		"correo": "aaldave@plusap.pe",
+ 		"telefono": 943650111,
+ 		"nonit": "97410-2",
+ 		"direccion": "Av. Del Ejercito 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Magdalena",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 2,
+ 		"datos": "Datos de Facturación 2",
+ 		"Receptor": "Franklin Salcedo",
+ 		"correo": "fsalcedo@plusap.pe",
+ 		"telefono": 943650112,
+ 		"nonit": "97410-2",
+ 		"direccion": "Av. Chorrillos 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Chorrillos",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 3,
+ 		"datos": "Datos de Facturación 3",
+ 		"Receptor": "Marin Flores",
+ 		"correo": "mfores@sociedad.pe",
+ 		"telefono": 943650113,
+ 		"nonit": "717963-4",
+ 		"direccion": "Av. Surquillo 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Surquillo",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 4,
+ 		"datos": "Datos de Facturación 4",
+ 		"Receptor": "Axel Matienzo",
+ 		"correo": "amatienzo@sociedad.pe",
+ 		"telefono": 943650114,
+ 		"nonit": "717963-4",
+ 		"direccion": "Av. Miraflores 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Miraflores",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 5,
+ 		"datos": "Datos de Facturación 5",
+ 		"Receptor": "Alexander Contreras ",
+ 		"correo": "acontreras@plusap.pe",
+ 		"telefono": 943650115,
+ 		"nonit": "2728365-8",
+ 		"direccion": "Av. San Isidro 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Isidro",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 6,
+ 		"datos": "Datos de Facturación 6",
+ 		"Receptor": "David Quispe",
+ 		"correo": "dquispe@plusap.pe",
+ 		"telefono": 943650116,
+ 		"nonit": "2728365-8",
+ 		"direccion": "Av. San Borja 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Borja",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 7,
+ 		"datos": "Datos de Facturación 7",
+ 		"Receptor": "Eder Matienzo",
+ 		"correo": "ematienzo@plusap.pe",
+ 		"telefono": 943650117,
+ 		"nonit": "2728339-9",
+ 		"direccion": "Av. Surco 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Surco",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 8,
+ 		"datos": "Datos de Facturación 8",
+ 		"Receptor": "Addison Matienzo",
+ 		"correo": "amatienzo@plusap.pe",
+ 		"telefono": 943650118,
+ 		"nonit": "2728339-9",
+ 		"direccion": "Av. San Juan de Lurigancho 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Juan de Lurigancho",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 9,
+ 		"datos": "Datos de Facturación 9",
+ 		"Receptor": "Cesar Calcina",
+ 		"correo": "ccalcina@plusap.pe",
+ 		"telefono": 943650119,
+ 		"nonit": "2728369-0",
+ 		"direccion": "Av. Callao 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Callao",
+ 		"pais": "Perú"
+ 	}, {
+ 		"key": 10,
+ 		"datos": "Datos de Facturación 10",
+ 		"Receptor": "Christian Valdivieso",
+ 		"correo": "cvaldivieso@plusap.pe",
+ 		"telefono": 943650110,
+ 		"nonit": "2728369-0",
+ 		"direccion": "Av. Los Olivos 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Los Olivos",
+ 		"pais": "Guatemala"
+ 	}],
+
+ 	"Sucursal": [{
+ 		"key": 1,
+ 		"datos": "Sociedad 1",
+ 		"IDexterno": "0001",
+ 		"nombre": "Nombre de Sociedad 1, S.A.",
+ 		"descripcion": "Descripción 1",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Arturo Aldave",
+ 		"correo": "aaldave@plusap.pe",
+ 		"telefono": 943650111,
+ 		"nonit": "00000001",
+ 		"direccion": "Av. Del Ejercito 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Magdalena"
+ 	}, {
+ 		"key": 2,
+ 		"datos": "Sociedad 2",
+ 		"IDexterno": "0002",
+ 		"nombre": "Nombre de Sociedad 2, S.A.",
+ 		"descripcion": "Descripción 2",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Franklin Salcedo",
+ 		"correo": "fsalcedo@plusap.pe",
+ 		"telefono": 943650112,
+ 		"nonit": "00000002",
+ 		"direccion": "Av. Chorrillos 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Chorrillos"
+ 	}, {
+ 		"key": 3,
+ 		"datos": "Sociedad 3",
+ 		"IDexterno": "0003",
+ 		"nombre": "Nombre de Sociedad 3, S.A.",
+ 		"descripcion": "Descripción 3",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Marin Flores",
+ 		"correo": "mflores@plusap.pe",
+ 		"telefono": 943650113,
+ 		"nonit": "00000003",
+ 		"direccion": "Av. Surquillo 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Surquillo"
+ 	}, {
+ 		"key": 4,
+ 		"datos": "Sociedad 4",
+ 		"IDexterno": "0004",
+ 		"nombre": "Nombre de Sociedad 3, S.A.",
+ 		"descripcion": "Descripción 4",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Axel Matienzo",
+ 		"correo": "amatienzo@plusap.pe",
+ 		"telefono": 943650114,
+ 		"nonit": "00000004",
+ 		"direccion": "Av. Miraflores 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Miraflores"
+ 	}, {
+ 		"key": 5,
+ 		"datos": "Sociedad 5",
+ 		"IDexterno": "0005",
+ 		"nombre": "Nombre de Sociedad 5, S.A",
+ 		"descripcion": "Descripción 5",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Alexander Contreras ",
+ 		"correo": "acontreras@plusap.pe",
+ 		"telefono": 943650115,
+ 		"nonit": "00000005",
+ 		"direccion": "Av. San Isidro 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Isidro"
+ 	}, {
+ 		"key": 6,
+ 		"datos": "Sociedad 6",
+ 		"IDexterno": "0006",
+ 		"nombre": "Nombre de Sociedad 6, S.A",
+ 		"descripcion": "Descripción 6",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "David Quispe",
+ 		"correo": "dquispe@plusap.pe",
+ 		"telefono": 943650116,
+ 		"nonit": "00000006",
+ 		"direccion": "Av. San Borja 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Borja"
+ 	}, {
+ 		"key": 7,
+ 		"datos": "Sociedad 7",
+ 		"IDexterno": "0007",
+ 		"nombre": "Nombre de Sociedad 7, S.A",
+ 		"descripcion": "Descripción 7",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Eder Matienzo",
+ 		"correo": "ematienzo@plusap.pe",
+ 		"telefono": 943650117,
+ 		"nonit": "00000007",
+ 		"direccion": "Av. Surco 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Surco"
+ 	}, {
+ 		"key": 8,
+ 		"datos": "Sociedad 8",
+ 		"IDexterno": "0008",
+ 		"nombre": "Nombre de Sociedad 8, S.A",
+ 		"descripcion": "Descripción 8",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Addison Matienzo",
+ 		"correo": "amatienzo@plusap.pe",
+ 		"telefono": 943650118,
+ 		"nonit": "00000008",
+ 		"direccion": "Av. San Juan de Lurigancho 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "San Juan de Lurigancho"
+ 	}, {
+ 		"key": 9,
+ 		"datos": "Sociedad 9",
+ 		"IDexterno": "0009",
+ 		"nombre": "Nombre de Sociedad 9, S.A",
+ 		"descripcion": "Descripción 9",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Cesar Calcina",
+ 		"correo": "ccalcina@plusap.pe",
+ 		"telefono": 943650119,
+ 		"nonit": "00000009",
+ 		"direccion": "Av. Callao 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Callao"
+ 	}, {
+ 		"key": 10,
+ 		"datos": "Sociedad 10",
+ 		"IDexterno": "0010",
+ 		"nombre": "Nombre de Sociedad 10, S.A",
+ 		"descripcion": "Descripción 10",
+ 		"pais": "Perú",
+ 		"divisa": "USD",
+ 		"Receptor": "Christian Valdivieso",
+ 		"correo": "cvaldivieso@plusap.pe",
+ 		"telefono": 943650110,
+ 		"nonit": "00000010",
+ 		"direccion": "Av. Los Olivos 1180",
+ 		"ciudad": "Lima",
+ 		"estado": "Los Olivos"
+ 	}]
+
+ }

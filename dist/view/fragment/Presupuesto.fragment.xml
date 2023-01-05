@@ -1,0 +1,74 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog title="{i18n>titleDialogP}" contentWidth="60%" stretch="{= ${device>/system/phone} ? true : false}">
+    	<content>
+    		<Table 
+				items="{localmodel>/oPresupuesto/aPresupuestos}">
+    			<headerToolbar>
+    				<OverflowToolbar width="100%">
+						<content>
+		    				<MessageStrip
+		    					class="sapMessaStripPresupuesto"
+								text="{localmodel>/oPresupuesto/sMessage}"
+								type="{= ${localmodel>/oPresupuesto/bDisponibleGen} ? 'Success' : 'Warning'}"
+								showIcon="true"
+								showCloseButton="false">
+							</MessageStrip>
+						</content>
+					</OverflowToolbar>
+    			</headerToolbar>
+				<columns>
+					<Column width="10%" hAlign="Center">
+						<Text text="{i18n>columnImpP}" />
+					</Column>
+					<Column width="10%" hAlign="Center">
+						<Text text="{i18n>columnCuentaMayor}" />
+					</Column>
+					<Column width="8%" hAlign="Center">
+						<Text text="{i18n>columnPresu}" />
+					</Column>
+					<Column hAlign="Center" width="8%">
+						<Text text="{i18n>columnTotalP}" />
+					</Column>
+                    <Column hAlign="Center" width="8%">
+						<Text text="{i18n>columnComprometido}" />
+					</Column>
+                    <Column hAlign="Center" width="8%" visible="{=${localmodel>/oPresupuesto/aPresupuestos/0/TipoImp} === 'Centro de coste '}">
+						<Text text="{i18n>columnMes}" />
+					</Column>
+                    <Column hAlign="Center" width="8%" visible="{=${localmodel>/oPresupuesto/aPresupuestos/0/TipoImp} === 'Orden '}">
+						<Text text="{i18n>columnAño}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem
+						type="Inactive">
+						<cells>
+							<ObjectIdentifier title="{localmodel>Imputacion}" text="{localmodel>TipoImp}"/>
+                            <Text text="{localmodel>Kstar}" />
+                            <ObjectStatus
+								class="sapUiSmallMarginBottom"
+								text="{ parts: [
+                                            {path : 'localmodel>Presupuesto'}
+                                        ], formatter : '.formatter.price' } {localmodel>Waers}"
+								state="{= ${localmodel>bDisponible} ? 'Success' : 'Warning'}" />
+							<Text text="{ parts: [
+                                            {path : 'localmodel>ValorTotal'}
+                                        ], formatter : '.formatter.price' } {localmodel>Waers}" />
+                            <Text text="{ parts: [
+                                            {path : 'localmodel>Comprometido'}
+                                        ], formatter : '.formatter.price' } {localmodel>Waers}" />
+                            <Text text="{localmodel>Mes}" wrapping="true"/>
+                            <Text text="{localmodel>Annio}" wrapping="true"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+    	</content><!-- sap.ui.core.Control -->
+    	<buttons>
+    		<Button type="Accept" text="{i18n>btnAceptar}" icon="sap-icon://accept" press="onSubmitAsignar" class="sapUiSizeCompact" enabled="{= ${localmodel>/oPresupuesto/bDisponibleGen} ? true : false}" />
+    		<Button text="{i18n>btnCancelar}" icon="sap-icon://cancel" press="onCancelAsignar" class="sapUiSizeCompact"/>
+    	</buttons><!-- sap.m.Button -->
+    </Dialog>
+</core:FragmentDefinition>

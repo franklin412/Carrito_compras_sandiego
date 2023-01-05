@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Grupo artículo" liveChange="_handleValueHelpSearchGA" class="sapUiPopupWithPadding" items="{localmodel>/grupoArticulo}"
+		search="_handleValueHelpSearchGA" confirm="_handleValueHelpCloseGA" cancel="_handleValueHelpCloseGA">
+		<StandardListItem iconDensityAware="false" iconInset="false" title="{localmodel>grupoArticulotext}"
+			description="{localmodel>grupoArticulotext}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

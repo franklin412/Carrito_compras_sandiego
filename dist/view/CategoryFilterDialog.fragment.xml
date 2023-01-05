@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<ViewSettingsDialog id="categoryFilterDialog" confirm=".handleConfirm" cancel=".handleCancel" resetFilters=".handleResetFilters">
+		<filterItems>
+
+			<ViewSettingsCustomItem text="{i18n>priceFilterTitle}" key="Price">
+				<customControl>
+					<l:VerticalLayout width="100%" class="sapUiContentPadding">
+						
+                        <RangeSlider id="rangeSlider" width="100%" value2="100" class="sapUiSmallMarginTop" max="5000" step="20" change=".handleChange" showAdvancedTooltip="true" enableTickmarks="true" />
+
+					</l:VerticalLayout>
+				</customControl>
+			</ViewSettingsCustomItem>
+			<ViewSettingsFilterItem text="{i18n>supplierFilterTitle}" key="supplierKey" items="{path: 'catalogo>proveedorescatalogos'}">
+				<items>
+					<ViewSettingsItem text="{catalogo>RazonSocial}" key="{catalogo>Lifnr}"/>
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
