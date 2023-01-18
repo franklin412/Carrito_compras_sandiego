@@ -141,7 +141,7 @@ sap.ui.define([
 		},
 		onAfterRendering: function () {
             var sAppModulePath = "zsandiego.carritocompras";            
-            this.getView().byId("imgLogo").setSrc(jQuery.sap.getModulePath(sAppModulePath) + "/img/imageMain.png");
+            // this.getView().byId("imgLogo").setSrc(jQuery.sap.getModulePath(sAppModulePath) + "/img/LogoImageSD.png");
 		},
 		_onRouteMatched: function () {
 			var bSmallScreen = this.getModel("appView").getProperty("/smallScreenMode");

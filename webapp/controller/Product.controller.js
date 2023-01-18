@@ -5,9 +5,11 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-	"sap/ui/model/json/JSONModel"
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/BusyIndicator",
+	"../model/cart"
 ], function (
-	BaseController, formatter, MessageToast, MessageBox, Filter, FilterOperator,JSONModel) {
+	BaseController, formatter, MessageToast, MessageBox, Filter, FilterOperator,JSONModel,BusyIndicator,cart) {
 	"use strict";
 
 	return BaseController.extend("zsandiego.carritocompras.controller.Product", {
@@ -122,6 +124,57 @@ sap.ui.define([
                 productType: oEntry.WarehouseCode,
 				productId: oEntry.InStock
 			});
+		},
+		onGetAlternativo: async function(oEvent){
+			BusyIndicator.show();
+			var oAlterSelected = oEvent.getSource().getBindingContext("localmodel").getObject();
+			this.getView().getModel("localmodel").setProperty("/AlternativoSeleccionado",oAlterSelected);
+			await this.onObtenerAlternativosDetalle(oAlterSelected.AlternativeItemCode);
+			this.onOpenAlternativo();
+			BusyIndicator.hide();
+		},
+		onObtenerAlternativosDetalle: function(ItemCode){
+			var that = this;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+		
+			return new Promise(function (resolve, reject) {
+				var uri = baseuri+"sb1sl/Items('"+ItemCode+"')";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					// data: JSON.stringify(loginInfo),
+					success: function (result) {
+						that.getView().getModel("localmodel").setProperty("/AlternativosItems", result);
+						// that.byId("categoryList").setBusy(false);
+						that.getView().getModel("localmodel").refresh(true);
+						resolve(result.value);
+					},
+					error: function (errMsg) {
+						reject(errMsg.responseJSON);
+					}
+				});
+			});
+		},
+		onOpenAlternativo: function(oEvent){
+			var that = this;
+			// var sInputValue = oEvent.getSource().getValue();
+			if (!that._valueHelpDialogAlternativo) {
+				that._valueHelpDialogAlternativo = sap.ui.xmlfragment(
+					"zsandiego.carritocompras.view.fragment.Alternativo",
+					that
+				);
+				that.getView().addDependent(that._valueHelpDialogAlternativo);
+			}
+			// that._valueHelpDialogAlternativo.getBinding("items").filter([new Filter(
+			// 	"unidad",
+			// 	FilterOperator.Contains, sInputValue
+			// )]);
+			// open value help dialog filtered by the input value
+			that._valueHelpDialogAlternativo.open();
+		},
+		pressOutAlternativo: function () {
+			this._valueHelpDialogAlternativo.close();
 		},
 		pressComprasSpot: function () {
 			this.ProductcomprasSPOT.open();

@@ -24,10 +24,13 @@ sap.ui.define([
 			Favorite: [new Filter("Type", "EQ", "Favorite")]
 		},
 		onInit: function () {
-            
             var oViewModel = new JSONModel({
-				welcomeCarouselSlider1: 'zsandiego/carritocompras/img/image2Main.png',
-				welcomeCarouselSlider2: 'zsandiego/carritocompras/img/imageMain.png',
+				welcomeCarouselSlider1: 'zsandiego/carritocompras/img/01.png',
+				welcomeCarouselSlider2: 'zsandiego/carritocompras/img/02.png',
+				welcomeCarouselSlider3: 'zsandiego/carritocompras/img/03.png',
+				welcomeCarouselSlider4: 'zsandiego/carritocompras/img/04.png',
+				welcomeCarouselSlider5: 'zsandiego/carritocompras/img/05.png',
+				welcomeCarouselSlider6: 'zsandiego/carritocompras/img/06.png',
 				Promoted: [],
 				Viewed: [],
 				Favorite: [],
@@ -37,9 +40,9 @@ sap.ui.define([
 			this.getRouter().attachRouteMatched(this._onRouteMatched, this);
 
 			// select random carousel page at start
-			var oWelcomeCarousel = this.byId("welcomeCarousel");
-			var iRandomIndex = Math.floor(Math.abs(Math.random()) * oWelcomeCarousel.getPages().length);
-			oWelcomeCarousel.setActivePage(oWelcomeCarousel.getPages()[iRandomIndex]);
+			// var oWelcomeCarousel = this.byId("welcomeCarousel");
+			// var iRandomIndex = Math.floor(Math.abs(Math.random()) * oWelcomeCarousel.getPages().length);
+			// oWelcomeCarousel.setActivePage(oWelcomeCarousel.getPages()[iRandomIndex]);
 
 			this.cartProducts = this.getOwnerComponent().getModel("cartProducts");
 

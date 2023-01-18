@@ -6,7 +6,9 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator",
 	"sap/m/MessageToast",
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/core/Fragment"
+	"sap/ui/core/Fragment",
+	"sap/m/MessageBox",
+    "sap/ui/core/BusyIndicator"
 ], function (
 	BaseController,
 	formatter,
@@ -15,9 +17,12 @@ sap.ui.define([
 	FilterOperator,
 	MessageToast,
 	JSONModel,
-	Fragment) {
+	Fragment,
+	MessageBox,
+	BusyIndicator) {
 	"use strict";
 
+	var cantBusqueda=0;
 	return BaseController.extend("zsandiego.carritocompras.controller.Category", {
 		formatter: formatter,
 		// Define filterPreviousValues as global variables because they need to be accessed from different functions
@@ -155,15 +160,19 @@ sap.ui.define([
 		 * @param {sap.ui.base.Event} oEvent the sap.m.ObjectListItem press event
 		 */
 
-		onProductDetails: function (oEvent) {
+		onProductDetails: async function (oEvent) {
+		try{
+			this.onLimpiarCabeceraDetalle();
 			var oBindContext;
 			if (Device.system.phone) {
-				oBindContext = oEvent.getSource().getBindingContext("localmodel");
+				oBindContext = oEvent.getSource().getBindingContext("localmodel").getObject();
 			} else {
 				oBindContext = oEvent.getSource().getSelectedItem().getBindingContext("localmodel").getObject();
 			}
             var oModel = this._catalogo;
 			// oBindContext.DatosCabecera = this.localModel.getProperty("/detallecatalogos");
+			var obtenerSeleccionados = this.getView().getModel("cartProducts").getProperty("/cartEntries").find(e=>e.ItemCode === oBindContext.ItemCode && e.WarehouseCode === oBindContext.WarehouseCode);
+			obtenerSeleccionados ? oBindContext.NoexisteSeleccionado = false : oBindContext.NoexisteSeleccionado = true;
 			this.localModel.setProperty("/ProductData",oBindContext);
 			// var sCategoryId = oModel.getData(oBindContext.getPath()).Catnr;
 			// var sProductId = oModel.getData(oBindContext.getPath()).Item;
@@ -182,6 +191,84 @@ sap.ui.define([
 			}, !Device.system.phone);
 
 			this._unhideMiddlePage();
+			if(oBindContext.InStock === 0){
+				BusyIndicator.show();
+				this.getView().getModel("localmodel").setProperty("/Alternativos",[]);
+				await this.onObtenerAlternativos(oBindContext.ItemCode);
+			}else{
+				this.getView().getModel("localmodel").setProperty("/Alternativos",[]);
+			}
+		} catch(e){
+			// MessageBox.error("Ha sucedido un error al obtener los alternativos");
+			// this.hideBusyIndicator();
+			BusyIndicator.hide();
+		}
+		},
+		onObtenerAlternativos: function(ItemCode){
+			var that = this;
+			var sendData = {
+				"OriginalItem": {
+					"ItemCode": ItemCode
+				}
+			};
+			var ord = 0;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise(function (resolve, reject) {
+				var uri = baseuri+"sb1sl/AlternativeItemsService_GetItem";
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					url: uri,
+					data: JSON.stringify(sendData),
+					success: function (result) {
+						var cantTotal = result.AlternativeItems.length;
+						result.AlternativeItems.forEach( function(e){
+							// e.orden = ord++;
+							that.onGetItemAlternativoServiceLayer(e,cantTotal);
+						})
+						// that.localModel.setProperty("/Alternativos",result.AlternativeItems);
+						// that.localModel.refresh(true);
+						// resolve(result);
+					},
+					error: function (errMsg) {
+						// MessageBox.error("Ha sucedido un error al obtener datos alternativos");
+						reject(errMsg.responseJSON);
+					}
+				});
+			});
+		},
+		onGetItemAlternativoServiceLayer: function(oAlternativo,cantTotal){
+			var that = this;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			return new Promise(function (resolve, reject) {
+				var uri = baseuri+"sb1sl/Items('"+oAlternativo.AlternativeItemCode+"')";
+				// url: oManifestObject.resolveUri(uri),
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: uri,
+					// data: JSON.stringify(loginInfo),
+					success: function (result) {
+						cantBusqueda++;
+						oAlternativo.itemObject = result.ItemName;
+						that.localModel.getProperty("/Alternativos").push(oAlternativo);
+						that.localModel.refresh(true);
+						that.closeBusy(cantBusqueda,cantTotal);
+						resolve(result);
+					},
+					error: function (errMsg) {
+						cantBusqueda++;
+						reject(errMsg.responseJSON);
+						that.closeBusy(cantBusqueda,cantTotal);
+					}
+				});
+			});
+		},
+		closeBusy(cantBusquedaC,cantTotal){
+			if(cantBusquedaC === cantTotal){
+				BusyIndicator.hide();
+				cantBusqueda=0
+			}
 		},
 
 		/** Apply selected filters to the category list and update text and visibility of the info toolbar

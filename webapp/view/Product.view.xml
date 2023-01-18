@@ -1,4 +1,5 @@
-<mvc:View controllerName="zsandiego.carritocompras.controller.Product" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+<mvc:View controllerName="zsandiego.carritocompras.controller.Product"
+    xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page" backgroundDesign="Solid">
 		<landmarkInfo>
 			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Product_rootLabel}" contentRole="Main"
@@ -23,7 +24,7 @@
 			</Bar>
 		</customHeader>
 		<content>
-			<ObjectHeader title="{Name}" titleLevel="H3" number="{ path : 'localmodel>Precio_Unit', formatter : '.formatter.price' }" numberUnit="{catalogo>Waers}">
+			<ObjectHeader title="{localmodel>/itemSelected/ItemName}" titleLevel="H3" >
 				<attributes>
 					<ObjectAttribute title="{i18n>codigo}" text="{localmodel>/ProductData/ItemCode}"/>
                     <ObjectAttribute title="{i18n>productSupplierAttributeText}" text="{localmodel>/ProductData/WarehouseCode}"/>
@@ -48,11 +49,54 @@
 					</detailBox>
 				</Image>
 			</VBox>
+
+			<VBox alignItems="Center" visible="{= ${localmodel>/Alternativos}.length > 0 ? true : false}" renderType="Div" width="90%">
+			<List headerText="Lista de Alternativos ({= ${localmodel>/Alternativos}.length})" showNoData="false"></List>
+				<ScrollContainer vertical="true" focusable="true" height="25rem">
+				<Table
+					inset="false"
+					fixedLayout="true"
+					items="{ path : 'localmodel>/Alternativos'}" >
+					<columns>  
+						<!-- <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="8%">
+							<Text text="Orden" />
+						</Column>                                                                       -->
+						<Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="15%">
+							<Text text="Codigo Item" />
+						</Column>   
+						<Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="75%">
+							<Text text="Descripción" />
+						</Column> 
+						                                                                   
+						<!-- <Column hAlign="Center"
+							width="20%">
+							<Text text="Codigo Item" />
+						</Column> -->
+						
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation" press="onGetAlternativo" vAlign="Middle">
+							<cells>
+								<!-- <Text
+									text="{localmodel>orden}" /> -->
+								<ObjectIdentifier title="{localmodel>AlternativeItemCode}"  />
+								<Text
+									text="{localmodel>itemObject}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>		
+				</ScrollContainer>
+			</VBox>
+
 		</content>
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
+				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
 			</Toolbar>
 		</footer>
 	</Page>

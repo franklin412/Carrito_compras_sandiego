@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
-	<Dialog title="Agregar Material" state="Success">
+	<Dialog title="Agregar Material" state="Success" afterClose="onCancelQuantity">
 		<content>
 			<f:Form editable="true" class="sapUiSizeCompact">
 				<f:layout>
@@ -31,10 +31,10 @@
 			</f:Form>
 		</content>
 		<beginButton>
-			<Button text="Agregar" press="onAddQuantity" type="Emphasized" icon="sap-icon://activity-items" class="sapUiSizeCompact"/>
+			<Button text="Agregar" press="onAddQuantity" type="Accept" icon="sap-icon://activity-items" class="sapUiSizeCompact"/>
 		</beginButton>
 		<endButton>
-			<Button text="Cancelar" press="onCancelQuantity" icon="sap-icon://decline" class="sapUiSizeCompact"/>
+			<Button text="Cancelar" press="onCancelQuantity" type="Reject" icon="sap-icon://decline" class="sapUiSizeCompact"/>
 		</endButton>
 	</Dialog>
 </core:FragmentDefinition>

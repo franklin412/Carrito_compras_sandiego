@@ -10,7 +10,7 @@
       <f:DynamicPageHeader pinnable="true">
         <f:content>
           <OverflowToolbar width="100%" design="Transparent" style="Clear">
-            <Image id="imgLogo" width="15%"/>
+            <!-- <Image id="imgLogo" width="15%"/> -->
             <ToolbarSpacer/>
             <Title text="{i18n>homeTitle} "/>
             <ToolbarSpacer/>
@@ -40,7 +40,7 @@
                     </Column>                    
                 </columns>
                 <items>
-                    <ColumnListItem type="Active">
+                    <ColumnListItem type="Navigation">
                         <cells>
 
                             <Text

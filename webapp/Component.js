@@ -21,18 +21,18 @@ sap.ui.define([
 		init: function () {
 			// }INS@001
 			//create and set cart model
-			var oCartModel = new LocalStorageModel("SHOPPING_CART_3", {
-				Url_Imagen: 'zsandiego/carritocompras/img/almacen.jpg',
-				cartEntries: [],
-                savedForLaterEntries: {},
-                lineaCabeceraDetalle: {
-                    AsignacionDetalle: null,
-                    Organizacion: null,
-                    GrupoCompra: null,
-                    Sociedad: null
-                }
-			});
-			this.setModel(oCartModel, "cartProducts");
+			// var oCartModel = new LocalStorageModel("SHOPPING_CART_3", {
+			// 	Url_Imagen: 'zsandiego/carritocompras/img/almacen.jpg',
+			// 	cartEntries: [],
+            //     savedForLaterEntries: {},
+            //     lineaCabeceraDetalle: {
+            //         AsignacionDetalle: null,
+            //         Organizacion: null,
+            //         GrupoCompra: null,
+            //         Sociedad: null
+            //     }
+			// });
+			// this.setModel(oCartModel, "cartProducts");
 
 			//create and set comparison model
 			var oComparisonModel = new LocalStorageModel("PRODUCT_COMPARISON_2", {

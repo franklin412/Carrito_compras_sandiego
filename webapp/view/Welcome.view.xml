@@ -1,4 +1,4 @@
-<mvc:View controllerName="zsandiego.carritocompras.controller.Welcome" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
+<mvc:View controllerName="zsandiego.carritocompras.controller.NotFound" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page">
 		<landmarkInfo>
 			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Welcome_rootLabel}" contentRole="Main"
@@ -33,7 +33,19 @@
 								</VBox>
 								<VBox renderType="Bare">
 									<Image src="{ path: 'view>/welcomeCarouselSlider2', formatter : '.formatter.pictureUrl' }" width="100%" height="100%"/>
-								</VBox>                                
+								</VBox>
+								<VBox renderType="Bare">
+									<Image src="{ path: 'view>/welcomeCarouselSlider3', formatter : '.formatter.pictureUrl' }" width="100%" height="100%"/>
+								</VBox>
+								<VBox renderType="Bare">
+									<Image src="{ path: 'view>/welcomeCarouselSlider4', formatter : '.formatter.pictureUrl' }" width="100%" height="100%"/>
+								</VBox>
+								<VBox renderType="Bare">
+									<Image src="{ path: 'view>/welcomeCarouselSlider5', formatter : '.formatter.pictureUrl' }" width="100%" height="100%"/>
+								</VBox>
+								<VBox renderType="Bare">
+									<Image src="{ path: 'view>/welcomeCarouselSlider6', formatter : '.formatter.pictureUrl' }" width="100%" height="100%"/>
+								</VBox>
 							</pages>
 						</Carousel>
 					</l:BlockLayoutCell>

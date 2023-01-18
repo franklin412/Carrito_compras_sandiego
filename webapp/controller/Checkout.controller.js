@@ -68,7 +68,8 @@ sap.ui.define([
 			this.localmodel.setProperty("/listaProductosCantidad/value", cantidadlista);
 			var proveedores = this._oCart.getProperty("/cartEntries");
 			var tday = new Date();
-			var dateCheckout = tday.getUTCFullYear()+"/"+ (tday.getUTCMonth()+1) +"/"+tday.getDate();
+			// var dateCheckout = tday.getUTCFullYear()+"/"+ (tday.getUTCMonth()+1) +"/"+tday.getDate();
+			var dateCheckout = tday.getDate()+"-"+ (tday.getUTCMonth()+1) +"-"+tday.getUTCFullYear();
 			this._oCart.setProperty("/TodayDate", dateCheckout);
 			// var empleados = await this.consultaEmpleados();
 			// this._oCart.setProperty("/empleados",empleados);
@@ -368,7 +369,6 @@ sap.ui.define([
 		_clearMessages: function () {
 			sap.ui.getCore().getMessageManager().removeAllMessages();
 		},
-
         handleInputChange: function (oEvent) {
             
             var control = oEvent.getSource();
@@ -427,6 +427,7 @@ sap.ui.define([
 			aCentroCosto.forEach( function(element){
 				element.CentroCostoValue 	= null;
 				element.CentroCostoSelected = null;
+				element.SelectedKeyCentro = null;
 			})
 			oThat._oCart.refresh(true);
 			oThat.localmodel.refresh(true);
@@ -438,6 +439,7 @@ sap.ui.define([
 				element.ClaveLabor 			= [];
 				element.ClaveLaborValue 	= null;
 				element.ClaveLaborSelected 	= null;
+				element.SelectedKeyClave 	= null;
 			})
 			oThat._oCart.refresh(true);
 		},
@@ -448,40 +450,46 @@ sap.ui.define([
 				element.CampoObjeto 			= [];
 				element.CampoObjetoValue 		= null;
 				element.CampoObjetoSelected 	= null;
+				element.SelectedKeyCampoObj 	= null;
 			})
 			oThat._oCart.refresh(true);
 		},
 
 		onSelectSolicitante: function(oEvent){
-			var that = this;
-			this.onClearCentroCosto();
-			this.onClearClaveLabor();
-			this.onClearCampoObjeto();
-			this.showBusyIndicator();
-			var solicitanteKey = oEvent.getSource().getSelectedKey();
-			var empleados = this.localmodel.getProperty("/empleados");
-			var solicitanteKeyAreas = empleados.find(e=> e.EmployeeID === solicitanteKey);
-			this.localmodel.setProperty("/CentrosCosto",[]);
-			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise( function (resolve, reject) {
-				var uri = baseuri+"sb1sl/Area('"+ solicitanteKeyAreas.U_Areas + "')";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (result) {
-						// that.localmodel.setProperty("/ClaveLabor", []);
-						// that.localmodel.setProperty("/CampoObjeto", []);
-						// resolve(result.value);
-						result.AREADCollection.forEach( function(instances){
-							that.getCentrosCosto(instances.U_Area);
-						})
-					},
-					error: function (errMsg) {
-						reject(errMsg.responseJSON);
-					}
+			try{
+				var that = this;
+				this.onClearCentroCosto();
+				this.onClearClaveLabor();
+				this.onClearCampoObjeto();
+				this.showBusyIndicator();
+				var solicitanteKey = oEvent.getSource().getSelectedKey();
+				var empleados = this.localmodel.getProperty("/empleados");
+				var solicitanteKeyAreas = empleados.find(e=> e.EmployeeID === parseInt(solicitanteKey));
+				this.localmodel.setProperty("/CentrosCosto",[]);
+				var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+				return new Promise( function (resolve, reject) {
+					var uri = baseuri+"sb1sl/Area('"+ solicitanteKeyAreas.U_Areas + "')";
+					$.ajax({
+						type: "GET",
+						dataType: "json",
+						url: uri,
+						success: function (result) {
+							// that.localmodel.setProperty("/ClaveLabor", []);
+							// that.localmodel.setProperty("/CampoObjeto", []);
+							// resolve(result.value);
+							result.AREADCollection.forEach( function(instances){
+								that.getCentrosCosto(instances.U_Area);
+							})
+						},
+						error: function (errMsg) {
+							reject(errMsg.responseJSON);
+						}
+					});
 				});
-			});
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al realizar la reserva");
+				this.hideBusyIndicator();
+			}
 		},
 
 		getCentrosCosto: function(areaId){
@@ -508,17 +516,26 @@ sap.ui.define([
 		},
 
 		onSelectCentro: function(oEvent){
-			var that = this;
-			this.showBusyIndicator();
-			var selectedCentro = oEvent.getSource().getSelectedKey();
-			var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
-			selectedObject.getObject().CentroCostoSelected 		= selectedCentro;
-			selectedObject.getObject().ClaveLaborValue 			= null;
-			selectedObject.getObject().ClaveLaborSelected 		= null;
-			selectedObject.getObject().CampoObjetoValue 		= null;
-			selectedObject.getObject().CampoObjetoSelected 		= null;
-			that.onObtenerClaveLabor(selectedObject,selectedCentro);
-			// that.onObtenerCampoObjeto(selectedObject,selectedCentro);
+			try{
+				var that = this;
+				this.showBusyIndicator();
+				var selectedCentro = oEvent.getSource().getSelectedKey();
+				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObject.getObject().CentroCostoSelected 		= selectedCentro;
+				selectedObject.getObject().ClaveLaborValue 			= null;
+				selectedObject.getObject().ClaveLaborSelected 		= null;
+				selectedObject.getObject().CampoObjetoValue 		= null;
+				selectedObject.getObject().CampoObjetoSelected 		= null;
+				selectedObject.getObject().SelectedKeyClave 		= null;
+				selectedObject.getObject().SelectedKeyCampoObj 		= null;
+				selectedObject.getObject().ClaveLabor 				= [];
+				selectedObject.getObject().CampoObjeto 				= [];
+				that.onObtenerClaveLabor(selectedObject,selectedCentro);
+				// that.onObtenerCampoObjeto(selectedObject,selectedCentro);
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al realizar la reserva");
+				this.hideBusyIndicator();
+			}
 		},
 		onObtenerClaveLabor: function(selectedObject,selectedCentro){
 			var that = this;
@@ -551,8 +568,13 @@ sap.ui.define([
 					dataType: "json",
 					url: uri,
 					success: function (result) {
-						that._oCart.setProperty(selectedObjectClvLabor.getPath()+"/CampoObjeto",result.value);
-						that._oCart.refresh(true);
+						if(result.value.length > 0){
+							var oLineCart = that._oCart.getProperty(selectedObjectClvLabor.getPath());
+							oLineCart.CampoObjetoValue		= result.value[0].U_ObjetoN;
+							oLineCart.SelectedKeyCampoObj	= result.value[0].U_Objeto;
+							oLineCart.CampoObjetoSelected	= result.value[0].U_Objeto;
+							that._oCart.refresh(true);
+						}
 						resolve(result);
 						that.hideBusyIndicator();
 					},
@@ -563,19 +585,30 @@ sap.ui.define([
 			});
 		},
 		onSelectClaveLabor: function(oEvent){
-			var that = this;
-			var selectedClvLabor = oEvent.getSource().getSelectedKey();
-			var selectedObjectClvLabor = oEvent.getSource().getBindingContext("cartProducts");
-			selectedObjectClvLabor.getObject().ClaveLaborSelected = selectedClvLabor;
-			selectedObjectClvLabor.getObject().CampoObjetoValue 		= null;
-			selectedObjectClvLabor.getObject().CampoObjetoSelected 		= null;
-			that.onObtenerCampoObjeto(selectedObjectClvLabor,selectedObjectClvLabor.getObject().CentroCostoSelected);
+			try{
+				var that = this;
+				var selectedClvLabor = oEvent.getSource().getSelectedKey();
+				var selectedObjectClvLabor = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObjectClvLabor.getObject().ClaveLaborSelected = selectedClvLabor;
+				selectedObjectClvLabor.getObject().CampoObjetoValue 		= null;
+				selectedObjectClvLabor.getObject().CampoObjetoSelected 		= null;
+				selectedObjectClvLabor.getObject().SelectedKeyCampoObj 		= null;
+				that.onObtenerCampoObjeto(selectedObjectClvLabor,selectedObjectClvLabor.getObject().CentroCostoSelected);
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al seleccionar clave labor");
+				this.hideBusyIndicator();
+			}
 		},
 		onSelectCampoObjeto: function(oEvent){
-			var that = this;
-			var selectedCampoObjeto = oEvent.getSource().getSelectedKey();
-			var selectedObjectCampoObjeto = oEvent.getSource().getBindingContext("cartProducts");
-			selectedObjectCampoObjeto.getObject().CampoObjetoSelected = selectedCampoObjeto;
+			try {
+				var that = this;
+				var selectedCampoObjeto = oEvent.getSource().getSelectedKey();
+				var selectedObjectCampoObjeto = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObjectCampoObjeto.getObject().CampoObjetoSelected = selectedCampoObjeto;
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al seleccionar campo objeto");
+				this.hideBusyIndicator();
+			}
 		},
 
 		/**
@@ -652,9 +685,11 @@ sap.ui.define([
 				],
 				onClose: function (oAction) {
 					if(oAction === "YES"){
-						this.showBusyIndicator();
+						oThat.showBusyIndicator();
 						var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
+						var error = false;
+						!comboselectedkey ? error = true : null;
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode"	: "oInventoryGenExit",
@@ -667,7 +702,7 @@ sap.ui.define([
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "oInventoryGenExit",
 							"U_SOLICITANTE": comboselectedkey,
-							"estadoAprob" : "P",
+							"estadoAprob" : false,
 							"DocumentLines": []
 						};
 
@@ -685,19 +720,16 @@ sap.ui.define([
 						})
 
 						oEntries.forEach( function(product){
-							// var stockstransferlineWf = {
-							// 	"ItemCode": product.ItemCode,
-							// 	"Quantity": product.Quantity,
-							// 	"WarehouseCode": product.WarehouseCode,
-							// 	"CostingCode2": product.CentroCostoSelected,
-							// 	"U_ClaveLabor": product.ClaveLaborSelected,
-							// 	"DocumentLinesBinAllocations": []
-							// }
+							!product.CentroCostoSelected || !product.CampoObjetoSelected || !product.ClaveLaborSelected ? error = true : null ;
 							dataWorkflow.DocumentLines.push(product);
 						})
 
-						// oThat.postWorkflowInstance(dataDraft);
-						
+
+						if(error === true){
+							MessageBox.error("Debe llenar los campos para poder realizar la reserva");
+							oThat.hideBusyIndicator();
+							return;
+						}
 						var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 						return new Promise(function (resolve, reject) {
 							var uri = baseuri+"sb1sl/Drafts";
@@ -715,8 +747,7 @@ sap.ui.define([
 									resolve(result.value);
 								},
 								error: function (errMsg) {
-									MessageBox.error("Ha sucedido un error al realizar la reserva");
-									reject(errMsg.responseJSON);
+									reject(errMsg);
 								}
 							});
 						});
@@ -725,46 +756,52 @@ sap.ui.define([
 			});
 
 		} catch(e){
+			MessageBox.error("Ha sucedido un error al realizar la reserva");
 			this.hideBusyIndicator();
 		}
 		},
 		postWorkflowInstance: function (dataDraft) {
-			var that = this;
-			var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
-			var appPath = appId.replaceAll(".", "/");
-			var appModulePath = jQuery.sap.getModulePath(appPath);
-			var dataPost = {
-				"definitionId": "workflowmodulev1.myworkflowapproval",
-				"context": dataDraft
-			  };
-            return new Promise(function (resolve, reject) {
-				$.ajax({
-					url: appModulePath+"/wfrest/v1/workflow-instances",
-					type: "POST",
-					data: JSON.stringify(dataPost),
-					contentType: "application/json",
-					// headers: {
-					//     "X-CSRF-Token": token
-					// },
-					async: false,
-					success: function (data) {
-						// MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
-						MessageBox.success("La reserva se registro correctamente con el numero: "+dataDraft.DocEntry, {
-							actions: [MessageBox.Action.OK],
-							emphasizedAction: MessageBox.Action.OK,
-							onClose: function (sAction) {
-								that._oCart.setProperty("/cartEntries",[]);
-								that.onReturnToShopButtonPress();
-							}
-						});
-						that.hideBusyIndicator();
-						resolve(data);
-					},
-					error: function (data) {
-						resolve(data);
-					}
+			try {
+				var that = this;
+				var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+				var appPath = appId.replaceAll(".", "/");
+				var appModulePath = jQuery.sap.getModulePath(appPath);
+				var dataPost = {
+					"definitionId": "workflowmodulev1.myworkflowapproval",
+					"context": dataDraft
+				};
+				return new Promise(function (resolve, reject) {
+					$.ajax({
+						url: appModulePath+"/wfrest/v1/workflow-instances",
+						type: "POST",
+						data: JSON.stringify(dataPost),
+						contentType: "application/json",
+						// headers: {
+						//     "X-CSRF-Token": token
+						// },
+						async: false,
+						success: function (data) {
+							// MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
+							MessageBox.success("La reserva se registro correctamente con el numero: "+dataDraft.DocEntry, {
+								actions: [MessageBox.Action.OK],
+								emphasizedAction: MessageBox.Action.OK,
+								onClose: function (sAction) {
+									that._oCart.setProperty("/cartEntries",[]);
+									that.onReturnToShopButtonPress();
+								}
+							});
+							that.hideBusyIndicator();
+							resolve(data);
+						},
+						error: function (data) {
+							resolve(data);
+						}
+					});
 				});
-            });
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al realizar la reserva");
+				this.hideBusyIndicator();
+			}
         },
 
 		/**
@@ -1317,7 +1354,8 @@ sap.ui.define([
 			}
 		},
 		onEliminarProducto: function (oEvent) {
-            var oCurrentObj = oEvent.getParameter("listItem").getBindingContext("cartProducts").getObject();
+            // var oCurrentObj = oEvent.getParameter("listItem").getBindingContext("cartProducts").getObject();
+            var oCurrentObj = oEvent.getParameter("listItem").getBindingContext("cartProducts").getPath().split("/")[2];
             var that = this;
 
 			MessageBox.show(this.getResourceBundle().getText("cartDeleteDialogMsg"), {
@@ -1332,7 +1370,8 @@ sap.ui.define([
 						return;
 					}
                     var aCartEntries = that._oCart.getProperty("/cartEntries");
-                    delete aCartEntries[oCurrentObj.Item];
+                    // delete aCartEntries[parseInt(oCurrentObj)];
+					aCartEntries.splice(oCurrentObj,1)
                     that._oCart.refresh(true);
 
 					MessageToast.show("Eliminado correctamente");

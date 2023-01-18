@@ -11,8 +11,6 @@
 				visible="{cfg>/notInDelete}" press=".onEditOrDoneButtonPress" tooltip="{i18n>cartEditButtonTooltip}"/>
 		</headerContent>
 		<content>
-			
-
 			<List id="entryList" class="sapUiSizeCompact" 
 				 delete=".onCartEntriesDelete" selectionChange=".onEntryListSelect" noDataText="{i18n>cartNoData}"
 				items="{cartProducts>/cartEntries}">
@@ -21,8 +19,8 @@
 
                         <StepInput 
                                     visible="{= !${cfg>/notInDelete}}" 
-                                    min="{= parseInt(${cartProducts>Cant_Min})}"
-                                    change="onChangeQuantity"
+                                    min="1"
+                                    change="onChangeQuantityCart"
                                     validationMode="LiveChange"
                                     width="6em"
                                     value="{cartProducts>Quantity}" />                    

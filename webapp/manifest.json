@@ -50,7 +50,7 @@
                   },
                   "semanticObject": "zsandiego",
                   "action": "display",
-                  "title": "Registro de reserva",
+                  "title": "Registro de Reserva",
                   "subTitle": "Reserva",
                   "icon": "sap-icon://activity-items"
               }
@@ -100,6 +100,10 @@
             "localmodel": {
               "type": "sap.ui.model.json.JSONModel",
               "uri": "model/carrito.json"
+            },
+            "cartProducts": {
+              "type": "sap.ui.model.json.JSONModel",
+              "uri": "model/cartProducts.json"
             },
             "matchcode": {
               "dataSource": "ZOD_ALAYRI_MATCHCODES_SRV",
@@ -164,7 +168,7 @@
                   "name": "home",
                   "target": [
                     "home",
-                    "welcome"
+                    "notFound"
                   ]
                 },
                 {
@@ -172,14 +176,14 @@
                   "name": "categories",
                   "target": [
                     "home",
-                    "welcome"
+                    "notFound"
                   ]
                 },
                 {
                   "pattern": "category/{id}",
                   "name": "category",
                   "target": [
-                    "welcome",
+                    "notFound",
                     "category"
                   ],
                   "titleTarget": "category"
@@ -227,7 +231,7 @@
                   "name": "cart",
                   "target": [
                     "home",
-                    "welcome",
+                    "notFound",
                     "cart"
                   ]
                 },
@@ -279,7 +283,7 @@
                 "welcome": {
                   "viewName": "Welcome",
                   "viewLevel": 0,
-                  "viewId": "welcomeView",
+                  "viewId": "Welcome",
                   "controlAggregation": "midColumnPages"
                 },
                 "home": {

@@ -9,7 +9,8 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator"    
 ], function (Controller, MessageToast, UIComponent, History, cart, MessageBox, Filter, FilterOperator) {
 	"use strict";
-
+	var dataAlternativoDetalle;
+	var dataAlternativoCabecera;
 	return Controller.extend("zsandiego.carritocompras.controller.BaseController", {
 		cart: cart,
 		/**
@@ -136,22 +137,89 @@ sap.ui.define([
             this.oDialogQuantity.data("oProduct", oProduct);
 			this.oDialogQuantity.open();
 		},
+		onSelectAlmacenReserva: function(oEvent){
+			// var selectedAlmacen = oEvent.getSource().getBindingContext("localmodel").getObject();
+			dataAlternativoCabecera = this.getView().getModel("localmodel").getProperty("/AlternativosItems");
+			var selectedAlmacen = oEvent.getParameters().listItem.getBindingContext("localmodel").getObject();
+			dataAlternativoDetalle = selectedAlmacen;
+
+			var oCartModel = this.getModel("cartProducts");
+			var existeAlternativo = oCartModel.getProperty("/cartEntries").find(e=>e.ItemCode === dataAlternativoDetalle.ItemCode && e.WarehouseCode === dataAlternativoDetalle.WarehouseCode);
+			if(existeAlternativo){
+				MessageBox.warning("El alternativo seleccionado ya existe en la lista de reservas.");
+				this.onLimpiarCabeceraDetalle();
+				return;
+			}
+			// dataAlternativoCabecera = this.getView().getModel("localmodel").getProperty("/AlternativoSeleccionado");
+			if(selectedAlmacen.InStock !== 0){
+				this.onAddToCart();
+			}else {
+				MessageBox.warning("Este item no tiene stock");
+			}
+		},
+		onLimpiarCabeceraDetalle: function(){
+			dataAlternativoDetalle = null;
+	 		dataAlternativoCabecera = null;
+		},
 		onAddQuantity: function(oEvent){
-            var oProduct = oEvent.getSource().getParent().data("oProduct");
+			var oCartModel = this.getModel("cartProducts");
+			if(dataAlternativoDetalle && dataAlternativoCabecera){
+				var oProduct = dataAlternativoDetalle;
+				var DatosCabecera = dataAlternativoCabecera;
+				// var existeAlternativo = oCartModel.getProperty("/cartEntries").find(e=>e.ItemCode === oProduct.ItemCode && e.WarehouseCode === oProduct.WarehouseCode);
+				// if(existeAlternativo){
+				// 	MessageBox.warning("El alternativo seleccionado ya existe en la lista de reservas.");
+				// 	return;
+				// }
+			}else{
+				var oProduct = oEvent.getSource().getParent().data("oProduct");
+				var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
+				oProduct.NoexisteSeleccionado = false;
+				this.getView().getModel("localmodel").refresh(true);
+			}
 			var iQuantity = sap.ui.getCore().byId("sInpQuantity").getValue() * 1;
 			var oResourceBundle = this.getModel("i18n").getResourceBundle();
-			var oCartModel = this.getModel("cartProducts");
-			var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
+			// var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
 			cart.addToCart(oResourceBundle, oProduct, oCartModel, iQuantity, DatosCabecera);
 			this.cantidad_productos = (oCartModel.getProperty("/cartEntries")).length;
 			this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", this.cantidad_productos);
+			this.onLimpiarCabeceraDetalle();
 			this.onCancelQuantity();
         },
         onChangeQuantity: function(oEvent){
             var oControl = oEvent.getSource();
             var fValue = oEvent.getParameter("value")
+            var iMin = oControl.getMin();
+			if(dataAlternativoDetalle){
+				var oStockDetalle = dataAlternativoDetalle.InStock;
+			}else {
+				var oStockDetalle = this.getView().getModel("localmodel").getProperty("/ProductData").InStock;
+			}
+			if(fValue > oStockDetalle){
+				oControl.setValue(oStockDetalle);
+				MessageBox.warning("La cantidad excede la cantidad de stock.");
+			}
+            if (fValue < iMin){
+                MessageBox.warning("La cantidad m\u00EDnima permitida es " + oControl.getMin() + ".");
+                oControl.setValue(iMin);
+                var oBinding = oControl.getBinding("value");
+                if (oBinding){
+                    setTimeout(function(){
+                        oBinding.setValue(iMin)
+                    }, 1000)
+                    
+                }
+            }
+        },
+		onChangeQuantityCart: function(oEvent){
+            var oControl = oEvent.getSource();
+            var fValue = oEvent.getParameter("value")
             var iMin = oControl.getMin()
-
+			var cantidadReserva = oEvent.getSource().getBindingContext("cartProducts").getObject().InStock;
+			if(fValue > cantidadReserva){
+				oControl.setValue(cantidadReserva);
+				MessageBox.warning("La cantidad excede la cantidad de stock.");
+			}
             if (fValue < iMin){
                 MessageBox.warning("La cantidad m\u00EDnima permitida es " + oControl.getMin() + ".");
                 oControl.setValue(iMin);
@@ -170,6 +238,7 @@ sap.ui.define([
 				this.oDialogQuantity.destroy();
 				this.oDialogQuantity = null;
 			}
+			this.onLimpiarCabeceraDetalle();
 		},
 		/**
 		 * Clear comparison model

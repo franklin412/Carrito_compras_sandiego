@@ -24,7 +24,8 @@
 					<Wizard id="shoppingCartWizard" complete="checkCompleted" enableBranching="true" finishButtonText="{i18n>checkoutWizardReviewbtn}">
 						<steps>
 							<!--SUCURSAL STEP!-->
-							<WizardStep id="sucursalStep"  nextStep="contentsStep" title="{i18n>datoscabecera}" icon="sap-icon://factory"
+							<WizardStep id="sucursalStep" 
+										complete="pricingComplete"  nextStep="contentsStep" title="{i18n>datoscabecera}" icon="sap-icon://factory"
 								>
 								<form:SimpleForm id="SimpleFormChange3524" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
 									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
@@ -70,7 +71,7 @@
                                             dialogTitle="{i18n>checkoutDeliveryTypeText}"
                                             width="{= ${device>/system/phone} ? '100%' : '22rem'}"
                                         /> -->
-                                        <DatePicker value="{cartProducts>/TodayDate}" displayFormat="yyyy/MM/dd" valueFormat="yyyy/MM/dd" width="{= ${device>/system/phone} ? '100%' : '25em'}" enabled="false"/>
+                                        <DatePicker value="{cartProducts>/TodayDate}" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" width="{= ${device>/system/phone} ? '100%' : '25em'}" enabled="false"/>
 										<!-- <Label required="true" labelFor="idfragGrupoCompra" text="Grupo de compras"/>
                                         <pc:InputValueHelp 
                                             id="idfragGrupoCompra"
@@ -222,15 +223,17 @@
                                                     text="{cartProducts>WarehouseCode}" />
                                                 <Text
                                                     text="{cartProducts>DatosCabeceraV2/InventoryUOM}" />
-                                                <ComboBox  width="25em" required="true" value="{cartProducts>CentroCostoValue}" selectionChange="onSelectCentro" enabled="{=${localmodel>/CentrosCosto}.length > 0}" items="{localmodel>/CentrosCosto}"  placeholder="Seleccione un centro de costo">
-                                                    <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterName}" />
+                                                <ComboBox  width="25em" required="true" value="{cartProducts>CentroCostoValue}" selectedKey="{cartProducts>SelectedKeyCentro}" selectionChange="onSelectCentro" enabled="{=${localmodel>/CentrosCosto}.length > 0}" items="{localmodel>/CentrosCosto}"  placeholder="Seleccione un centro de costo">
+                                                    <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterCode} - {localmodel>CenterName}" />
                                                 </ComboBox>
-                                                <ComboBox  width="25em" required="true" value="{cartProducts>ClaveLaborValue}" selectionChange="onSelectClaveLabor" enabled="{=${cartProducts>ClaveLabor}.length > 0}" items="{cartProducts>ClaveLabor}"  placeholder="Seleccione clave labor">
-                                                    <core:Item key="{cartProducts>U_Clave}" text="{cartProducts>U_ClaveN}" />
+                                                <ComboBox  width="25em" required="true" value="{cartProducts>ClaveLaborValue}" selectedKey="{cartProducts>SelectedKeyClave}" selectionChange="onSelectClaveLabor" enabled="{=${cartProducts>ClaveLabor}.length > 0}" items="{cartProducts>ClaveLabor}"  placeholder="Seleccione clave labor">
+                                                    <core:Item key="{cartProducts>U_Clave}" text="{cartProducts>U_Clave} - {cartProducts>U_ClaveN}" />
                                                 </ComboBox>
-                                                <ComboBox  width="25em" required="true" value="{cartProducts>CampoObjetoValue}" selectionChange="onSelectCampoObjeto" enabled="{=${cartProducts>CampoObjeto}.length > 0}" items="{cartProducts>CampoObjeto}"  placeholder="Seleccione un campo objeto">
+                                                <!-- <ComboBox  width="25em" required="true" value="{cartProducts>CampoObjetoValue}" selectedKey="{cartProducts>SelectedKeyCampoObj}" selectionChange="onSelectCampoObjeto" enabled="{=${cartProducts>CampoObjeto}.length > 0}" items="{cartProducts>CampoObjeto}"  placeholder="Seleccione un objeto">
                                                     <core:Item key="{cartProducts>U_Objeto}" text="{cartProducts>U_ObjetoN}" />
-                                                </ComboBox>
+                                                </ComboBox> -->
+                                                <Text 
+                                                    text="{cartProducts>CampoObjetoValue}" />
                                                 <!-- <Text
                                                     text="{cartProducts>Knttp}" /> -->
                                                 <!-- <Text
