@@ -31,11 +31,12 @@
 
                 <columns>
                     <Column
-                        width="12em">
+                        width="6em">
                         <Text text="{i18n>codigo}" />
                     </Column>
                     <Column
-                        width="12em">
+                        minScreenWidth="Desktop"
+				                demandPopin="true">
                         <Text text="{i18n>descripcion}" />
                     </Column>                    
                 </columns>
