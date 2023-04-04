@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Grupo compras" liveChange="_handleValueHelpSearchGrupo" class="sapUiPopupWithPadding"
+		items="{ path: 'localmodel>/GrupoCompras' }" search="_handleValueHelpSearchGrupo" confirm="_handleValueHelpCloseGrupo"
+		cancel="_handleValueHelpCloseGrupo">
+		<StandardListItem title="{localmodel>codigogrupo}" description="{localmodel>descripcionGrupo}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

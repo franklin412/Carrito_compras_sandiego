@@ -1,0 +1,103 @@
+<mvc:View controllerName="zsandiego.carritocompras.controller.Product"
+    xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+	<Page id="page" backgroundDesign="Solid">
+		<landmarkInfo>
+			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Product_rootLabel}" contentRole="Main"
+				contentLabel="{i18n>Product_contentLabel}" headerRole="Region" headerLabel="{i18n>Product_headerLabel}" footerRole="Region"
+				footerLabel="{i18n>Product_footerLabel}"/>
+		</landmarkInfo>
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Button type="Back" visible="{appView>/smallScreenMode}" press=".onBack"/>
+					<!-- <Button text="Compras SPOT" icon="sap-icon://cart-4" type="Transparent" press="pressComprasSpot"/> -->
+				</contentLeft>
+				<contentMiddle>
+					<Title level="H2" text="{i18n>num_Almacen}"/>
+				</contentMiddle>
+				<contentRight>
+					<!-- <Button icon="sap-icon://header" press=".onAvatarPress" tooltip="{i18n>avatarButtonTooltip}"/> -->
+					<ToggleButton icon="sap-icon://activity-items" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
+						press=".onToggleCart" text="{ path: 'cartProducts>/cartEntries', formatter: '.formatter.countItems' }"></ToggleButton>
+                    
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<content>
+			<ObjectHeader title="{localmodel>/itemSelected/ItemName}" titleLevel="H3" >
+				<attributes>
+					<ObjectAttribute title="{i18n>codigo}" text="{localmodel>/ProductData/ItemCode}"/>
+                    <ObjectAttribute title="{i18n>productSupplierAttributeText}" text="{localmodel>/ProductData/WarehouseCode}"/>
+					<ObjectAttribute title="{i18n>cantidadMinima}" text="{localmodel>/ProductData/InStock}"/>
+					<!-- <ObjectAttribute title="{i18n>cantidadMinima}" text="{ path : 'localmodel>/ProductData/InStock', formatter : '.formatter.cantidad' }"/>
+                    <ObjectAttribute visible="true" text="{i18n>precio}: { path : 'localmodel>Precio_Unit_Bukrs', formatter : '.formatter.price' } {localmodel>Waers_Bukrs}"/> -->
+                </attributes>
+				<statuses>
+					<ObjectStatus text="{ path : 'Status', formatter : '.formatter.statusText' }"
+						state="{ path : 'Status', formatter : '.formatter.statusState' }"/>
+				</statuses>
+			</ObjectHeader>
+			<VBox alignItems="Center" renderType="Div" width="90%">
+				<Image id="productImage" src="{= ${productImagen>/Url_Imagen} !== '' ? ${productImagen>/Url_Imagen} : ${localmodel>/placeholder}}" decorative="true" densityAware="false" class="sapUiSmallMargin" width="100%"
+					height="100%">
+					<detailBox>
+						<LightBox id="lightBox">
+							<imageContent>
+								<LightBoxItem imageSrc="{= ${productImagen>/Url_Imagen} !== '' ? ${productImagen>/Url_Imagen} : ${localmodel>/placeholder}}" title="{localmodel>Itetx}"/>
+							</imageContent>
+						</LightBox>
+					</detailBox>
+				</Image>
+			</VBox>
+
+			<VBox alignItems="Center" visible="{= ${localmodel>/Alternativos}.length > 0 ? true : false}" renderType="Div" width="90%">
+			<List headerText="Lista de Alternativos ({= ${localmodel>/Alternativos}.length})" showNoData="false"></List>
+				<ScrollContainer vertical="true" focusable="true" height="25rem">
+				<Table
+					inset="false"
+					fixedLayout="true"
+					items="{ path : 'localmodel>/Alternativos'}" >
+					<columns>  
+						<!-- <Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="8%">
+							<Text text="Orden" />
+						</Column>                                                                       -->
+						<Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="15%">
+							<Text text="Codigo Item" />
+						</Column>   
+						<Column demandPopin="true" minScreenWidth="Tablet" popinDisplay="Inline" hAlign="Center"
+							width="75%">
+							<Text text="Descripción" />
+						</Column> 
+						                                                                   
+						<!-- <Column hAlign="Center"
+							width="20%">
+							<Text text="Codigo Item" />
+						</Column> -->
+						
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation" press="onGetAlternativo" vAlign="Middle">
+							<cells>
+								<!-- <Text
+									text="{localmodel>orden}" /> -->
+								<ObjectIdentifier title="{localmodel>AlternativeItemCode}"  />
+								<Text
+									text="{localmodel>itemObject}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>		
+				</ScrollContainer>
+			</VBox>
+
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

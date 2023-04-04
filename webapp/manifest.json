@@ -55,7 +55,7 @@
                   "icon": "sap-icon://activity-items"
               }
           }
-      }
+        }
     },
     "sap.ui": {
         "fullWidth": true,
