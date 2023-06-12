@@ -1,1 +1,1 @@
-sap.ui.define(["./BaseController","../model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator","sap/ui/Device"],function(e,r,t,o,i){"use strict";return e.extend("zsandiego.carritocompras.controller.Master",{formatter:r,onInit:function(){}})});
+sap.ui.define(["./BaseController","../model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator","sap/ui/Device"],function(e,r,t,o,i){"use strict";return e.extend("zsandiego.crearreserva.controller.Master",{formatter:r,onInit:function(){}})});

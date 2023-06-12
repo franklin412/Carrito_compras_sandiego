@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (BaseController, GroupHeaderListItem) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.OrderCompleted", {
+	return BaseController.extend("zsandiego.crearreserva.controller.OrderCompleted", {
 
 		onInit: function () {
 			this._oRouter = this.getRouter();

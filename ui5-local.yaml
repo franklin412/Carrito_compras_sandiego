@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: zsandiego.carritocompras
+  name: zsandiego.crearreserva
 type: application
 framework:
   name: SAPUI5
@@ -35,5 +35,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: zsandiego.carritocompras
+        component: zsandiego.crearreserva
         ui5Theme: sap_horizon

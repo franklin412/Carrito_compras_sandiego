@@ -13,14 +13,14 @@ sap.ui.define([
 	BaseController, formatter, MessageToast, MessageBox, Filter, FilterOperator,JSONModel,BusyIndicator,cart,serviceSL) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Product", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Product", {
 		formatter: formatter,
 
 		onInit: function () {
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oViewModel = new JSONModel({
 				Url_Imagen: baseuri+'img/almacen02.png',
-				welcomeCarouselSlider2: 'zsandiego/carritocompras/img/slider2.png',
+				welcomeCarouselSlider2: 'zsandiego/crearreserva/img/slider2.png',
 				Promoted: [],
 				Viewed: [],
 				Favorite: [],
@@ -34,10 +34,10 @@ sap.ui.define([
 			this._router.getTarget("product").attachDisplay(function (oEvent) {
                 // this.fnUpdateProduct(oEvent.getParameter("data").productId, oEvent.getParameter("data").productType, oEvent.getParameter("data").id); // update the binding based on products cart selection
 			}, this);
-			this.ProductcomprasSPOT = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.ProductComprasSPOT", this);
+			this.ProductcomprasSPOT = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.ProductComprasSPOT", this);
             this.getView().addDependent(this.ProductcomprasSPOT);
             
-            //this.openIngresarCabecera = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.DatosCabecera", this);
+            //this.openIngresarCabecera = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.DatosCabecera", this);
 			//this.getView().addDependent(this.openIngresarCabecera);
 
 		},
@@ -151,7 +151,7 @@ sap.ui.define([
 			// var sInputValue = oEvent.getSource().getValue();
 			if (!that._valueHelpDialogAlternativo) {
 				that._valueHelpDialogAlternativo = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.Alternativo",
+					"zsandiego.crearreserva.view.fragment.Alternativo",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogAlternativo);
@@ -308,7 +308,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialog) {
 				that._valueHelpDialog = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.ProveedorSPOT.WelcomeComprasSPOT",
+					"zsandiego.crearreserva.view.fragment.ProveedorSPOT.WelcomeComprasSPOT",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialog);
@@ -346,7 +346,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogUMProduct) {
 				that._valueHelpDialogUMProduct = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.UnidadMedida.ProductUM",
+					"zsandiego.crearreserva.view.fragment.UnidadMedida.ProductUM",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogUMProduct);
@@ -382,7 +382,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogGArt) {
 				that._valueHelpDialogGArt = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.GrupoArticulo.ProductGrupoArt",
+					"zsandiego.crearreserva.view.fragment.GrupoArticulo.ProductGrupoArt",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogGArt);

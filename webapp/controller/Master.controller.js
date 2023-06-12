@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (BaseController, formatter, Filter, FilterOperator, Device) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Master", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Master", {
 		formatter: formatter,
 
 		onInit: function () {

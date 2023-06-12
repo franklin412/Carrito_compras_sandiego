@@ -12,7 +12,7 @@ sap.ui.define([
 	"use strict";
 	var dataAlternativoDetalle;
 	var dataAlternativoCabecera;
-	return Controller.extend("zsandiego.carritocompras.controller.BaseController", {
+	return Controller.extend("zsandiego.crearreserva.controller.BaseController", {
 		cart: cart,
 		/**
 		 * Convenience method for accessing the router.
@@ -128,7 +128,7 @@ sap.ui.define([
             //}
             
             if (!this.oDialogQuantity) {
-				this.oDialogQuantity = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.addQuantity", this);
+				this.oDialogQuantity = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.addQuantity", this);
 				this.getView().addDependent(this.oDialogQuantity);
             }
 

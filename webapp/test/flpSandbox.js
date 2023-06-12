@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "App Title",
-									"targetURL": "#zsandiegocarritocompras-display"
+									"targetURL": "#zsandiegocrearreserva-display"
 								}
 							}]
 						}]
@@ -51,8 +51,8 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"zsandiegocarritocompras-display": {
-								"semanticObject": "zsandiegocarritocompras",
+							"zsandiegocrearreserva-display": {
+								"semanticObject": "zsandiegocrearreserva",
 								"action": "display",
 								"description": "A Fiori application.",
 								"title": "App Title",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=zsandiego.carritocompras",
-									"url": sap.ui.require.toUrl("zsandiego/carritocompras")
+									"additionalInformation": "SAPUI5.Component=zsandiego.crearreserva",
+									"url": sap.ui.require.toUrl("zsandiego/crearreserva")
 								}
 							}
 						}

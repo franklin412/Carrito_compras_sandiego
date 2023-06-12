@@ -2,7 +2,7 @@
     xmlns="sap.m" 
     xmlns:l="sap.ui.layout" 
     xmlns:f="sap.ui.layout.form" 
-    xmlns:pc="zsandiego.carritocompras.control"
+    xmlns:pc="zsandiego.crearreserva.control"
     xmlns:core="sap.ui.core">
 	<Dialog id="DetalleArticuloDialog" title="Detalle del Material - {cartEntry>Itetx}">
 		<l:Grid defaultSpan="L12 M12 S12" width="auto" id="idGrid">

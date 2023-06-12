@@ -1,4 +1,4 @@
-<mvc:View height="100%" controllerName="zsandiego.carritocompras.controller.Master" xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+<mvc:View height="100%" controllerName="zsandiego.crearreserva.controller.Master" xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt">
 	<NavContainer >
 		<pages>

@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(BaseController, UIComponent) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.NotFound", {
+	return BaseController.extend("zsandiego.crearreserva.controller.NotFound", {
 		onInit: function () {
 			this._router = UIComponent.getRouterFor(this);
 		}

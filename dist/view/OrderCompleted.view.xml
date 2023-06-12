@@ -1,5 +1,5 @@
 <mvc:View 
-    controllerName="zsandiego.carritocompras.controller.OrderCompleted" 
+    controllerName="zsandiego.crearreserva.controller.OrderCompleted" 
     xmlns:mvc="sap.ui.core.mvc" 
     xmlns="sap.m"
     xmlns:table="sap.ui.table">

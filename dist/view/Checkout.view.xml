@@ -1,12 +1,12 @@
 <mvc:View 
     height="100%" 
-    controllerName="zsandiego.carritocompras.controller.Checkout" 
+    controllerName="zsandiego.crearreserva.controller.Checkout" 
     xmlns:layout="sap.ui.layout" 
     xmlns:form="sap.ui.layout.form"
 	xmlns:mvc="sap.ui.core.mvc" 
     xmlns="sap.m" 
     class="sapUiSizeCompact"
-    xmlns:pc="zsandiego.carritocompras.control"
+    xmlns:pc="zsandiego.crearreserva.control"
     xmlns:core="sap.ui.core" 
     xmlns:tnt="sap.tnt">
 	<NavContainer id="wizardNavContainer">

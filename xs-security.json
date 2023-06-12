@@ -1,18 +1,28 @@
 {
-  "xsappname": "zsandiegocarritocompras",
+  "xsappname": "zsandiegocrearreserva",
   "tenant-mode": "dedicated",
   "description": "Security profile of called application",
   "scopes": [
     {
       "name": "uaa.user",
       "description": "UAA"
+    }, {
+        "name": "$XSAPPNAME.SDCrear",
+        "description": "SDCrear"
     }
   ],
   "role-templates": [{
       "name": "Token_Exchange",
-      "description": "UAA",
+      "description": "UAA Token Exchange",
       "scope-references": [
           "uaa.user"
+      ]
+  },
+  {
+      "name": "SDCrear",
+      "description": "Aprobación de reservas",
+      "scope-references": [
+          "$XSAPPNAME.SDCrear"
       ]
   }]
 }

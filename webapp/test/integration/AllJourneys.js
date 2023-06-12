@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "zsandiego.carritocompras.view.",
+		viewNamespace: "zsandiego.crearreserva.view.",
 		autoWait: true
 	});
 });

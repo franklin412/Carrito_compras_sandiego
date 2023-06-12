@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (UIComponent, LocalStorageModel, models, Device) {
 	"use strict";
 
-	return UIComponent.extend("zsandiego.carritocompras.Component", {
+	return UIComponent.extend("zsandiego.crearreserva.Component", {
 
 		metadata: {
 			manifest: "json"
@@ -22,7 +22,7 @@ sap.ui.define([
 			// }INS@001
 			//create and set cart model
 			// var oCartModel = new LocalStorageModel("SHOPPING_CART_3", {
-			// 	Url_Imagen: 'zsandiego/carritocompras/img/almacen.jpg',
+			// 	Url_Imagen: 'zsandiego/crearreserva/img/almacen.jpg',
 			// 	cartEntries: [],
             //     savedForLaterEntries: {},
             //     lineaCabeceraDetalle: {

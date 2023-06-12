@@ -8,13 +8,13 @@ sap.ui.define([
 ], function (BaseController, formatter, MessageToast, MessageBox, Filter, FilterOperator) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Comparison", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Comparison", {
 		formatter: formatter,
 		onInit: function () {
 			this._oRouter = this.getRouter();
 			this._oRouter.getRoute("comparison").attachPatternMatched(this._onRoutePatternMatched, this);
 			this._oRouter.getRoute("comparisonCart").attachPatternMatched(this._onRoutePatternMatched, this);
-			this.ComparisoncomprasSPOT = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.ComparisonComprasSPOT", this);
+			this.ComparisoncomprasSPOT = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.ComparisonComprasSPOT", this);
 			this.getView().addDependent(this.ComparisoncomprasSPOT);
 		},
 
@@ -232,7 +232,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialog) {
 				that._valueHelpDialog = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.ProveedorSPOT.ComparisonComprasSPOT",
+					"zsandiego.crearreserva.view.fragment.ProveedorSPOT.ComparisonComprasSPOT",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialog);
@@ -270,7 +270,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogUMProduct) {
 				that._valueHelpDialogUMProduct = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.UnidadMedida.ComparisonUM",
+					"zsandiego.crearreserva.view.fragment.UnidadMedida.ComparisonUM",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogUMProduct);
@@ -306,7 +306,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogGArt) {
 				that._valueHelpDialogGArt = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.GrupoArticulo.WelcomeGrupoArt",
+					"zsandiego.crearreserva.view.fragment.GrupoArticulo.WelcomeGrupoArt",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogGArt);

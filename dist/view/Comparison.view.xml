@@ -1,4 +1,4 @@
-<mvc:View controllerName="zsandiego.carritocompras.controller.Comparison" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+<mvc:View controllerName="zsandiego.crearreserva.controller.Comparison" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
 	xmlns:form="sap.ui.layout.form" displayBlock="true">
 	<Page id="page" backgroundDesign="Solid">
 		<customHeader>
@@ -20,8 +20,8 @@
 		<content>
 			<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true" focusable="false">
 				<HBox class="comparebox" id="comparisonContainer">
-					<core:Fragment fragmentName="zsandiego.carritocompras.view.ComparisonItem" type="XML"/>
-					<core:Fragment fragmentName="zsandiego.carritocompras.view.ComparisonItem" type="XML"/>
+					<core:Fragment fragmentName="zsandiego.crearreserva.view.ComparisonItem" type="XML"/>
+					<core:Fragment fragmentName="zsandiego.crearreserva.view.ComparisonItem" type="XML"/>
 					<Panel id="placeholder" visible="false">
 						<headerToolbar>
 							<Toolbar>

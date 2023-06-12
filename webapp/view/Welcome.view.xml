@@ -1,4 +1,4 @@
-<mvc:View controllerName="zsandiego.carritocompras.controller.NotFound" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
+<mvc:View controllerName="zsandiego.crearreserva.controller.NotFound" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page">
 		<landmarkInfo>
 			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Welcome_rootLabel}" contentRole="Main"

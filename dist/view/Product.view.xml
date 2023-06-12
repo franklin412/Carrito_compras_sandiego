@@ -1,4 +1,4 @@
-<mvc:View controllerName="zsandiego.carritocompras.controller.Product"
+<mvc:View controllerName="zsandiego.crearreserva.controller.Product"
     xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page" backgroundDesign="Solid">
 		<landmarkInfo>

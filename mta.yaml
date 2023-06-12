@@ -1,53 +1,53 @@
 _schema-version: "3.2"
-ID: zsandiego-carritocompras
+ID: zsandiego-crearreserva
 description: A Fiori application.
 version: 0.0.1
 modules:
-- name: zsandiego-carritocompras-destination-content
+- name: zsandiego-crearreserva-destination-content
   type: com.sap.application.content
   requires:
-  - name: zsandiego-carritocompras-destination-service
+  - name: zsandiego-crearreserva-destination-service
     parameters:
       content-target: true
-  - name: zsandiego-carritocompras-repo-host
+  - name: zsandiego-crearreserva-repo-host
     parameters:
       service-key:
-        name: zsandiego-carritocompras-repo-host-key
-  - name: zsandiego-carritocompras-uaa
+        name: zsandiego-crearreserva-repo-host-key
+  - name: zsandiego-crearreserva-uaa
     parameters:
       service-key:
-        name: zsandiego-carritocompras-uaa-key
+        name: zsandiego-crearreserva-uaa-key
   parameters:
     content:
       instance:
         destinations:
-        - Name: zsandiego-carritocompras_html_repo_host
-          ServiceInstanceName: zsandiego-carritocompras-html5-srv
-          ServiceKeyName: zsandiego-carritocompras-repo-host-key
-          sap.cloud.service: zsandiego-carritocompras
+        - Name: zsandiego-crearreserva_html_repo_host
+          ServiceInstanceName: zsandiego-crearreserva-html5-srv
+          ServiceKeyName: zsandiego-crearreserva-repo-host-key
+          sap.cloud.service: zsandiego-crearreserva
         - Authentication: OAuth2UserTokenExchange
-          Name: zsandiego-carritocompras_uaa
-          ServiceInstanceName: zsandiego-carritocompras-xsuaa-srv
-          ServiceKeyName: zsandiego-carritocompras-uaa-key
-          sap.cloud.service: zsandiego-carritocompras
+          Name: zsandiego-crearreserva_uaa
+          ServiceInstanceName: zsandiego-crearreserva-xsuaa-srv
+          ServiceKeyName: zsandiego-crearreserva-uaa-key
+          sap.cloud.service: zsandiego-crearreserva
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
-- name: zsandiego-carritocompras-app-content
+- name: zsandiego-crearreserva-app-content
   type: com.sap.application.content
   path: .
   requires:
-  - name: zsandiego-carritocompras-repo-host
+  - name: zsandiego-crearreserva-repo-host
     parameters:
       content-target: true
   build-parameters:
     build-result: resources
     requires:
     - artifacts:
-      - zsandiegocarritocompras.zip
-      name: zsandiegocarritocompras
+      - zsandiegocrearreserva.zip
+      name: zsandiegocrearreserva
       target-path: resources/
-- name: zsandiegocarritocompras
+- name: zsandiegocrearreserva
   type: html5
   path: .
   build-parameters:
@@ -58,7 +58,7 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
-- name: zsandiego-carritocompras-destination-service
+- name: zsandiego-crearreserva-destination-service
   type: org.cloudfoundry.managed-service
   parameters:
     config:
@@ -74,20 +74,20 @@ resources:
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
-    service-name: zsandiego-carritocompras-destination-service
+    service-name: zsandiego-crearreserva-destination-service
     service-plan: lite
-- name: zsandiego-carritocompras-uaa
+- name: zsandiego-crearreserva-uaa
   type: org.cloudfoundry.managed-service
   parameters:
     path: ./xs-security.json
     service: xsuaa
-    service-name: zsandiego-carritocompras-xsuaa-srv
+    service-name: zsandiego-crearreserva-xsuaa-srv
     service-plan: application
-- name: zsandiego-carritocompras-repo-host
+- name: zsandiego-crearreserva-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
     service: html5-apps-repo
-    service-name: zsandiego-carritocompras-html5-srv
+    service-name: zsandiego-crearreserva-html5-srv
     service-plan: app-host
 parameters:
   deploy_mode: html5-repo

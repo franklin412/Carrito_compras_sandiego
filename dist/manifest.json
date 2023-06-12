@@ -1,7 +1,7 @@
 {
     "_version": "1.48.0",
     "sap.app": {
-        "id": "zsandiego.carritocompras",
+        "id": "zsandiego.crearreserva",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
@@ -43,7 +43,7 @@
         },
         "crossNavigation": {
             "inbounds": {
-                "zsandiego-carritocompras-inbound": {
+                "zsandiego-crearreserva-inbound": {
                     "signature": {
                         "parameters": {},
                         "additionalParameters": "allowed"
@@ -94,7 +94,7 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "zsandiego.carritocompras.i18n.i18n"
+                    "bundleName": "zsandiego.crearreserva.i18n.i18n"
                 }
             },
             "localmodel": {
@@ -152,7 +152,7 @@
                 "routerClass": "sap.f.routing.Router",
                 "viewType": "XML",
                 "async": true,
-                "viewPath": "zsandiego.carritocompras.view",
+                "viewPath": "zsandiego.crearreserva.view",
                 "controlId": "layout",
                 "controlAggregation": "midColumnPages",
                 "bypassed": {
@@ -321,7 +321,7 @@
             }
         },
         "rootView": {
-            "viewName": "zsandiego.carritocompras.view.App",
+            "viewName": "zsandiego.crearreserva.view.App",
             "type": "XML",
             "async": true,
             "id": "app"
@@ -329,6 +329,12 @@
     },
     "sap.cloud": {
         "public": true,
-        "service": "zsandiego-carritocompras"
+        "service": "zsandiego-crearreserva"
+    },
+    "sap.platform.cf": {
+        "ui5VersionNumber": "1.108.4",
+        "oAuthScopes": [
+            "$XSAPPNAME.SDReservar"
+        ]
     }
 }

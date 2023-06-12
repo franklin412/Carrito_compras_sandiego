@@ -17,7 +17,7 @@ sap.ui.define([
 	var sSavedForLaterEntries = "savedForLaterEntries";
 	var sCartEntries = "cartEntries";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Cart", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Cart", {
 		formatter: formatter,
 
 		onInit: function () {

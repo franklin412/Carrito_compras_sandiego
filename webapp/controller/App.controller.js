@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (BaseController, JSONModel, Filter, FilterOperator, Device, Fragment, MessageBox) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.App", {
+	return BaseController.extend("zsandiego.crearreserva.controller.App", {
 
 		onInit: function () {
             this._oCart = this.getOwnerComponent().getModel("cartProducts");
@@ -107,11 +107,11 @@ sap.ui.define([
             const bus = this.getOwnerComponent().getEventBus();
             bus.subscribe("app", "openDatosCabecera", this.openDatosCabeceraBus, this);            
 
-			this.openDatosCabecera = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.DatosCabecera", this);
+			this.openDatosCabecera = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.DatosCabecera", this);
             this.getView().addDependent(this.openDatosCabecera);
             
 			// this.openDatosCabecera.open();
-			this.openGrupoCompras = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.GrupoCompras", this);
+			this.openGrupoCompras = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.GrupoCompras", this);
 			this.getView().addDependent(this.openGrupoCompras);
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
         },
@@ -124,7 +124,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueOrgx) {
 				this._valueOrgx = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.OrgCompras",
+					"zsandiego.crearreserva.view.fragment.OrgCompras",
 					this
 				);
 				this.getView().addDependent(this._valueOrgx);
@@ -154,7 +154,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueCuentax) {
 				this._valueCuentax = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.GrupoCompras",
+					"zsandiego.crearreserva.view.fragment.GrupoCompras",
 					this
 				);
 				this.getView().addDependent(this._valueCuentax);
@@ -184,7 +184,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueSociedad) {
 				this._valueSociedad = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.Sociedad",
+					"zsandiego.crearreserva.view.fragment.Sociedad",
 					this
 				);
 				this.getView().addDependent(this._valueSociedad);
@@ -214,7 +214,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.asignacion",
+					"zsandiego.crearreserva.view.fragment.asignacion",
 					this
 				);
 				this.getView().addDependent(this._valueHelpDialog);

@@ -1,5 +1,5 @@
 sap.ui.define([
-	"zsandiego/carritocompras/localService/mockserver"
+	"zsandiego/crearreserva/localService/mockserver"
 ], function (mockserver) {
 	"use strict";
 

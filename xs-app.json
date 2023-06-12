@@ -12,7 +12,7 @@
       "source": "^/sb1sl/(.*)$",
       "target": "$1",
       "authenticationType": "none",
-      "destination": "TestB1SL",
+      "destination": "serviceLayer",
       "csrfProtection": false
     },
     {

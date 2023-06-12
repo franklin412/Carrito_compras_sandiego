@@ -11,7 +11,7 @@ sap.ui.define([
 ], function (BaseController, cart, JSONModel, Filter, FilterOperator, formatter, MessageToast, MessageBox, Device) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Welcome", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Welcome", {
 
 		_iCarouselTimeout: 0, // a pointer to the current timeout
 		_iCarouselLoopTime: 6000, // loop to next picture after 8 seconds
@@ -25,12 +25,12 @@ sap.ui.define([
 		},
 		onInit: function () {
             var oViewModel = new JSONModel({
-				welcomeCarouselSlider1: 'zsandiego/carritocompras/img/01.png',
-				welcomeCarouselSlider2: 'zsandiego/carritocompras/img/02.png',
-				welcomeCarouselSlider3: 'zsandiego/carritocompras/img/03.png',
-				welcomeCarouselSlider4: 'zsandiego/carritocompras/img/04.png',
-				welcomeCarouselSlider5: 'zsandiego/carritocompras/img/05.png',
-				welcomeCarouselSlider6: 'zsandiego/carritocompras/img/06.png',
+				welcomeCarouselSlider1: 'zsandiego/crearreserva/img/01.png',
+				welcomeCarouselSlider2: 'zsandiego/crearreserva/img/02.png',
+				welcomeCarouselSlider3: 'zsandiego/crearreserva/img/03.png',
+				welcomeCarouselSlider4: 'zsandiego/crearreserva/img/04.png',
+				welcomeCarouselSlider5: 'zsandiego/crearreserva/img/05.png',
+				welcomeCarouselSlider6: 'zsandiego/crearreserva/img/06.png',
 				Promoted: [],
 				Viewed: [],
 				Favorite: [],
@@ -48,7 +48,7 @@ sap.ui.define([
 
             
 			// FRAGMENT ABRIR COMPRAS SPOT
-			this.comprasSPOT = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.ComprasSPOT", this);
+			this.comprasSPOT = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.ComprasSPOT", this);
 			this.getView().addDependent(this.comprasSPOT);
 
             if (Device.system.phone){
@@ -116,7 +116,7 @@ sap.ui.define([
 			
 			var oProduct = oEvent.getSource().getBindingContext("view").getObject();
 			if (!this.oDialogQuantity) {
-				this.oDialogQuantity = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.addQuantity", this);
+				this.oDialogQuantity = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.addQuantity", this);
 				this.getView().addDependent(this.oDialogQuantity);
 			}
 			this.oDialogQuantity.data("oProduct", oProduct);
@@ -223,7 +223,7 @@ sap.ui.define([
 			that.inputId = "idComprasProv";
 			if (!that._valueHelpDialogProv) {
 				that._valueHelpDialogProv = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.ProveedorSPOT.WelcomeComprasSPOT",
+					"zsandiego.crearreserva.view.fragment.ProveedorSPOT.WelcomeComprasSPOT",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogProv);
@@ -260,7 +260,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogUM) {
 				that._valueHelpDialogUM = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.UnidadMedida.WelcomeUM",
+					"zsandiego.crearreserva.view.fragment.UnidadMedida.WelcomeUM",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogUM);
@@ -362,7 +362,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.Checkout.Clasepedido",
+					"zsandiego.crearreserva.view.fragment.Checkout.Clasepedido",
 					this
 				);
 				this.getView().addDependent(this._valueHelpDialog);
@@ -404,7 +404,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialogGA) {
 				that._valueHelpDialogGA = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.GrupoArticulo.WelcomeGrupoArt",
+					"zsandiego.crearreserva.view.fragment.GrupoArticulo.WelcomeGrupoArt",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialogGA);

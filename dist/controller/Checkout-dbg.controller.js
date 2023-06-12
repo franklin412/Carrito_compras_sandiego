@@ -20,7 +20,7 @@ sap.ui.define([
 	Fragment, MessageToast, Filter, FilterOperator, BusyIndicator, NumberFormat,serviceSL) {
 	"use strict";
 	var sCartEntries = "cartEntries";
-	return BaseController.extend("zsandiego.carritocompras.controller.Checkout", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Checkout", {
 
 		types: {
 			email: new EmailType()
@@ -62,7 +62,7 @@ sap.ui.define([
 
 			}.bind(this));
 			
-			this.openIngresar = sap.ui.xmlfragment("zsandiego.carritocompras.view.fragment.IngresarCantidad", this);
+			this.openIngresar = sap.ui.xmlfragment("zsandiego.crearreserva.view.fragment.IngresarCantidad", this);
 			this.getView().addDependent(this.openIngresar);
 			this._oCart = this.getOwnerComponent().getModel("cartProducts");
 			var cantidadlista = (this._oCart.getProperty("/cartEntries")).length;
@@ -865,7 +865,7 @@ sap.ui.define([
             if (!this._oDialogDetalle) {
                 Fragment.load({
                     id: this.getView().getId(),
-                    name: "zsandiego.carritocompras.view.DetalleArticulos",
+                    name: "zsandiego.crearreserva.view.DetalleArticulos",
                     controller: this
                 }).then(function (oDialog) {
                     // connect dialog to the root view of this component (models, lifecycle)
@@ -1069,7 +1069,7 @@ sap.ui.define([
                                 that.localmodel.setProperty("/oPresupuesto", oPresupuesto);
                                 if (!that.oDialogPresupuesto) {
                                     Fragment.load({
-                                        name: "zsandiego.carritocompras.view.fragment.Presupuesto",
+                                        name: "zsandiego.crearreserva.view.fragment.Presupuesto",
                                         controller: that
                                     }).then(function (oDialog) {
                                         that.oDialogPresupuesto = oDialog;
@@ -1133,7 +1133,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!that._valueHelpDialog) {
 				that._valueHelpDialog = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.asignacion",
+					"zsandiego.crearreserva.view.fragment.asignacion",
 					that
 				);
 				that.getView().addDependent(that._valueHelpDialog);
@@ -1167,7 +1167,7 @@ sap.ui.define([
             this.inputId = oEvent.getSource().getId();  
 			if (!this._oDialogNumOrden) {
 				Fragment.load({
-					name: "zsandiego.carritocompras.view.fragment.NumOrden",
+					name: "zsandiego.crearreserva.view.fragment.NumOrden",
 					controller: this
 				}).then(function (oDialog_NumOrden) {
 					this._oDialogNumOrden = oDialog_NumOrden;
@@ -1267,7 +1267,7 @@ sap.ui.define([
             this.inputId = oEvent.getSource().getId();  
 			if (!this._oDialogCentro) {
 				Fragment.load({
-					name: "zsandiego.carritocompras.view.fragment.centrocosto",
+					name: "zsandiego.crearreserva.view.fragment.centrocosto",
 					controller: this
 				}).then(function (oDialog) {
 					this._oDialogCentro = oDialog;
@@ -1282,7 +1282,7 @@ sap.ui.define([
             this.inputId = oEvent.getSource().getId();
 			if (!this._oDialogWerks) {
 				Fragment.load({
-					name: "zsandiego.carritocompras.view.fragment.centro",
+					name: "zsandiego.crearreserva.view.fragment.centro",
 					controller: this
 				}).then(function (oDialog) {
 					this._oDialogWerks = oDialog;
@@ -1308,7 +1308,7 @@ sap.ui.define([
             this.inputId = oEvent.getSource().getId();
 			if (!this._oDialogCuenta) {
 				Fragment.load({
-					name: "zsandiego.carritocompras.view.fragment.Cuenta",
+					name: "zsandiego.crearreserva.view.fragment.Cuenta",
 					controller: this
 				}).then(function (_valueCuenta) {
 					this._oDialogCuenta = _valueCuenta;
@@ -1549,7 +1549,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this.oDialogGrupoCompra) {
 				this.oDialogGrupoCompra = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.GrupoCompras",
+					"zsandiego.crearreserva.view.fragment.GrupoCompras",
 					this
 				);
 				this.getView().addDependent(this.oDialogGrupoCompra);
@@ -1582,7 +1582,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueCuentax) {
 				this._valueCuentax = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.OrgCompras",
+					"zsandiego.crearreserva.view.fragment.OrgCompras",
 					this
 				);
 				this.getView().addDependent(this._valueCuentax);
@@ -1615,7 +1615,7 @@ sap.ui.define([
 			// create value help dialog
 			if (!this._valueSociedad) {
 				this._valueSociedad = sap.ui.xmlfragment(
-					"zsandiego.carritocompras.view.fragment.Sociedad",
+					"zsandiego.crearreserva.view.fragment.Sociedad",
 					this
 				);
 				this.getView().addDependent(this._valueSociedad);
@@ -1645,7 +1645,7 @@ sap.ui.define([
             this.inputId = oEvent.getSource().getId();
 			if (!this._oDialogNumProyecto) {
 				Fragment.load({
-					name: "zsandiego.carritocompras.view.fragment.NumProyecto",
+					name: "zsandiego.crearreserva.view.fragment.NumProyecto",
 					controller: this
 				}).then(function (oDialog_NumProyecto) {
 					this._oDialogNumProyecto = oDialog_NumProyecto;

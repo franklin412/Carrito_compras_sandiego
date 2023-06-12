@@ -23,7 +23,7 @@ sap.ui.define([
 	"use strict";
 
 	var cantBusqueda=0;
-	return BaseController.extend("zsandiego.carritocompras.controller.Category", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Category", {
 		formatter: formatter,
 		// Define filterPreviousValues as global variables because they need to be accessed from different functions
 		_iLowFilterPreviousValue: 0,
@@ -364,7 +364,7 @@ sap.ui.define([
 			if (!this.byId("categoryFilterDialog")) {
 				Fragment.load({
 					id: this.getView().getId(),
-					name: "zsandiego.carritocompras.view.CategoryFilterDialog",
+					name: "zsandiego.crearreserva.view.CategoryFilterDialog",
 					controller: this
 				}).then(function (oDialog) {
 					// connect dialog to the root view of this component (models, lifecycle)

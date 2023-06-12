@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (BaseController, formatter, Filter, FilterOperator, Device, Fragment, MessageBox,serviceSL) {
 	"use strict";
 
-	return BaseController.extend("zsandiego.carritocompras.controller.Home", {
+	return BaseController.extend("zsandiego.crearreserva.controller.Home", {
 		formatter: formatter,
 
 		onInit: function () {
@@ -38,7 +38,7 @@ sap.ui.define([
 			this.consultaEmpleados();
 			// this.onCentrosDeCosto();
 
-            var sAppModulePath = "zsandiego.carritocompras";    
+            var sAppModulePath = "zsandiego.crearreserva";    
             this.localmodel.setProperty("/localmodel/lineafragmento", {});
             this.localmodel.setProperty("/CentrosCosto", []);
             this.localmodel.setProperty("/placeholder", jQuery.sap.getModulePath(sAppModulePath) + "/img/11030-200.png");
@@ -160,7 +160,7 @@ sap.ui.define([
 			});
 		},
 		onAfterRendering: function () {
-            var sAppModulePath = "zsandiego.carritocompras";            
+            var sAppModulePath = "zsandiego.crearreserva";            
             // this.getView().byId("imgLogo").setSrc(jQuery.sap.getModulePath(sAppModulePath) + "/img/LogoImageSD.png");
 		},
 		_onRouteMatched: function () {
