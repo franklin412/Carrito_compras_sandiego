@@ -15,32 +15,7 @@
             "version": "1.8.3",
             "toolsId": "639386d4-d801-42a5-8d12-9bc6bf12231a"
         },
-        "dataSources": {
-            "ZOD_ALAYRI_MATCHCODES_SRV": {
-                "uri": "sap/opu/odata/sap/ZOD_ALAYRI_MATCHCODES_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            },
-            "ZOD_ALAYRI_GESTION_CATALOGOS_SRV": {
-                "uri": "sap/opu/odata/sap/ZOD_ALAYRI_GESTION_CATALOGOS_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            },
-            "ZOD_ALAYRI_PRESUPUESTO_SRV": {
-                "uri": "sap/opu/odata/sap/ZOD_ALAYRI_PRESUPUESTO_SRV/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            }
-        },
+        "dataSources": {},
         "crossNavigation": {
             "inbounds": {
                 "zsandiego-crearreserva-inbound": {

@@ -35,64 +35,64 @@ sap.ui.define([
             var that = this
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
             this.matchcode = this.getOwnerComponent().getModel("matchcode");            
-            this.matchcode.read("/ZCDSALAYRI_ESART", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSALAYRI_ESART", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSALAYRI_ESART"
-                    })
-                }
-            }); 
+            // this.matchcode.read("/ZCDSALAYRI_ESART", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSALAYRI_ESART", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSALAYRI_ESART"
+            //         })
+            //     }
+            // }); 
 
-            this.matchcode.read("/ZCDSMM_WERKS_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSMM_WERKS_TXT", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSMM_WERKS_TXT"
-                    })
-                }
-            });
+            // this.matchcode.read("/ZCDSMM_WERKS_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSMM_WERKS_TXT", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSMM_WERKS_TXT"
+            //         })
+            //     }
+            // });
 
             
-            this.matchcode.read("/ZCDSMM_EKORG_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSMM_EKORG_TXT", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSMM_EKORG_TXT"
-                    })
-                }
-            }); 
-            this.matchcode.read("/ZCDSMM_EKGRP_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSMM_EKGRP_TXT", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSMM_EKGRP_TXT"
-                    })
-                }
-            }); 
-            this.matchcode.read("/ZCDSFI_SOCIEDAD_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSFI_SOCIEDAD_TXT", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSFI_SOCIEDAD_TXT"
-                    })
-                }
-            }); 
+            // this.matchcode.read("/ZCDSMM_EKORG_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSMM_EKORG_TXT", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSMM_EKORG_TXT"
+            //         })
+            //     }
+            // }); 
+            // this.matchcode.read("/ZCDSMM_EKGRP_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSMM_EKGRP_TXT", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSMM_EKGRP_TXT"
+            //         })
+            //     }
+            // }); 
+            // this.matchcode.read("/ZCDSFI_SOCIEDAD_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSFI_SOCIEDAD_TXT", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSFI_SOCIEDAD_TXT"
+            //         })
+            //     }
+            // }); 
 
-            this.matchcode.read("/ZCDSMM_IDNLF_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSMM_IDNLF_TXT", response.data.results);
-                    that.localmodel.firePropertyChange({
-                        reason: sap.ui.model.ChangeReason.Change,
-                        path: "/ZCDSMM_IDNLF_TXT"
-                    })
-                }
-            }); 
+            // this.matchcode.read("/ZCDSMM_IDNLF_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSMM_IDNLF_TXT", response.data.results);
+            //         that.localmodel.firePropertyChange({
+            //             reason: sap.ui.model.ChangeReason.Change,
+            //             path: "/ZCDSMM_IDNLF_TXT"
+            //         })
+            //     }
+            // }); 
 
 			// since then() has no "reject"-path attach to the MetadataFailed-Event to disable the busy indicator in case of an error
 

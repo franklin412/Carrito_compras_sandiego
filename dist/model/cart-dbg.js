@@ -16,46 +16,47 @@ sap.ui.define([
 		 * @param {Object} oProduct Product that is added to the cart
 		 * @param {Object} oCartModel Cart model
 		 */
-		addToCart: function (oBundle, oProduct, oCartModel, iQuantity, DatosCabecera) {
+		addToCart: function (oBundle, oProduct, oCartModel, iQuantity, DatosCabecera,localmodel) {
 			// Items to be added from the welcome view have it's content inside product object
 			if (oProduct.Product !== undefined) {
 				oProduct = oProduct.Product;
 			}
 			switch (oProduct.Status) {
-			case "D":
-				//show message dialog
-				MessageBox.show(
-					oBundle.getText("productStatusDiscontinuedMsg"), {
-						icon: MessageBox.Icon.ERROR,
-						titles: oBundle.getText("productStatusDiscontinuedTitle"),
-						actions: [MessageBox.Action.CLOSE]
-					});
-				break;
-			case "O":
-				// show message dialog
-				MessageBox.show(
-					oBundle.getText("productStatusOutOfStockMsg"), {
-						icon: MessageBox.Icon.QUESTION,
-						title: oBundle.getText("productStatusOutOfStockTitle"),
-						actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-						onClose: function (oAction) {
-							// order
-							if (MessageBox.Action.OK === oAction) {
-								this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity);
-							}
-						}.bind(this)
-					});
-				break;
-			case "A":
+			// case "D":
+			// 	//show message dialog
+			// 	MessageBox.show(
+			// 		oBundle.getText("productStatusDiscontinuedMsg"), {
+			// 			icon: MessageBox.Icon.ERROR,
+			// 			titles: oBundle.getText("productStatusDiscontinuedTitle"),
+			// 			actions: [MessageBox.Action.CLOSE]
+			// 		});
+			// 	break;
+			// case "O":
+			// 	// show message dialog
+			// 	MessageBox.show(
+			// 		oBundle.getText("productStatusOutOfStockMsg"), {
+			// 			icon: MessageBox.Icon.QUESTION,
+			// 			title: oBundle.getText("productStatusOutOfStockTitle"),
+			// 			actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+			// 			onClose: function (oAction) {
+			// 				// order
+			// 				if (MessageBox.Action.OK === oAction) {
+			// 					this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity);
+			// 				}
+			// 			}.bind(this)
+			// 		});
+			// 	break;
+			// case "A":
 			default:
-				this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity, DatosCabecera);
+				this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity, DatosCabecera,localmodel);
 				break;
 			}
 		},
 
-		_updateCartItem: function (oBundle, oProductToBeAdded, oCartModel, iQuantity, DatosCabecera) {
+		_updateCartItem: function (oBundle, oProductToBeAdded, oCartModel, iQuantity, DatosCabecera,localmodel) {
 			// find existing entry for product
 			var oCollectionEntries = Object.assign([], oCartModel.getData()["cartEntries"]);
+			var solicitanteData = localmodel.getProperty("/oDatosSolicitante");
 			var oCartEntry = oCollectionEntries.find(e=>e.WarehouseCode === oProductToBeAdded.WarehouseCode && e.ItemCode === oProductToBeAdded.ItemCode );
 			// var oCartEntry = oCollectionEntries[oProductToBeAdded.WarehouseCode];
 
@@ -67,8 +68,13 @@ sap.ui.define([
 				oCartEntry.ClaveLabor = [];
 				oCartEntry.ClaveLaborSelected = "";
 				oCartEntry.CampoObjeto = [];
+				oCartEntry.visIdentificador = false;
 				oCartEntry.CampoObjetoSelected = "";
 				oCartEntry.CentroCostoSelected = "";
+
+				oCartEntry.CampoSolicitanteValue = solicitanteData.CampoSolicitanteValue;
+				oCartEntry.CampoSolicitanteKey = solicitanteData.CampoSolicitanteKey;
+
 				// oCollectionEntries[oProductToBeAdded.ItemCode] = oCartEntry;
 				oCartModel.getProperty("/cartEntries").push(oCartEntry);
 			} else {

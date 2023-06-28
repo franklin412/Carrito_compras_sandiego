@@ -9,6 +9,13 @@
 		"authenticationType": "xsuaa"
     },
     {
+      "source": "^/iasscim/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "DAC_IAS_API",
+      "csrfProtection": false
+    },
+    {
       "source": "^/sb1sl/(.*)$",
       "target": "$1",
       "authenticationType": "none",

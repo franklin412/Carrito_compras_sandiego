@@ -345,7 +345,136 @@ sap.ui.define([
               }
             });
           });
-        }
+        },
+
+        onConsultaServiceLayer: function(baseuri, SLTable){
+          var that = this;
+          // var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+          return new Promise( function (resolve, reject) {
+            // var uri = baseuri+"sb1sl/ProfitCenters";
+            var uri = baseuri+"sb1sl/"+ SLTable;
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (result) {
+                // that.localmodel.setProperty("/CentrosCosto", result.value);
+                resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+        onConsultaServiceLayerIdentificador: function(baseuri, SLTable, getAreasSolicitanteKey){
+          var that = this;
+          // var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+          return new Promise( function (resolve, reject) {
+            // var uri = baseuri+"sb1sl/ProfitCenters";
+            var uri = baseuri+"sb1sl/U_ACTIVOS?$filter=U_Solicitante eq '"+getAreasSolicitanteKey+"'";
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (result) {
+                // that.localmodel.setProperty("/CentrosCosto", result.value);
+                resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+
+        onConsultaIAS: function(sMail,baseuri, Options){
+          var that = this,optionFilter;
+          if(Options === "Group"){
+            optionFilter = "groups.display"
+            sMail = "Grp_Aprobar_Reserva"
+          }else {
+            optionFilter = "emails.value" ; 
+          }
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+'iasscim/Users?filter='+optionFilter+' eq "' + sMail+ '"';
+            $.ajax({
+              type: "GET",
+              contentType: "application/scim+json",
+              url: uri,
+              success: function (result) {
+                // that.localmodel.setProperty("/CentrosCosto", result.value);
+                resolve(result);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+        onObtenerAreas: function(baseuri,getAreasSolicitanteKey){
+          return new Promise( function (resolve, reject) {
+						var uri = baseuri+"sb1sl/Area('"+ getAreasSolicitanteKey + "')";
+						$.ajax({
+							type: "GET",
+							dataType: "json",
+							url: uri,
+							success: function (result) {
+								// result.AREADCollection.forEach( function(instances){
+								// 	that.getCentrosCosto(instances.U_Area);
+								// })
+                resolve(result);
+								// that.hideBusyIndicator();
+							},
+							error: function (errMsg) {
+								reject(errMsg.responseJSON);
+							}
+						});
+					});
+        },
+        getCentrosCosto: function(baseuri, areaId){
+          var that = this;
+          // var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+          return new Promise(function (resolve, reject) {
+            var uri = baseuri+"sb1sl/ProfitCenters?$filter= U_Area eq '"+areaId+"'";
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (data) {
+                // var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
+                // that.localmodel.setProperty("/CentrosCosto",concatValues);
+                // that.localmodel.refresh(true);
+                // that.hideBusyIndicator();
+                resolve(data.value);
+              },
+              error: function (data) {
+                resolve(data);
+              }
+            });
+          });
+        },
+        consultaEmpleado: function (nArea, baseuri, ListOption,skiptoken) {
+          var that = this, option;
+          // !EmpleadosArea ? EmpleadosArea = [] : null;
+          !skiptoken? skiptoken = 0 : null;
+          return new Promise( function (resolve, reject) {
+            ListOption === "S" ? option = "ExternalEmployeeNumber" : option = "U_Area";
+            var uri = baseuri+"sb1sl/EmployeesInfo?$filter="+option+" eq '"+nArea+"'&$skip="+skiptoken;
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (result) {
+                resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+        
 
 
     };

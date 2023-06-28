@@ -9,11 +9,13 @@ sap.ui.define([
 	"../service/serviceSL"
 ], function (BaseController, formatter, Filter, FilterOperator, Device, Fragment, MessageBox,serviceSL) {
 	"use strict";
+	var usuarioLogeado = null;
+	var baseuri = null;
 
 	return BaseController.extend("zsandiego.crearreserva.controller.Home", {
 		formatter: formatter,
 
-		onInit: function () {
+		onInit: async function () {
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 			this._router.getRoute("categories").attachMatched(this._onRouteMatched, this);
@@ -34,13 +36,36 @@ sap.ui.define([
             //     }
             // }); 
 
-			this.onGetItemServiceLayer();
-			this.consultaEmpleados();
-			// this.onCentrosDeCosto();
+			await this.onGetItemServiceLayer();
+			// await this.consultaEmpleados();
+			await this.consultaOrdenTrabajo();
+			await this.consultaActivoFijo();
+			//CONSULTA USUARIO IAS
+			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
+			baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oDatosOrdenTrabajo = await serviceSL.onConsultaIAS(usuarioLogeado, baseuri);
+			if(oDatosOrdenTrabajo.Resources){
+				let getAreasSolicitanteKey = null;
+				if(oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]){
+					getAreasSolicitanteKey = oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].employeeNumber; //employeenumber, es el area del usuario solicitante, ingresado desde el IAS.
+					await this.consultaIdentificador(getAreasSolicitanteKey);
+					let getAreasSolicitante = await serviceSL.onObtenerAreas(baseuri, getAreasSolicitanteKey);
+					for await (const instances of getAreasSolicitante.AREADCollection) {
+						let getCentros = await serviceSL.getCentrosCosto(baseuri, instances.U_Area);
+						var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(getCentros);
+						that.localmodel.setProperty("/CentrosCosto",concatValues);
+						that.localmodel.refresh(true);
+					}
+					let getAreasSolicitanteName = (oDatosOrdenTrabajo.Resources[0].name.familyName +" "+ oDatosOrdenTrabajo.Resources[0].name.givenName); //employeenumber, es el area del usuario solicitante, ingresado desde el IAS.
+					this.localmodel.setProperty("/oDatosSolicitante/CampoSolicitanteValue", getAreasSolicitanteKey ? getAreasSolicitanteName : "Employee number vacío");
+					this.localmodel.setProperty("/oDatosSolicitante/CampoSolicitanteKey", getAreasSolicitanteKey);
+					this.onGetUsuariosPorArea(getAreasSolicitanteKey,baseuri);
+				}
+			}
 
             var sAppModulePath = "zsandiego.crearreserva";    
             this.localmodel.setProperty("/localmodel/lineafragmento", {});
-            this.localmodel.setProperty("/CentrosCosto", []);
+            // this.localmodel.setProperty("/CentrosCosto", []);
             this.localmodel.setProperty("/placeholder", jQuery.sap.getModulePath(sAppModulePath) + "/img/11030-200.png");
           
         },
@@ -48,6 +73,30 @@ sap.ui.define([
             
 
 		},       
+		onGetUsuariosPorArea: async function(getAreasSolicitanteKey,baseuri){
+			var that = this, aUserSAPExisteIAS = [];
+			let getSAPUser =  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "S");
+			let getSAPUsuariosArea =  await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri);
+			if(getSAPUsuariosArea.length === 20){
+				let contador = getSAPUsuariosArea.length;
+				let skiptoken = 0;
+				while(contador === 20){
+						skiptoken = (skiptoken+20);
+						let getUsuariosArea = await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri,null,skiptoken);
+						getSAPUsuariosArea = getSAPUsuariosArea.concat(getUsuariosArea);
+						contador = getUsuariosArea.length;
+				}
+			}
+			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser[0].U_Area, baseuri, "Group");
+			getIASUsuariosAprobadores.Resources.forEach( function(data){
+				// let oUsuarioJefe = {};
+				let usuarioIASexiste = getSAPUsuariosArea.find(e=>e.eMail === data.emails[0].value);
+				usuarioIASexiste ? aUserSAPExisteIAS.push(usuarioIASexiste.eMail) : null;
+			})
+			aUserSAPExisteIAS.push("amatienzo@plusap.pe");
+			that.localmodel.setProperty("/oUsuariosWorkflow/tUsuariosJefeArea", aUserSAPExisteIAS.length>0 ? aUserSAPExisteIAS.toString() : "");
+			that.localmodel.setProperty("/oUsuariosWorkflow/tAlmacen", "dgutierrez@plusap.pe");
+		},
 		getWFInstances: function () {
 			var that = this;
 			var oManifestObject = that.getOwnerComponent().getManifestObject();
@@ -70,22 +119,24 @@ sap.ui.define([
                 });
             });
         },
-		onGetItemServiceLayer: function(checkItem){
+		onGetItemServiceLayer: function(checkItem,ItemCode){
 			var that = this;
-			let oManifestObject = this.getOwnerComponent().getManifestObject();
-			var loginInfo = {
-				"USRWS":"S4ND!3G0",
-				"PWDWS":"1NG.S4ND13G0",
-				"CompanyDB":"TEST_QA_102022",
-				"Password":"integra",
-				"UserName":"manager",
-				"Server":"172.31.49.151",
-				"ItemCode":"0026592"};
+			// let oManifestObject = this.getOwnerComponent().getManifestObject();
+			// var loginInfo = {
+			// 	"USRWS":"S4ND!3G0",
+			// 	"PWDWS":"1NG.S4ND13G0",
+			// 	"CompanyDB":"TEST_QA_102022",
+			// 	"Password":"integra",
+			// 	"UserName":"manager",
+			// 	"Server":"172.31.49.151",
+			// 	"ItemCode":"0026592"};
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 		
 			return new Promise(function (resolve, reject) {
 				var uri = null;
-				if(checkItem){
+				if(ItemCode){
+					uri = baseuri+"sb1sl/Items?$filter=contains(ItemCode,'"+checkItem+"')";
+				}else if(checkItem){
 					uri = baseuri+"sb1sl/Items?$filter=contains(ItemName,'"+checkItem+"')";
 				}else {
 					uri = baseuri+"sb1sl/Items?$skip=50000";
@@ -121,24 +172,20 @@ sap.ui.define([
 				});
 			});
 		},
-		consultaEmpleados: function () {
-			var that = this;
+		consultaOrdenTrabajo: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise( function (resolve, reject) {
-				var uri = baseuri+"sb1sl/EmployeesInfo";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (result) {
-						that.localmodel.setProperty("/empleados", result.value);
-						resolve(result.value);
-					},
-					error: function (errMsg) {
-						reject(errMsg.responseJSON);
-					}
-				});
-			});
+			var oDatosOrdenTrabajo = await serviceSL.onConsultaServiceLayer(baseuri,"U_ORDENESTRABAJO?$filter=U_Valido eq '1'");
+			this.localmodel.setProperty("/OrdenTrabajo",oDatosOrdenTrabajo);
+		},
+		consultaActivoFijo: async function(){
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			this.localmodel.setProperty("/ActivoFijo",oDatosActivoFijo);
+		},
+		consultaIdentificador: async function(getAreasSolicitanteKey){
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oDatosIdentificador = await serviceSL.onConsultaServiceLayerIdentificador(baseuri,"U_ACTIVOS",getAreasSolicitanteKey );
+			this.localmodel.setProperty("/Identificador",oDatosIdentificador);
 		},
 		onCentrosDeCosto: function () {
 			var that = this;
@@ -199,7 +246,11 @@ sap.ui.define([
 			// add filter for search
 			var sQuery = oEvent.getSource().getValue();
 			if(sQuery){
-				await this.onGetItemServiceLayer(sQuery);
+				if(!!parseInt(sQuery)){
+					await this.onGetItemServiceLayer(sQuery,true);
+				}else{
+					await this.onGetItemServiceLayer(sQuery);
+				}
 			}else {
 				await this.onGetItemServiceLayer();
 			}

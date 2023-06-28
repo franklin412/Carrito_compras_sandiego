@@ -80,7 +80,7 @@ sap.ui.define([
 
             var oModel = this.getModel("catalogo");
             
-			this._loadSuppliers();
+			// this._loadSuppliers();
             var oProductList = this.byId("productList");
             
 			// var oBinding = oProductList.getBinding("items");
@@ -119,22 +119,22 @@ sap.ui.define([
 		 * Create a unique array of suppliers to be used in the supplier flter option
 		 * @private
 		 */
-		_loadSuppliers: function () {
-			var oModel = this.getModel("matchcode");
-			oModel.read("/ZCDSMM_LIFNR_TXT", {
-				success: function (oData) {
-					var aSuppliers = [];
+		// _loadSuppliers: function () {
+		// 	var oModel = this.getModel("matchcode");
+		// 	oModel.read("/ZCDSMM_LIFNR_TXT", {
+		// 		success: function (oData) {
+		// 			var aSuppliers = [];
 
-					oData.results.forEach(function (oProduct) {
-						aSuppliers.push(oProduct.name1);
-					});
+		// 			oData.results.forEach(function (oProduct) {
+		// 				aSuppliers.push(oProduct.name1);
+		// 			});
 
-					this.getModel("view").setProperty("/Suppliers", aSuppliers);
-				}.bind(this)
-			});
+		// 			this.getModel("view").setProperty("/Suppliers", aSuppliers);
+		// 		}.bind(this)
+		// 	});
 
-			this._clearComparison();
-		},
+		// 	this._clearComparison();
+		// },
 
 		fnDataReceived: function () {
             var oList = this.byId("productList");

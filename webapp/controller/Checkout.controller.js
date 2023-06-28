@@ -42,11 +42,11 @@ sap.ui.define([
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
             this.matchcode = this.getOwnerComponent().getModel("matchcode");
             this.presupuesto = this.getOwnerComponent().getModel("presupuesto");
-            this.matchcode.read("/ZCDSMM_KNTTP_TXT", {
-                success: function(oData, response) {
-                    that.localmodel.setProperty("/ZCDSMM_KNTTP_TXT", response.data.results);
-                }
-            }); 
+            // this.matchcode.read("/ZCDSMM_KNTTP_TXT", {
+            //     success: function(oData, response) {
+            //         that.localmodel.setProperty("/ZCDSMM_KNTTP_TXT", response.data.results);
+            //     }
+            // }); 
 
             
 
@@ -78,23 +78,6 @@ sap.ui.define([
 			this.localmodel.setProperty("/pruebav1", proveedores);
 
         },
-		consultaEmpleados:async function () {
-			return new Promise(async function (resolve, reject) {
-				var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-				var uri = baseuri+"sb1sl/SalesPersons";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (result) {
-						resolve(result.value);
-					},
-					error: function (errMsg) {
-						reject(errMsg.responseJSON);
-					}
-				});
-			});
-		},
 		ContadorRequisiciones: function () {
 			var proveedores = this._oCart.getProperty("/cartEntries");
 			this.localmodel.setProperty("/pruebav1", proveedores);
@@ -306,51 +289,6 @@ sap.ui.define([
                 );
                 return;
             }
-
-            // for (var i = 0; i < aEntries.length; i++){
-            //     var e = aEntries[i];
-            //     if (!e.Werks || e.Werks === ""){
-            //         MessageBox.warning("Material / Servicio #" + e.Item + " Centro es requerido.", {
-            //                 styleClass: bCompact ? "sapUiSizeCompact" : ""
-            //             }
-            //         );               
-            //         return
-            //     }
-
-            //     if (e.Knttp === "A" && e.Anla === ""){
-            //         MessageBox.warning("Material / Servicio #" + e.Item + " Activo Fijo es requerido.", {
-            //                 styleClass: bCompact ? "sapUiSizeCompact" : ""
-            //             }
-            //         );               
-            //         return
-            //     }
-
-            //     if (e.Knttp === "F" && e.Saknr === ""){
-            //         MessageBox.warning("Material / Servicio #" + e.Item + " Cuenta es requerida.", {
-            //                 styleClass: bCompact ? "sapUiSizeCompact" : ""
-            //             }
-            //         );               
-            //         return
-            //     }           
-
-            //     if (e.Knttp === "F" && e.Aufk === ""){
-            //         MessageBox.warning("Material / Servicio #" + e.Item + " Orden es requerido.", {
-            //                 styleClass: bCompact ? "sapUiSizeCompact" : ""
-            //             }
-            //         );               
-            //         return
-            //     }  
- 
-                
-
-            //     if (e.Knttp === "K" && e.Kostl === ""){
-            //         MessageBox.warning("Material / Servicio #" + e.Item + " Centro de Costo es requerido.", {
-            //                 styleClass: bCompact ? "sapUiSizeCompact" : ""
-            //             }
-            //         );               
-            //         return
-            //     }     
-            // }
             
 			var sText = this.getResourceBundle().getText("checkoutControllerAreYouSureSubmit");
 			this._handleSubmitOrCancel(sText, "confirm", "ordercompleted", oEntries);
@@ -421,11 +359,11 @@ sap.ui.define([
             
       
 		},
-		onClearCentroCosto: function(){
+		onClearCentroCosto: function(aArticulos){
 			var oThat = this;
 			oThat.localmodel.setProperty("/CentrosCosto",[]);
-			var aCentroCosto = oThat._oCart.getProperty("/cartEntries");
-			aCentroCosto.forEach( function(element){
+			// var aCentroCosto = oThat._oCart.getProperty("/cartEntries");
+			aArticulos.forEach( function(element){
 				element.CentroCostoValue 	= null;
 				element.CentroCostoSelected = null;
 				element.SelectedKeyCentro = null;
@@ -433,10 +371,10 @@ sap.ui.define([
 			oThat._oCart.refresh(true);
 			oThat.localmodel.refresh(true);
 		},
-		onClearClaveLabor: function(){
+		onClearClaveLabor: function(aArticulos){
 			var oThat = this;
-			var aClvLabor = oThat._oCart.getProperty("/cartEntries");
-			aClvLabor.forEach( function(element){
+			// var aClvLabor = oThat._oCart.getProperty("/cartEntries");
+			aArticulos.forEach( function(element){
 				element.ClaveLabor 			= [];
 				element.ClaveLaborValue 	= null;
 				element.ClaveLaborSelected 	= null;
@@ -444,10 +382,10 @@ sap.ui.define([
 			})
 			oThat._oCart.refresh(true);
 		},
-		onClearCampoObjeto: function(){
+		onClearCampoObjeto: function(aArticulos){
 			var oThat = this;
-			var aClvLabor = oThat._oCart.getProperty("/cartEntries");
-			aClvLabor.forEach( function(element){
+			// var aClvLabor = oThat._oCart.getProperty("/cartEntries");
+			aArticulos.forEach( function(element){
 				element.CampoObjeto 			= [];
 				element.CampoObjetoValue 		= null;
 				element.CampoObjetoSelected 	= null;
@@ -455,66 +393,98 @@ sap.ui.define([
 			})
 			oThat._oCart.refresh(true);
 		},
-
-		onSelectSolicitante: function(oEvent){
-			try{
-				var that = this;
-				this.onClearCentroCosto();
-				this.onClearClaveLabor();
-				this.onClearCampoObjeto();
-				this.showBusyIndicator();
-				var solicitanteKey = oEvent.getSource().getSelectedKey();
-				var empleados = this.localmodel.getProperty("/empleados");
-				var solicitanteKeyAreas = empleados.find(e=> e.EmployeeID === parseInt(solicitanteKey));
-				this.localmodel.setProperty("/CentrosCosto",[]);
-				var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-				return new Promise( function (resolve, reject) {
-					var uri = baseuri+"sb1sl/Area('"+ solicitanteKeyAreas.U_Areas + "')";
-					$.ajax({
-						type: "GET",
-						dataType: "json",
-						url: uri,
-						success: function (result) {
-							// that.localmodel.setProperty("/ClaveLabor", []);
-							// that.localmodel.setProperty("/CampoObjeto", []);
-							// resolve(result.value);
-							result.AREADCollection.forEach( function(instances){
-								that.getCentrosCosto(instances.U_Area);
-							})
-						},
-						error: function (errMsg) {
-							reject(errMsg.responseJSON);
-						}
-					});
-				});
-			} catch(e){
-				MessageBox.error("Ha sucedido un error al realizar la reserva");
-				this.hideBusyIndicator();
-			}
+		onClearCampoSolicitante: function(aArticulos){
+			var oThat = this;
+			// var aSolicitante = oThat._oCart.getProperty("/cartEntries");
+			aArticulos.forEach( function(element){
+				// element.CampoSolicitante 			= [];
+				element.CampoSolicitanteValue 	= null;
+				element.CampoSolicitanteKey 	= null;
+			})
+			oThat._oCart.refresh(true);
 		},
-
-		getCentrosCosto: function(areaId){
-			var that = this;
-			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise(function (resolve, reject) {
-				var uri = baseuri+"sb1sl/ProfitCenters?$filter= U_Area eq '"+areaId+"'";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (data) {
-						var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
-						that.localmodel.setProperty("/CentrosCosto",concatValues);
-						that.localmodel.refresh(true);
-						that.hideBusyIndicator();
-						resolve(data);
-					},
-					error: function (data) {
-						resolve(data);
-					}
-				});
-			});
+		onClearCampoIdentificador: function(aArticulos){
+			var oThat = this;
+			// var aSolicitante = oThat._oCart.getProperty("/cartEntries");
+			aArticulos.forEach( function(element){
+				element.IdentificadorValue 			= null;
+				element.CampoIdentificadorSelected 	= null;
+				element.visIdentificador 			= null;
+			})
+			oThat._oCart.refresh(true);
 		},
+		onSetSolicianteValues: function(oEmpleado,aArticulos){
+			var oThat = this;
+			aArticulos.forEach( function(element){
+				// element.CampoSolicitante 			= [];
+				element.CampoSolicitanteValue 	= oEmpleado.FirstName ? oEmpleado.FirstName+" " : "" + oEmpleado.MiddleName ? oEmpleado.MiddleName+" " : "" + oEmpleado.LastName ? oEmpleado.LastName : "";
+				element.CampoSolicitanteKey 	= oEmpleado.ExternalEmployeeNumber; //enviar dato
+			})
+			oThat._oCart.refresh(true);
+		},
+		// onSelectSolicitante: function(oEvent){
+		// 	try{
+		// 		var that = this;
+		// 		var aArticulos = that._oCart.getProperty("/cartEntries");
+		// 		this.onClearCentroCosto(aArticulos);
+		// 		this.onClearClaveLabor(aArticulos);
+		// 		this.onClearCampoObjeto(aArticulos);
+		// 		this.onClearCampoSolicitante(aArticulos);
+		// 		this.onClearCampoIdentificador(aArticulos);
+		// 		var solicitanteKey = oEvent.getSource().getSelectedKey();
+		// 		if(solicitanteKey){
+		// 			this.showBusyIndicator();
+		// 			var empleados = this.localmodel.getProperty("/empleados");
+		// 			var solicitanteKeyAreas = empleados.find(e=> e.EmployeeID === parseInt(solicitanteKey));
+		// 			this.localmodel.setProperty("/CentrosCosto",[]);
+		// 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+		// 			this.onSetSolicianteValues(solicitanteKeyAreas,aArticulos);
+		// 			return new Promise( function (resolve, reject) {
+		// 				var uri = baseuri+"sb1sl/Area('"+ solicitanteKeyAreas.U_Areas + "')";
+		// 				$.ajax({
+		// 					type: "GET",
+		// 					dataType: "json",
+		// 					url: uri,
+		// 					success: function (result) {
+		// 						result.AREADCollection.forEach( function(instances){
+		// 							that.getCentrosCosto(instances.U_Area);
+		// 						})
+		// 						that.hideBusyIndicator();
+		// 					},
+		// 					error: function (errMsg) {
+		// 						reject(errMsg.responseJSON);
+		// 					}
+		// 				});
+		// 			});
+		// 		}
+		// 	} catch(e){
+		// 		MessageBox.error("Ha sucedido un error al seleccionar el solicitante");
+		// 		this.hideBusyIndicator();
+		// 	}
+		// },
+
+		// getCentrosCosto: function(areaId){
+		// 	var that = this;
+		// 	var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+		// 	return new Promise(function (resolve, reject) {
+		// 		var uri = baseuri+"sb1sl/ProfitCenters?$filter= U_Area eq '"+areaId+"'";
+		// 		$.ajax({
+		// 			type: "GET",
+		// 			dataType: "json",
+		// 			url: uri,
+		// 			success: function (data) {
+		// 				var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
+		// 				that.localmodel.setProperty("/CentrosCosto",concatValues);
+		// 				that.localmodel.refresh(true);
+		// 				that.hideBusyIndicator();
+		// 				resolve(data);
+		// 			},
+		// 			error: function (data) {
+		// 				resolve(data);
+		// 			}
+		// 		});
+		// 	});
+		// },
 
 		onSelectCentro: function(oEvent){
 			try{
@@ -522,7 +492,7 @@ sap.ui.define([
 				this.showBusyIndicator();
 				var selectedCentro = oEvent.getSource().getSelectedKey();
 				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
-				selectedObject.getObject().CentroCostoSelected 		= selectedCentro;
+				selectedObject.getObject().CentroCostoSelected 		= selectedCentro ? selectedCentro : null;
 				selectedObject.getObject().ClaveLaborValue 			= null;
 				selectedObject.getObject().ClaveLaborSelected 		= null;
 				selectedObject.getObject().CampoObjetoValue 		= null;
@@ -531,13 +501,68 @@ sap.ui.define([
 				selectedObject.getObject().SelectedKeyCampoObj 		= null;
 				selectedObject.getObject().ClaveLabor 				= [];
 				selectedObject.getObject().CampoObjeto 				= [];
-				that.onObtenerClaveLabor(selectedObject,selectedCentro);
-				// that.onObtenerCampoObjeto(selectedObject,selectedCentro);
+				if(selectedCentro){
+					that.onObtenerClaveLabor(selectedObject,selectedCentro);
+				}else{
+					
+				}
+				// }
+				this.hideBusyIndicator();
 			} catch(e){
-				MessageBox.error("Ha sucedido un error al realizar la reserva");
+				MessageBox.error("Ha sucedido un error al seleccionar el centro");
 				this.hideBusyIndicator();
 			}
 		},
+		onSearchExisteCentro: function(oEvent){
+			let oChange = oEvent;
+		},
+		onSelectOrdenTrabajo: function(oEvent){
+			try{
+				var that = this;
+				this.showBusyIndicator();
+				var selectedOrdenTrabajo= oEvent.getSource().getSelectedKey();
+				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObject.getObject().OrdenTrabajoSelected		= selectedOrdenTrabajo ? selectedOrdenTrabajo : null;
+				// if(!selectedOrdenTrabajo){
+				// 	selectedObject.getObject().OrdenTrabajoValue = null;
+				// }
+				this.hideBusyIndicator();
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al seleccionar la orden de trabajo");
+				this.hideBusyIndicator();
+			}
+		},
+		onSelectActivoFijo: function(oEvent){
+			try{
+				var that = this;
+				this.showBusyIndicator();
+				var selectedActivoFijo= oEvent.getSource().getSelectedKey();
+				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObject.getObject().ActivoFijoSelected		= selectedActivoFijo ? selectedActivoFijo : null;
+				// if(!selectedActivoFijo){
+				// 	selectedObject.getObject().ActivoFijoValue = null;
+				// }
+				this.hideBusyIndicator();
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al seleccionar la orden de trabajo");
+				this.hideBusyIndicator();
+			}
+		},
+		// onSelectIdentificador: function(oEvent){
+		// 	try{
+		// 		var that = this;
+		// 		this.showBusyIndicator();
+		// 		var selectedIdentificador= oEvent.getSource().getSelectedKey();
+		// 		var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+		// 		selectedObject.getObject().IdentificadorSelected		= selectedIdentificador ? selectedIdentificador : null;
+		// 		if(!selectedIdentificador){
+		// 			selectedObject.getObject().IdentificadorValue = null;
+		// 		}
+		// 	} catch(e){
+		// 		MessageBox.error("Ha sucedido un error al seleccionar la orden de trabajo");
+		// 		this.hideBusyIndicator();
+		// 	}
+		// },
 		onObtenerClaveLabor: function(selectedObject,selectedCentro){
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
@@ -575,6 +600,9 @@ sap.ui.define([
 							oLineCart.SelectedKeyCampoObj	= result.value[0].U_Objeto;
 							oLineCart.CampoObjetoSelected	= result.value[0].U_Objeto;
 							that._oCart.refresh(true);
+							if(!result.value[0].U_Objeto || !result.value[0].U_ObjetoN){
+								MessageBox.warning("No tiene el campo Objeto predefinido debe contactarse con el administrador de SAP B1");
+							}
 						}
 						resolve(result);
 						that.hideBusyIndicator();
@@ -590,7 +618,10 @@ sap.ui.define([
 				var that = this;
 				var selectedClvLabor = oEvent.getSource().getSelectedKey();
 				var selectedObjectClvLabor = oEvent.getSource().getBindingContext("cartProducts");
-				selectedObjectClvLabor.getObject().ClaveLaborSelected = selectedClvLabor;
+				selectedObjectClvLabor.getObject().ClaveLaborSelected = selectedClvLabor ? selectedClvLabor : null;
+				// if(!selectedClvLabor){
+				// 	selectedObjectClvLabor.getObject().ClaveLaborValue = null;
+				// }
 				selectedObjectClvLabor.getObject().CampoObjetoValue 		= null;
 				selectedObjectClvLabor.getObject().CampoObjetoSelected 		= null;
 				selectedObjectClvLabor.getObject().SelectedKeyCampoObj 		= null;
@@ -600,16 +631,55 @@ sap.ui.define([
 				this.hideBusyIndicator();
 			}
 		},
-		onSelectCampoObjeto: function(oEvent){
+		// onSelectCampoObjeto: function(oEvent){
+		// 	try {
+		// 		var that = this;
+		// 		var selectedCampoObjeto = oEvent.getSource().getSelectedKey();
+		// 		var selectedObjectCampoObjeto = oEvent.getSource().getBindingContext("cartProducts");
+		// 		selectedObjectCampoObjeto.getObject().CampoObjetoSelected = selectedCampoObjeto;
+		// 		if(!selectedCampoObjeto){
+		// 			selectedObjectCampoObjeto.getObject().CampoObjetoValue = null;
+		// 		}
+		// 	} catch(e){
+		// 		MessageBox.error("Ha sucedido un error al seleccionar campo objeto");
+		// 		this.hideBusyIndicator();
+		// 	}
+		// },
+		onSelectIdentificador: function(oEvent){
 			try {
 				var that = this;
-				var selectedCampoObjeto = oEvent.getSource().getSelectedKey();
-				var selectedObjectCampoObjeto = oEvent.getSource().getBindingContext("cartProducts");
-				selectedObjectCampoObjeto.getObject().CampoObjetoSelected = selectedCampoObjeto;
+				var selectedCampoIdentificador = oEvent.getSource().getSelectedKey();
+				var selectedObjectCampoIdentificador = oEvent.getSource().getBindingContext("cartProducts");
+				var Identificadores = that.localmodel.getProperty("/Identificador");
+				var getIdentificador = Identificadores.find(e=> e.U_Identificador === selectedCampoIdentificador);
+				selectedObjectCampoIdentificador.getObject().CampoIdentificadorSelected = selectedCampoIdentificador;
+				if(!selectedCampoIdentificador){
+					this.onClearCamposIdentificador(selectedObjectCampoIdentificador.getObject());
+					selectedObjectCampoIdentificador.getObject().visIdentificador 		= false;
+				}else {
+					selectedObjectCampoIdentificador.getObject().CentroCostoSelected	= getIdentificador.U_CentroCosto;
+					selectedObjectCampoIdentificador.getObject().CentroCostoValue		= getIdentificador.U_CentroCosto;
+					selectedObjectCampoIdentificador.getObject().ClaveLaborSelected		= getIdentificador.U_ClaveLabor;
+					selectedObjectCampoIdentificador.getObject().ClaveLaborValue		= getIdentificador.U_ClaveLabor;
+					that.onObtenerCampoObjeto(selectedObjectCampoIdentificador,getIdentificador.U_CentroCosto);
+					selectedObjectCampoIdentificador.getObject().visIdentificador = true;
+				}
+				that.localmodel.refresh(true);
+				this.hideBusyIndicator();
 			} catch(e){
-				MessageBox.error("Ha sucedido un error al seleccionar campo objeto");
+				MessageBox.error("Ha sucedido un error al seleccionar campo Identificador");
 				this.hideBusyIndicator();
 			}
+		},
+		onClearCamposIdentificador: function(oIdentificador){
+			oIdentificador.CentroCostoSelected	= null;
+			oIdentificador.CentroCostoValue		= null;
+			oIdentificador.ClaveLaborSelected	= null;
+			oIdentificador.ClaveLaborValue		= null;
+			oIdentificador.CampoObjetoValue		= null;
+			oIdentificador.SelectedKeyCampoObj	= null;
+			oIdentificador.CampoObjetoSelected	= null;
+			oIdentificador.IdentificadorValue 	= null;
 		},
 
 		/**
@@ -687,22 +757,26 @@ sap.ui.define([
 				onClose: function (oAction) {
 					if(oAction === "YES"){
 						oThat.showBusyIndicator();
-						var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
+						// var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
+						var comboselectedkey = oThat.localmodel.getProperty("/oDatosSolicitante");
+						var oUsersWorkflow = oThat.localmodel.getProperty("/oUsuariosWorkflow");
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var error = false;
-						!comboselectedkey ? error = true : null;
+						!comboselectedkey.CampoSolicitanteKey ? error = true : null;
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode"	: "oInventoryGenExit",
 							"ESTADO_A1"		: "P",
-							"U_SOLICITANTE"	: comboselectedkey,
+							"U_SOLICITANTE"	: comboselectedkey.CampoSolicitanteKey,
 							"DocumentLines"	: []
 						};
 
 						var dataWorkflow = {
+							"UsuarioJefeArea": oUsersWorkflow.tUsuariosJefeArea ? oUsersWorkflow.tUsuariosJefeArea : null,
+							"UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "oInventoryGenExit",
-							"U_SOLICITANTE": comboselectedkey,
+							"U_SOLICITANTE": comboselectedkey.CampoSolicitanteKey,
 							"estadoAprob" : false,
 							"DocumentLines": []
 						};
@@ -715,16 +789,36 @@ sap.ui.define([
 								"CostingCode2": product.CentroCostoSelected,
 								"CostingCode": product.CampoObjetoSelected,
 								"U_ClaveLabor": product.ClaveLaborSelected,
+								"U_Solicitante": product.CampoSolicitanteKey, // campo de ExternalEmployeeNumber
+								"U_DescSolicitante": product.CampoSolicitanteValue, // Nombre concatenado
+								"U_NoOT": product.OrdenTrabajoSelected, // Orden de trabajo -> Name o Code
+								"U_Activo": product.ActivoFijoSelected, // Activo fijo (combo) ItemCode
+								"U_Identificador": product.CampoIdentificadorSelected,//identificador (combo) U_Identificador
 								"DocumentLinesBinAllocations": []
 							}
+							!product.CentroCostoSelected || 
+							!product.CampoObjetoSelected || 
+							!product.CampoObjetoValue || 
+							// !product.OrdenTrabajoSelected || 
+							!product.CampoSolicitanteKey || 
+							!product.ClaveLaborSelected ? error = true : null ;
+
+							dataWorkflow.DocumentLines.push(product);
 							dataDraft.DocumentLines.push(DocumentLines);
 						})
 
-						oEntries.forEach( function(product){
-							!product.CentroCostoSelected || !product.CampoObjetoSelected || !product.ClaveLaborSelected ? error = true : null ;
-							dataWorkflow.DocumentLines.push(product);
-						})
+						// oEntries.forEach( function(product){
+						// 	!product.CentroCostoSelected || 
+						// 	!product.CampoObjetoSelected || 
+						// 	!product.ClaveLaborSelected ? error = true : null ;
+						// 	dataWorkflow.DocumentLines.push(product);
+						// })
 
+						if(!oUsersWorkflow.tUsuariosJefeArea || !oUsersWorkflow.tAlmacen){
+							MessageBox.error("No existe usuario Jefe de Área o usuario de almacén para el solicitante ingresado, comunicarse con el administrador.");
+							oThat.hideBusyIndicator();
+							return;
+						}
 
 						if(error === true){
 							MessageBox.error("Debe llenar los campos para poder realizar la reserva");
@@ -740,15 +834,16 @@ sap.ui.define([
 								url: uri,
 								data: JSON.stringify(dataDraft),
 								success: async function (result) {
-									var comboselectedNombre = oThat.getView().byId("comboSalesPerson").getValue();
+									// var comboselectedNombre = oThat.getView().byId("comboSalesPerson").getValue();
+									var comboselectedNombre = oThat.localmodel.getProperty("/oDatosSolicitante");
 									//NRO DE RESERVA || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
 									dataWorkflow.DocEntry 			= result.DocEntry.toString()
 																	+"|"+oThat._oCart.getProperty("/TodayDate")
-																	+"|"+comboselectedNombre
+																	+"|"+comboselectedNombre.CampoSolicitanteValue
 																	+"|"+"CREADO"
 																	+"|"+dataWorkflow.Comments;
 									// dataWorkflow.DocEntry 			= result.DocEntry.toString();
-									dataWorkflow.UsuarioRegistro 	= comboselectedNombre;
+									dataWorkflow.UsuarioRegistro 	= comboselectedNombre.CampoSolicitanteValue;
 									dataWorkflow.FechaRegistro 		= oThat._oCart.getProperty("/TodayDate");
 									await oThat.postWorkflowInstance(dataWorkflow);
 									for (let i=0; i<dataWorkflow.DocumentLines.length; i++) {
@@ -1163,6 +1258,42 @@ sap.ui.define([
             this.byId(this.inputId)._bSelectingItem = true;
 			this.byId(this.inputId).fireChange();
 		},
+		// onOpenCentroCosto: function(oEvent){
+		// 	var that = this;
+		// 	// this.inputId = oEvent.getSource().getId();
+		// 	let oSelItem = oEvent.getSource().getBindingContext("cartProducts").getObject();
+		// 	this.localmodel.setProperty("/oSelDetalleMashcode",oSelItem);
+		// 	if (!that._valueHelpDialogCentroCosto) {
+		// 		that._valueHelpDialogCentroCosto = sap.ui.xmlfragment(
+		// 			"zsandiego.crearreserva.view.fragment.MashcodeReservas.CentroCosto",
+		// 			that
+		// 		);
+		// 		that.getView().addDependent(that._valueHelpDialogCentroCosto);
+		// 	}
+		// 	that._valueHelpDialogCentroCosto.open();
+		// },
+		// onConfirmCentroCosto: function(oEvent){
+		// 	var that = this;
+		// 	let oSelectCS = oEvent.getParameters().selectedItem.getBindingContext("localmodel").getObject();
+		// 	let oDatoMainSel = this.localmodel.getProperty("/oSelDetalleMashcode");
+		// 	let searchDatoSel = this._oCart.getProperty("/cartEntries").find(e=>e.ItemCode === oDatoMainSel.ItemCode && e.WarehouseCode === oDatoMainSel.WarehouseCode );
+		// 	searchDatoSel.CentroCostoSelected =  oSelectCS.CenterCode;
+		// 	searchDatoSel.CentroCostoValue =  oSelectCS.CenterCode+" - "+oSelectCS.CenterName;
+		// 	searchDatoSel.ClaveLaborValue 			= null;
+		// 	searchDatoSel.ClaveLaborSelected 		= null;
+		// 	searchDatoSel.CampoObjetoValue 			= null;
+		// 	searchDatoSel.CampoObjetoSelected 		= null;
+		// 	searchDatoSel.SelectedKeyClave 			= null;
+		// 	searchDatoSel.SelectedKeyCampoObj 		= null;
+		// 	searchDatoSel.ClaveLabor 				= [];
+		// 	searchDatoSel.CampoObjeto 				= [];
+		// 	that.onObtenerClaveLabor(searchDatoSel,oSelectCS.CenterCode);
+		// 	this.localmodel.refresh(true);
+		// },
+		// onCloseCentroCosto: function(){
+		// 	var that = this;
+		// 	that._valueHelpDialogCentroCosto.close();
+		// },
 		openFragNumOrden: function (oEvent) {
             this.inputId = oEvent.getSource().getId();  
 			if (!this._oDialogNumOrden) {
