@@ -548,6 +548,30 @@ sap.ui.define([
 				this.hideBusyIndicator();
 			}
 		},
+		onSelectProyecto: function(oEvent){
+			try{
+				var that = this;
+				this.showBusyIndicator();
+				var selectedProyecto= oEvent.getSource().getSelectedKey();
+				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObject.getObject().ProyectoSelected		= selectedProyecto ? selectedProyecto : null;
+				// if(!selectedProyecto){
+				// 	selectedObjectCampoIdentificador.getObject().visIdentificador 		= false;
+				// }else {
+				// 	selectedObjectCampoIdentificador.getObject().CentroCostoSelected	= getIdentificador.U_CentroCosto;
+				// 	selectedObjectCampoIdentificador.getObject().CentroCostoValue		= getIdentificador.U_CentroCosto;
+				// 	selectedObjectCampoIdentificador.getObject().ClaveLaborSelected		= getIdentificador.U_ClaveLabor;
+				// 	selectedObjectCampoIdentificador.getObject().ClaveLaborValue		= getIdentificador.U_ClaveLabor;
+				// 	that.onObtenerCampoObjeto(selectedObjectCampoIdentificador,getIdentificador.U_CentroCosto);
+				// 	selectedObjectCampoIdentificador.getObject().visIdentificador 		= true;
+				// }
+				that.localmodel.refresh(true);
+				this.hideBusyIndicator();
+			} catch(e){
+				MessageBox.error("Ha sucedido un error al seleccionar un projecto");
+				this.hideBusyIndicator();
+			}
+		},
 		// onSelectIdentificador: function(oEvent){
 		// 	try{
 		// 		var that = this;
@@ -774,11 +798,11 @@ sap.ui.define([
 						var dataWorkflow = {
 							"UsuarioJefeArea": oUsersWorkflow.tUsuariosJefeArea ? oUsersWorkflow.tUsuariosJefeArea : null,
 							"UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
+							"estadoAprob" : false,
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "oInventoryGenExit",
 							"U_SOLICITANTE": comboselectedkey.CampoSolicitanteKey,
-							"estadoAprob" : false,
-							"DocumentLines": []
+							"DocumentLinesBatchNumbers": []
 						};
 
 						oEntries.forEach( function(product){
@@ -793,18 +817,21 @@ sap.ui.define([
 								"U_DescSolicitante": product.CampoSolicitanteValue, // Nombre concatenado
 								"U_NoOT": product.OrdenTrabajoSelected, // Orden de trabajo -> Name o Code
 								"U_Activo": product.ActivoFijoSelected, // Activo fijo (combo) ItemCode
+								"ProjectCode": product.ProyectoSelected, // Activo fijo (combo) ItemCode
 								"U_Identificador": product.CampoIdentificadorSelected,//identificador (combo) U_Identificador
 								"DocumentLinesBinAllocations": []
 							}
 							!product.CentroCostoSelected || 
 							!product.CampoObjetoSelected || 
-							!product.CampoObjetoValue || 
+							// !product.CampoObjetoValue || 
 							// !product.OrdenTrabajoSelected || 
 							!product.CampoSolicitanteKey || 
 							!product.ClaveLaborSelected ? error = true : null ;
 
-							dataWorkflow.DocumentLines.push(product);
 							dataDraft.DocumentLines.push(DocumentLines);
+							DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
+							DocumentLines.InventoryUOM = product.DatosCabeceraV2.InventoryUOM;
+							dataWorkflow.DocumentLinesBatchNumbers.push(DocumentLines);
 						})
 
 						// oEntries.forEach( function(product){

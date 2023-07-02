@@ -40,6 +40,7 @@ sap.ui.define([
 			// await this.consultaEmpleados();
 			await this.consultaOrdenTrabajo();
 			await this.consultaActivoFijo();
+			await this.consultaProjects();
 			//CONSULTA USUARIO IAS
 			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
 			baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
@@ -186,6 +187,11 @@ sap.ui.define([
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oDatosIdentificador = await serviceSL.onConsultaServiceLayerIdentificador(baseuri,"U_ACTIVOS",getAreasSolicitanteKey );
 			this.localmodel.setProperty("/Identificador",oDatosIdentificador);
+		},
+		consultaProjects: async function(){
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oDatosProjects = await serviceSL.consultaProjects(baseuri,new Date() );
+			this.localmodel.setProperty("/Proyect",oDatosProjects);
 		},
 		onCentrosDeCosto: function () {
 			var that = this;
