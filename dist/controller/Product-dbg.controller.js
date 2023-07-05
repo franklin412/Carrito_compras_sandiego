@@ -179,65 +179,65 @@ sap.ui.define([
 			var unidadmedida = sap.ui.getCore().byId("idUnidadMedida_").getValue();
 			var precio = sap.ui.getCore().byId("idPrecio_").getValue();
 
-			if (Proveedor.length === 0) {
-				MessageBox.warning(
-					"Seleccione un proveedor", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (GrupoArticulo.length === 0) {
-				MessageBox.warning(
-					"Seleccione un grupo de artículo", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (nombreMaterial.length === 0) {
-				MessageBox.warning(
-					"Ingrese el nombre de material", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (cantidad.length === 0) {
-				MessageBox.warning(
-					"Ingrese la cantidad del material", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (cantidad == 0) {
-				MessageBox.warning(
-					"Ingresa una cantidad diferente a 0", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				sap.ui.getCore().byId("idCantidadSPOT_").setValue();
-				return;
-			} else if (unidadmedida.length === 0) {
-				MessageBox.warning(
-					"Ingrese la unidad de medida", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (precio.length === 0) {
-				MessageBox.warning(
-					"Ingrese el precio unitario del material", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				return;
-			} else if (precio == 0) {
-				MessageBox.warning(
-					"Ingresa un precio unitario diferente a 0", {
-						styleClass: bCompact ? "sapUiSizeCompact" : ""
-					}
-				);
-				sap.ui.getCore().byId("idPrecio_").setValue();
-				return;
-			}
+			// if (Proveedor.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Seleccione un proveedor", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (GrupoArticulo.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Seleccione un grupo de artículo", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (nombreMaterial.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Ingrese el nombre de material", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (cantidad.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Ingrese la cantidad del material", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (cantidad == 0) {
+			// 	MessageBox.warning(
+			// 		"Ingresa una cantidad diferente a 0", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	sap.ui.getCore().byId("idCantidadSPOT_").setValue();
+			// 	return;
+			// } else if (unidadmedida.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Ingrese la unidad de medida", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (precio.length === 0) {
+			// 	MessageBox.warning(
+			// 		"Ingrese el precio unitario del material", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	return;
+			// } else if (precio == 0) {
+			// 	MessageBox.warning(
+			// 		"Ingresa un precio unitario diferente a 0", {
+			// 			styleClass: bCompact ? "sapUiSizeCompact" : ""
+			// 		}
+			// 	);
+			// 	sap.ui.getCore().byId("idPrecio_").setValue();
+			// 	return;
+			// }
 			var oCartModel = this.getModel("cartProducts");
 			/*var datosSPOT = {
 				"ProductID": serieMaterial 

@@ -8,7 +8,8 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/Fragment",
 	"sap/m/MessageBox",
-    "sap/ui/core/BusyIndicator"
+    "sap/ui/core/BusyIndicator",
+	"../service/serviceSL"
 ], function (
 	BaseController,
 	formatter,
@@ -19,7 +20,7 @@ sap.ui.define([
 	JSONModel,
 	Fragment,
 	MessageBox,
-	BusyIndicator) {
+	BusyIndicator,serviceSL) {
 	"use strict";
 
 	var cantBusqueda=0;
@@ -164,12 +165,19 @@ sap.ui.define([
 		try{
 			this.onLimpiarCabeceraDetalle();
 			var oBindContext;
+			var oUserData = this.localModel.getProperty("/oEmpleadoData");
 			if (Device.system.phone) {
 				oBindContext = oEvent.getSource().getBindingContext("localmodel").getObject();
 			} else {
 				oBindContext = oEvent.getSource().getSelectedItem().getBindingContext("localmodel").getObject();
 			}
             var oModel = this._catalogo;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
+			if(!(oUserData.U_Area === oWarehouse.U_Area)){
+				MessageBox.warning("El área del usuario solicitante es diferente al area de almacén del item seleccionado.");
+				return;
+			}
 			// oBindContext.DatosCabecera = this.localModel.getProperty("/detallecatalogos");
 			var obtenerSeleccionados = this.getView().getModel("cartProducts").getProperty("/cartEntries").find(e=>e.ItemCode === oBindContext.ItemCode && e.WarehouseCode === oBindContext.WarehouseCode);
 			obtenerSeleccionados ? oBindContext.NoexisteSeleccionado = false : oBindContext.NoexisteSeleccionado = true;

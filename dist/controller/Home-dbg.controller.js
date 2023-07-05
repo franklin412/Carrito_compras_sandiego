@@ -95,6 +95,7 @@ sap.ui.define([
 				usuarioIASexiste ? aUserSAPExisteIAS.push(usuarioIASexiste.eMail) : null;
 			})
 			aUserSAPExisteIAS.push("amatienzo@plusap.pe");
+			that.localmodel.setProperty("/oEmpleadoData", getSAPUser[0]);
 			that.localmodel.setProperty("/oUsuariosWorkflow/tUsuariosJefeArea", aUserSAPExisteIAS.length>0 ? aUserSAPExisteIAS.toString() : "");
 			that.localmodel.setProperty("/oUsuariosWorkflow/tAlmacen", "dgutierrez@plusap.pe");
 		},

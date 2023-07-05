@@ -476,14 +476,32 @@ sap.ui.define([
         },
         consultaProjects: function (baseuri, newDate) {
           var that = this, option;
+          var date = (newDate.getUTCFullYear()+"-"+(newDate.getUTCMonth()+1).toString().padStart(2, '0')+"-"+newDate.getDate().toString().padStart(2, '0'));
           return new Promise( function (resolve, reject) {
-            var uri = baseuri+"sb1sl/Projects?$filter=ValidFrom lt '2021-06-30T00:00:00.000' and ValidTo gt '2021-06-30T00:00:00.000'";
+            var uri = baseuri+"sb1sl/Projects?$filter=ValidFrom lt '"+date+"' and ValidTo gt '"+date+"'";
             $.ajax({
               type: "GET",
               dataType: "json",
               url: uri,
               success: function (result) {
                 resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+        onObtenerAlmacen: function (warehouse, baseuri) {
+          var that = this, option;
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+"sb1sl/Warehouses('"+warehouse+"')";
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (result) {
+                resolve(result);
               },
               error: function (errMsg) {
                 reject(errMsg.responseJSON);

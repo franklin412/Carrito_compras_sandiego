@@ -553,18 +553,28 @@ sap.ui.define([
 				var that = this;
 				this.showBusyIndicator();
 				var selectedProyecto= oEvent.getSource().getSelectedKey();
-				var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
-				selectedObject.getObject().ProyectoSelected		= selectedProyecto ? selectedProyecto : null;
-				// if(!selectedProyecto){
-				// 	selectedObjectCampoIdentificador.getObject().visIdentificador 		= false;
-				// }else {
-				// 	selectedObjectCampoIdentificador.getObject().CentroCostoSelected	= getIdentificador.U_CentroCosto;
-				// 	selectedObjectCampoIdentificador.getObject().CentroCostoValue		= getIdentificador.U_CentroCosto;
-				// 	selectedObjectCampoIdentificador.getObject().ClaveLaborSelected		= getIdentificador.U_ClaveLabor;
-				// 	selectedObjectCampoIdentificador.getObject().ClaveLaborValue		= getIdentificador.U_ClaveLabor;
-				// 	that.onObtenerCampoObjeto(selectedObjectCampoIdentificador,getIdentificador.U_CentroCosto);
-				// 	selectedObjectCampoIdentificador.getObject().visIdentificador 		= true;
-				// }
+				var selectedObjectProyecto = oEvent.getSource().getBindingContext("cartProducts");
+				selectedObjectProyecto.getObject().ProyectoSelected		= selectedProyecto ? selectedProyecto : null;
+				if(!selectedProyecto){
+					selectedObjectProyecto.getObject().visProyecto 	= false;
+				}else {
+					selectedObjectProyecto.getObject().CentroCostoValue 	= null;
+					selectedObjectProyecto.getObject().CentroCostoSelected 	= null;
+					selectedObjectProyecto.getObject().SelectedKeyCentro 	= null;
+					selectedObjectProyecto.getObject().ClaveLabor 			= [];
+					selectedObjectProyecto.getObject().ClaveLaborValue 		= null;
+					selectedObjectProyecto.getObject().ClaveLaborSelected 	= null;
+					selectedObjectProyecto.getObject().SelectedKeyClave 	= null;
+					selectedObjectProyecto.getObject().CampoObjeto 			= [];
+					selectedObjectProyecto.getObject().CampoObjetoValue 	= null;
+					selectedObjectProyecto.getObject().CampoObjetoSelected 	= null;
+					selectedObjectProyecto.getObject().SelectedKeyCampoObj 	= null;
+					selectedObjectProyecto.getObject().IdentificadorValue 			= null;
+					selectedObjectProyecto.getObject().CampoIdentificadorSelected 	= null;
+					selectedObjectProyecto.getObject().visProyecto 			= true;
+					selectedObjectProyecto.getObject().visIdentificador 	= false;
+					// selectedObject.getObject().visIdentificador 			= null;
+				}
 				that.localmodel.refresh(true);
 				this.hideBusyIndicator();
 			} catch(e){
@@ -624,7 +634,7 @@ sap.ui.define([
 							oLineCart.SelectedKeyCampoObj	= result.value[0].U_Objeto;
 							oLineCart.CampoObjetoSelected	= result.value[0].U_Objeto;
 							that._oCart.refresh(true);
-							if(!result.value[0].U_Objeto || !result.value[0].U_ObjetoN){
+							if(!result.value[0].U_Objeto){
 								MessageBox.warning("No tiene el campo Objeto predefinido debe contactarse con el administrador de SAP B1");
 							}
 						}
@@ -821,15 +831,20 @@ sap.ui.define([
 								"U_Identificador": product.CampoIdentificadorSelected,//identificador (combo) U_Identificador
 								"DocumentLinesBinAllocations": []
 							}
-							!product.CentroCostoSelected || 
-							!product.CampoObjetoSelected || 
-							!product.CampoObjetoValue || 
-							// !product.OrdenTrabajoSelected || 
-							!product.CampoSolicitanteKey || 
-							!product.ClaveLaborSelected ? error = true : null ;
+							if(product.ProyectoSelected){
+								!product.CampoSolicitanteKey ? error = true : null;
+							}else {
+								!product.CentroCostoSelected || 
+								!product.CampoObjetoSelected || 
+								!product.ClaveLaborSelected  || 
+								// !product.CampoObjetoValue || 
+								// !product.OrdenTrabajoSelected || 
+								!product.CampoSolicitanteKey ? error = true : null ;
+							}
 
 							dataDraft.DocumentLines.push(DocumentLines);
 							DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
+							DocumentLines.InventoryUOM = product.DatosCabeceraV2.InventoryUOM;
 							dataWorkflow.DocumentLinesBatchNumbers.push(DocumentLines);
 						})
 
