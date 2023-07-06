@@ -582,21 +582,6 @@ sap.ui.define([
 				this.hideBusyIndicator();
 			}
 		},
-		// onSelectIdentificador: function(oEvent){
-		// 	try{
-		// 		var that = this;
-		// 		this.showBusyIndicator();
-		// 		var selectedIdentificador= oEvent.getSource().getSelectedKey();
-		// 		var selectedObject = oEvent.getSource().getBindingContext("cartProducts");
-		// 		selectedObject.getObject().IdentificadorSelected		= selectedIdentificador ? selectedIdentificador : null;
-		// 		if(!selectedIdentificador){
-		// 			selectedObject.getObject().IdentificadorValue = null;
-		// 		}
-		// 	} catch(e){
-		// 		MessageBox.error("Ha sucedido un error al seleccionar la orden de trabajo");
-		// 		this.hideBusyIndicator();
-		// 	}
-		// },
 		onObtenerClaveLabor: function(selectedObject,selectedCentro){
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
@@ -797,6 +782,16 @@ sap.ui.define([
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var error = false;
 						!comboselectedkey.CampoSolicitanteKey ? error = true : null;
+						var aUsersAlm = [];
+						oEntries.forEach( function(item){
+							aUsersAlm = aUsersAlm.concat(item.arrayUsuariosAlmacen);
+						})
+						var aUsersAlmReduced = aUsersAlm.reduce(function (previousValue, currentValue) {
+							if (previousValue.indexOf(currentValue) === -1) {
+								previousValue.push(currentValue);
+							}
+							return previousValue;
+						}, [] );
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode"	: "oInventoryGenExit",
@@ -807,7 +802,8 @@ sap.ui.define([
 
 						var dataWorkflow = {
 							"UsuarioJefeArea": oUsersWorkflow.tUsuariosJefeArea ? oUsersWorkflow.tUsuariosJefeArea : null,
-							"UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
+							// "UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
+							"UsuarioAlmacen": aUsersAlmReduced.length>0 ? aUsersAlmReduced.toString() : "",
 							"estadoAprob" : false,
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "oInventoryGenExit",
@@ -887,8 +883,8 @@ sap.ui.define([
 									dataWorkflow.UsuarioRegistro 	= comboselectedNombre.CampoSolicitanteValue;
 									dataWorkflow.FechaRegistro 		= oThat._oCart.getProperty("/TodayDate");
 									await oThat.postWorkflowInstance(dataWorkflow);
-									for (let i=0; i<dataWorkflow.DocumentLines.length; i++) {
-										var oItem = dataWorkflow.DocumentLines[i];
+									for (let i=0; i<dataWorkflow.DocumentLinesBatchNumbers.length; i++) {
+										var oItem = dataWorkflow.DocumentLinesBatchNumbers[i];
 										var oDatoReserva = await serviceSL.onObtenerDescuentoReserva(baseuri,oItem);
 										if(oDatoReserva.length == 0){
 											var onGetCantidadCorrelativo = await serviceSL.onGetCantidadCorrelativo(oItem,baseuri);

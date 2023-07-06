@@ -509,6 +509,40 @@ sap.ui.define([
             });
           });
         },
+        onObtenerUserxAlmacen: function (warehouse, baseuri) {
+          var that = this, option;
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+"sb1sl/BTP_ALMXTIPO?$filter=U_WhsCode eq '"+warehouse+"'";
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              success: function (result) {
+                resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        },
+        onObtenerUsersIASxTipo: function(sTipo,baseuri){
+          var that = this;
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+'iasscim/Users';
+            $.ajax({
+              type: "GET",
+              contentType: "application/scim+json",
+              url: uri,
+              success: function (result) {
+                resolve(result);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
+        }
         
 
 

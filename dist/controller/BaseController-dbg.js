@@ -162,10 +162,11 @@ sap.ui.define([
 			dataAlternativoDetalle = null;
 	 		dataAlternativoCabecera = null;
 		},
-		onAddQuantity: function(oEvent){
-			var oCartModel = this.getModel("cartProducts");
+		onAddQuantity: async function(oEvent){
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oCartModel = this.getModel("cartProducts"), oProduct;
 			if(dataAlternativoDetalle && dataAlternativoCabecera){
-				var oProduct = dataAlternativoDetalle;
+				oProduct = dataAlternativoDetalle;
 				var DatosCabecera = dataAlternativoCabecera;
 				// var existeAlternativo = oCartModel.getProperty("/cartEntries").find(e=>e.ItemCode === oProduct.ItemCode && e.WarehouseCode === oProduct.WarehouseCode);
 				// if(existeAlternativo){
@@ -173,10 +174,29 @@ sap.ui.define([
 				// 	return;
 				// }
 			}else{
-				var oProduct = oEvent.getSource().getParent().data("oProduct");
+				oProduct = oEvent.getSource().getParent().data("oProduct");
 				var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
 				oProduct.NoexisteSeleccionado = false;
 				this.getView().getModel("localmodel").refresh(true);
+			}
+			var aUserxAlm = await serviceSL.onObtenerUserxAlmacen(oProduct.WarehouseCode,baseuri);
+			if(aUserxAlm.length > 0){
+				oProduct.arrayUsuariosAlmacen = [];
+				for (let i=0; i<aUserxAlm.length; i++) {
+					let object = aUserxAlm[i];
+					let uIASxTipo = await serviceSL.onObtenerUsersIASxTipo(object,baseuri);
+					if(uIASxTipo.Resources.length > 0){
+						let filterCostCenter = uIASxTipo.Resources.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]);
+						if(filterCostCenter){
+							let aAprobadoresIASAlmacen = filterCostCenter.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].costCenter === object.U_TipoAlmacen);
+							if(aAprobadoresIASAlmacen.length > 0){
+								aAprobadoresIASAlmacen.forEach( function(iasData){
+									oProduct.arrayUsuariosAlmacen.push(iasData.emails[0].value);
+								})
+							}
+						}
+					}
+				}
 			}
 			var iQuantity = sap.ui.getCore().byId("sInpQuantity").getValue() * 1;
 			var oResourceBundle = this.getModel("i18n").getResourceBundle();

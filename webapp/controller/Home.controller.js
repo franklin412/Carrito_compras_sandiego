@@ -16,6 +16,7 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: async function () {
+			sap.ui.core.BusyIndicator.show(0);
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 			this._router.getRoute("categories").attachMatched(this._onRouteMatched, this);
@@ -68,7 +69,7 @@ sap.ui.define([
             this.localmodel.setProperty("/localmodel/lineafragmento", {});
             // this.localmodel.setProperty("/CentrosCosto", []);
             this.localmodel.setProperty("/placeholder", jQuery.sap.getModulePath(sAppModulePath) + "/img/11030-200.png");
-          
+			sap.ui.core.BusyIndicator.hide();
         },
 		onBeforeRendering: function () {
             
