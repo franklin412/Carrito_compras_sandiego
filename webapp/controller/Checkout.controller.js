@@ -779,6 +779,7 @@ sap.ui.define([
 						// var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
 						var comboselectedkey = oThat.localmodel.getProperty("/oDatosSolicitante");
 						var oUsersWorkflow = oThat.localmodel.getProperty("/oUsuariosWorkflow");
+						var oUserData = oThat.localmodel.getProperty("/oEmpleadoData");
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var error = false;
 						!comboselectedkey.CampoSolicitanteKey ? error = true : null;
@@ -873,13 +874,13 @@ sap.ui.define([
 								success: async function (result) {
 									// var comboselectedNombre = oThat.getView().byId("comboSalesPerson").getValue();
 									var comboselectedNombre = oThat.localmodel.getProperty("/oDatosSolicitante");
-									//NRO DE RESERVA || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
-									dataWorkflow.DocEntry 			= result.DocEntry.toString()
+									//NRO DE RESERVA|| U_AREASOL || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
+									dataWorkflow.DocEntry 			= (result.DocEntry.toString()
+																	+"|"+oUserData.U_Area
 																	+"|"+oThat._oCart.getProperty("/TodayDate")
 																	+"|"+comboselectedNombre.CampoSolicitanteValue
 																	+"|"+"CREADO"
-																	+"|"+dataWorkflow.Comments;
-									// dataWorkflow.DocEntry 			= result.DocEntry.toString();
+																	+"|"+dataWorkflow.Comments);
 									dataWorkflow.UsuarioRegistro 	= comboselectedNombre.CampoSolicitanteValue;
 									dataWorkflow.FechaRegistro 		= oThat._oCart.getProperty("/TodayDate");
 									await oThat.postWorkflowInstance(dataWorkflow);

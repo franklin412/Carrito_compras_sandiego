@@ -251,6 +251,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               // data: JSON.stringify(oDataPost),
               success: function (result) {
                 resolve(result);
@@ -291,6 +294,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               // data: JSON.stringify(oDataPost),
               success: function (result) {
                 resolve(result.value);
@@ -333,6 +339,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               // data: JSON.stringify(loginInfo),
               success: function (result) {
                 result.ItemWarehouseInfoCollection.forEach( function(e){
@@ -357,6 +366,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 // that.localmodel.setProperty("/CentrosCosto", result.value);
                 resolve(result.value);
@@ -377,6 +389,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 // that.localmodel.setProperty("/CentrosCosto", result.value);
                 resolve(result.value);
@@ -419,6 +434,9 @@ sap.ui.define([
 							type: "GET",
 							dataType: "json",
 							url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
 							success: function (result) {
 								// result.AREADCollection.forEach( function(instances){
 								// 	that.getCentrosCosto(instances.U_Area);
@@ -441,6 +459,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (data) {
                 // var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
                 // that.localmodel.setProperty("/CentrosCosto",concatValues);
@@ -465,6 +486,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 resolve(result.value);
               },
@@ -483,6 +507,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 resolve(result.value);
               },
@@ -500,6 +527,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 resolve(result);
               },
@@ -517,6 +547,9 @@ sap.ui.define([
               type: "GET",
               dataType: "json",
               url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
               success: function (result) {
                 resolve(result.value);
               },
