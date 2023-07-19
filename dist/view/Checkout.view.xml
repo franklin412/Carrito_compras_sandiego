@@ -22,126 +22,15 @@
                             <WizardStep id="sucursalStep" complete="pricingComplete" nextStep="contentsStep" title="{i18n>datoscabecera}" icon="sap-icon://factory">
                                 <form:SimpleForm id="SimpleFormChange3524" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
                                     <form:content>
-                                        <!-- <Label labelFor="idfragasignacion_" text="Solicitante"/>
-                                        <ComboBox id="comboSalesPerson" required="true" width="25em" selectionChange="onSelectSolicitante" items="{localmodel>/empleados}" placeholder="Seleccione un empleado">
-                                            <core:Item key="{localmodel>EmployeeID}" text="{localmodel>FirstName} {localmodel>MiddleName} {localmodel>LastName}" />
-                                        </ComboBox> -->
-
-                                        <!-- <Label labelFor="idfragasignacion2_" text="Centro de Costo"/>
-                                        <ComboBox id="comboCentroCosto" width="25em" items="{localmodel>/CentrosCosto}" placeholder="Seleccione un centro de costo">
-                                            <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterName}" />
-                                        </ComboBox>
-
-                                        <Label labelFor="idfragasignacion3_" text="Norma de Reparto"/>
-                                        <ComboBox id="combo2" width="25em" items="{localmodel>/empleados}" placeholder="Seleccione una norma de reparto">
-                                            <core:Item key="{localmodel>SalesEmployeeCode}" text="{localmodel>SalesEmployeeName}" />
-                                        </ComboBox> -->
-
-                                        <Label labelFor="idfragOrgCompra23" text="Fecha Documento"/>
-                                        <!-- <pc:InputValueHelp id="idfragOrgCompra" placeholder="Selecciona una organización de compras" value="{cartProducts>/lineaCabeceraDetalle/Organizacion}" showSuggestion="true" helpModel="localmodel" helpEntitySet="ZCDSMM_EKORG_TXT" helpDescriptionField="ekotx" helpKeyField="ekorg" dialogTitle="{i18n>checkoutDeliveryTypeText}" width="{= ${device>/system/phone} ? '100%' : '22rem'}" /> -->
+                                        <Label labelFor="idfragOrgCompra23" text="{i18n>FechaDocumento}"/>
+                                        
                                         <DatePicker value="{cartProducts>/TodayDate}" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" width="{= ${device>/system/phone} ? '100%' : '25em'}" enabled="false"/>
-                                        <!-- <Label required="true" labelFor="idfragGrupoCompra" text="Grupo de compras"/>
-                                        <pc:InputValueHelp id="idfragGrupoCompra" placeholder="Selecciona un grupo compras" value="{cartProducts>/lineaCabeceraDetalle/GrupoCompra}" showSuggestion="true" helpModel="localmodel" helpEntitySet="ZCDSMM_EKGRP_TXT" helpDescriptionField="eknam" helpKeyField="ekgrp" dialogTitle="{i18n>grupoCompras}" width="{= ${device>/system/phone} ? '100%' : '22rem'}" />
-										<Label required="true" labelFor="idfragSociedad" text="Sociedad"/>
-                                        <pc:InputValueHelp id="idfragSociedad" placeholder="Selecciona una sociedad" value="{cartProducts>/lineaCabeceraDetalle/Sociedad}" showSuggestion="true" helpModel="localmodel" helpEntitySet="ZCDSFI_SOCIEDAD_TXT" helpDescriptionField="butxt" helpKeyField="bukrs" dialogTitle="Sociedad" width="{= ${device>/system/phone} ? '100%' : '22rem'}" />
-										<Label required="true" labelFor="idfragSolicitante" text="Solicitante"/>
-                                        <pc:InputValueHelp id="idfragSolicitante" placeholder="Selecciona un solicitante" value="{cartProducts>/lineaCabeceraDetalle/Solicitante}" showSuggestion="true" helpModel="localmodel" helpEntitySet="ZCDSMM_IDNLF_TXT" helpDescriptionField="descripcion" helpKeyField="cod_area_solic" dialogTitle="Solicitante" text="{cartProducts>/lineaCabeceraDetalle/SolicitanteTexto}" width="{= ${device>/system/phone} ? '100%' : '22rem'}" /> -->
+                                        
                                     </form:content>
                                 </form:SimpleForm>
                             </WizardStep>
-
-                            <!--punto 5 materiales!-->
-                            <!-- <WizardStep id="contentsStep" nextStep="comentarioStep" title="{i18n>checkoutContentsTitle}" icon="sap-icon://activity-items">
-								<List headerText="Lista de Materiales ({= ${localmodel>/listaProductosCantidad/value}})" showNoData="false"></List>
-								<ScrollContainer vertical="true" focusable="true">
-                                <Panel width="auto" class="sapUiResponsiveMargin">
-                                    <Table id="idProductsTable" inset="false" fixedLayout="true" mode="Delete" delete="onEliminarProducto" items="{ path : 'cartProducts>/cartEntries'}">
-                                        <headerToolbar>
-                                            <OverflowToolbar>
-                                                <ToolbarSpacer/>
-                                                <Button icon="sap-icon://delete" text="{i18n>eliminarTodo}" type="Transparent" press="onEliminarTodo"/>
-                                            </OverflowToolbar>
-                                        </headerToolbar>                                    
-                                        <columns>
-                                            <Column width="200px">
-                                                <Text text="{i18n>material}" />
-                                            </Column>
-                                            <Column hAlign="Center" width="100px">
-                                                <Text text="{i18n>cantStock}" />
-                                            </Column> 
-                                        
-                                            <Column width="100px" minScreenWidth="Tablet" hAlign="Center">
-                                                <Text text="{i18n>cantReserva}" />
-                                            </Column>                 
-
-                                            <Column width="100px" minScreenWidth="Tablet" hAlign="Center">
-                                                <Text text="{i18n>cantidad}" />
-                                            </Column>                 
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet" hAlign="Center">
-                                                <Text text="{i18n>centro}" />
-                                            </Column>        
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>imputacion}" />
-                                            </Column>        
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>ClvLabor}" />
-                                            </Column>                                                                                                                                                                                                                   
-                                            <Column width="100px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>campoObjeto}" />
-                                            </Column>    
-                                            <Column width="100px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>Solicitante}" />
-                                            </Column>
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>OrdTrabajo}" />
-                                            </Column>
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>ActivoFijo}" />
-                                            </Column>
-                                            <Column width="150px" demandPopin="true" minScreenWidth="Tablet">
-                                                <Text text="{i18n>Identificador}" />
-                                            </Column>
-                                        </columns>
-                                        <items>
-                                            <ColumnListItem >
-                                                <cells>
-                                                    <ObjectIdentifier title="{cartProducts>ItemCode}" text="{cartProducts>DatosCabeceraV2/ItemName}" />
-                                                    <Text text="{cartProducts>InStock}" />                                                       
-                                                    <Text text="{cartProducts>Quantity}" />
-                                                    <Text text="{cartProducts>WarehouseCode}" />
-                                                    <Text text="{cartProducts>DatosCabeceraV2/InventoryUOM}" />
-                                                    <ComboBox width="25em" change="onSelectCentro" required="true" value="{cartProducts>CentroCostoValue}" selectedKey="{cartProducts>SelectedKeyCentro}" enabled="{=${cartProducts>visIdentificador}? false : ${localmodel>/CentrosCosto}.length > 0 ? true : false}" items="{localmodel>/CentrosCosto}" placeholder="Seleccione un centro de costo">
-                                                        <core:Item key="{localmodel>CenterCode}" text="{localmodel>CenterCode} - {localmodel>CenterName}" />
-                                                    </ComboBox>
-                                                    <ComboBox width="25em" required="true" value="{cartProducts>ClaveLaborValue}" selectedKey="{cartProducts>SelectedKeyClave}" change="onSelectClaveLabor" enabled="{=${cartProducts>visIdentificador}? false : ${cartProducts>ClaveLabor}.length > 0 ? true : false}" items="{cartProducts>ClaveLabor}" placeholder="Seleccione clave labor">
-                                                        <core:Item key="{cartProducts>U_Clave}" text="{cartProducts>U_Clave} - {cartProducts>U_ClaveN}" />
-                                                    </ComboBox>
-                                                    <Text text="{cartProducts>CampoObjetoValue}" />
-                                                    <Text text="{cartProducts>CampoSolicitanteValue}" />
-                                                    <ComboBox width="25em" required="true" value="{cartProducts>OrdenTrabajoValue}" selectedKey="{cartProducts>SelectedOrdenTrabajoKey}" change="onSelectOrdenTrabajo" enabled="{=${localmodel>/OrdenTrabajo}.length > 0}" items="{localmodel>/OrdenTrabajo}" placeholder="Seleccione Orden de trabajo">
-                                                        <core:Item key="{localmodel>Name}" text="{localmodel>Name} - {localmodel>U_TipoOT}" />
-                                                    </ComboBox>
-                                                    <ComboBox width="25em" required="true" value="{cartProducts>ActivoFijoValue}" selectedKey="{cartProducts>SelectedActivoFijoKey}" change="onSelectActivoFijo" enabled="{=${localmodel>/ActivoFijo}.length > 0}" items="{localmodel>/ActivoFijo}" placeholder="Seleccione Activo Fijo">
-                                                        <core:Item key="{localmodel>ItemCode}" text="{localmodel>ItemCode} - {localmodel>ItemName}" />
-                                                    </ComboBox>
-                                                    <ComboBox width="25em" required="true" value="{cartProducts>IdentificadorValue}" selectedKey="{cartProducts>SelectedIdentificadorKey}" change="onSelectIdentificador" enabled="{=${localmodel>/Identificador}.length > 0}" items="{localmodel>/Identificador}" placeholder="Seleccione Identificador">
-                                                        <core:Item key="{localmodel>U_Identificador}" text="{localmodel>U_Identificador} - {localmodel>U_NombreActivo}" />
-                                                    </ComboBox>
-                                                </cells>
-                                            </ColumnListItem>
-                                        </items>
-                                    </Table>   
-	                            </Panel>
-									
-								</ScrollContainer>
-
-								<Bar>
-									<contentRight class="rightcsm">
-									</contentRight>
-								</Bar>
-							</WizardStep> -->
                             <WizardStep id="contentsStep" nextStep="comentarioStep" title="{i18n>checkoutContentsTitle}" icon="sap-icon://activity-items">
-                                <List headerText="Lista de Materiales ({= ${localmodel>/listaProductosCantidad/value}})" showNoData="false">
+                                <List headerText="{i18n>ListaMateriales} ({= ${localmodel>/listaProductosCantidad/value}})" showNoData="false">
                                 </List>
                                 <ScrollContainer vertical="true" focusable="true">
                                     <Panel class="sapUiResponsiveMargin">

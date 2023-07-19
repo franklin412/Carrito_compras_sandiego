@@ -575,6 +575,29 @@ sap.ui.define([
               }
             });
           });
+        },
+        consultaAccountRulesProject: function (baseuri) {
+          var that = this, option;
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+"sb1sl/GLAccountAdvancedRules?$filter=Code eq 'PROYECTOS'";
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
+              success: function (result) {
+                result.value.sort(function (a, b) {
+                  return parseInt(b.PeriodName) - parseInt(a.PeriodName);
+                });
+                resolve(result.value);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
         }
         
 

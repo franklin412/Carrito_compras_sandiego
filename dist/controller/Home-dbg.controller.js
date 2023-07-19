@@ -46,6 +46,8 @@ sap.ui.define([
 			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
 			baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oDatosOrdenTrabajo = await serviceSL.onConsultaIAS(usuarioLogeado, baseuri);
+			let projAccountRules = await serviceSL.consultaAccountRulesProject(baseuri);
+			this.localmodel.setProperty("/AccountRules",projAccountRules[0].DecreasingAccount);
 			if(oDatosOrdenTrabajo.Resources){
 				let getAreasSolicitanteKey = null;
 				if(oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]){

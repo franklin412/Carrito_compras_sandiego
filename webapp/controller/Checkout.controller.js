@@ -780,6 +780,7 @@ sap.ui.define([
 						var comboselectedkey = oThat.localmodel.getProperty("/oDatosSolicitante");
 						var oUsersWorkflow = oThat.localmodel.getProperty("/oUsuariosWorkflow");
 						var oUserData = oThat.localmodel.getProperty("/oEmpleadoData");
+						var accountRules = oThat.localmodel.getProperty("/AccountRules");
 						var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
 						var error = false;
 						!comboselectedkey.CampoSolicitanteKey ? error = true : null;
@@ -797,7 +798,7 @@ sap.ui.define([
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode"	: "oInventoryGenExit",
 							"ESTADO_A1"		: "P",
-							"U_SOLICITANTE"	: comboselectedkey.CampoSolicitanteKey,
+							"U_SOLICITANTE"	: oUserData.EmployeeID, // se modifica, se cambia ell external por el employeeid
 							"DocumentLines"	: []
 						};
 
@@ -808,7 +809,7 @@ sap.ui.define([
 							"estadoAprob" : false,
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode": "oInventoryGenExit",
-							"U_SOLICITANTE": comboselectedkey.CampoSolicitanteKey,
+							"U_SOLICITANTE": oUserData.EmployeeID,
 							"DocumentLinesBatchNumbers": []
 						};
 
@@ -830,6 +831,8 @@ sap.ui.define([
 							}
 							if(product.ProyectoSelected){
 								!product.CampoSolicitanteKey ? error = true : null;
+								// DocumentLines.AccountCode = "_SYS00000013197";
+								DocumentLines.AccountCode = accountRules;
 							}else {
 								!product.CentroCostoSelected || 
 								!product.CampoObjetoSelected || 
@@ -943,6 +946,7 @@ sap.ui.define([
 								emphasizedAction: MessageBox.Action.OK,
 								onClose: function (sAction) {
 									that._oCart.setProperty("/cartEntries",[]);
+									that._oCart.setProperty("/lineaCabeceraDetalle/Comentario",null);
 									that.onReturnToShopButtonPress();
 								}
 							});
