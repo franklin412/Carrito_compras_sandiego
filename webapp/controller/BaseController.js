@@ -181,14 +181,14 @@ sap.ui.define([
 					oProduct.NoexisteSeleccionado = false;
 					this.getView().getModel("localmodel").refresh(true);
 				}
-				var aUserxAlm = await serviceSL.onObtenerUserxAlmacen(oProduct.WarehouseCode,baseuri);
+				var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMXTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
 				if(aUserxAlm.length > 0){
 					oProduct.arrayUsuariosAlmacen = [];
+					let uIASxTipo = await serviceSL.onObtenerUsersIASxTipo(null,baseuri);
+					let filterCostCenter = uIASxTipo.Resources.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]);
 					for (let i=0; i<aUserxAlm.length; i++) {
 						let object = aUserxAlm[i];
-						let uIASxTipo = await serviceSL.onObtenerUsersIASxTipo(object,baseuri);
 						if(uIASxTipo.Resources.length > 0){
-							let filterCostCenter = uIASxTipo.Resources.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]);
 							if(filterCostCenter){
 								let aAprobadoresIASAlmacen = filterCostCenter.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].costCenter === object.U_TipoAlmacen);
 								if(aAprobadoresIASAlmacen.length > 0){

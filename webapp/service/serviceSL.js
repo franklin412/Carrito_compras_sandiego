@@ -475,13 +475,14 @@ sap.ui.define([
             });
           });
         },
-        consultaEmpleado: function (nArea, baseuri, ListOption,skiptoken) {
+        consultaEmpleado: function (nArea, baseuri, query) {
           var that = this, option;
           // !EmpleadosArea ? EmpleadosArea = [] : null;
-          !skiptoken? skiptoken = 0 : null;
+          // !skiptoken? skiptoken = 0 : null;
           return new Promise( function (resolve, reject) {
-            ListOption === "S" ? option = "ExternalEmployeeNumber" : option = "U_Area";
-            var uri = baseuri+"sb1sl/EmployeesInfo?$filter="+option+" eq '"+nArea+"'&$skip="+skiptoken;
+            // ListOption === "S" ? option = "ExternalEmployeeNumber" : option = "U_Area";
+            // var uri = baseuri+"sb1sl/EmployeesInfo?$filter="+option+" eq '"+nArea+"'&$skip="+skiptoken;
+            var uri = baseuri+"sb1sl/"+query;
             $.ajax({
               type: "GET",
               dataType: "json",
@@ -539,10 +540,10 @@ sap.ui.define([
             });
           });
         },
-        onObtenerUserxAlmacen: function (warehouse, baseuri) {
+        onObtenerALMXTIPO: function (warehouse, baseuri,query) {
           var that = this, option;
           return new Promise( function (resolve, reject) {
-            var uri = baseuri+"sb1sl/BTP_ALMXTIPO?$filter=U_WhsCode eq '"+warehouse+"'";
+            var uri = baseuri+"sb1sl/"+query;
             $.ajax({
               type: "GET",
               dataType: "json",

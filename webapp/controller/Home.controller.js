@@ -79,28 +79,38 @@ sap.ui.define([
 		},       
 		onGetUsuariosPorArea: async function(getAreasSolicitanteKey,baseuri){
 			var that = this, aUserSAPExisteIAS = [];
-			let getSAPUser =  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "S");
-			let getSAPUsuariosArea =  await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri);
-			if(getSAPUsuariosArea.length === 20){
-				let contador = getSAPUsuariosArea.length;
-				let skiptoken = 0;
-				while(contador === 20){
-						skiptoken = (skiptoken+20);
-						let getUsuariosArea = await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri,null,skiptoken);
-						getSAPUsuariosArea = getSAPUsuariosArea.concat(getUsuariosArea);
-						contador = getUsuariosArea.length;
-				}
-			}
+			let getSAPUser 			=  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
+			let getSAPUsuariosArea 	=  await serviceSL.consultaEmpleado(getSAPUser, baseuri,"EmployeesInfo?$filter=U_Area eq '"+getSAPUser[0].U_Area+"'");
+			// if(getSAPUsuariosArea.length === 20){
+			// 	let contador = getSAPUsuariosArea.length;
+			// 	let skiptoken = 0;
+			// 	while(contador === 20){
+			// 			skiptoken = (skiptoken+20);
+			// 			let getUsuariosArea = await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri,null,skiptoken);
+			// 			getSAPUsuariosArea = getSAPUsuariosArea.concat(getUsuariosArea);
+			// 			contador = getUsuariosArea.length;
+			// 	}
+			// }
 			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser[0].U_Area, baseuri, "Group");
 			getIASUsuariosAprobadores.Resources.forEach( function(data){
 				// let oUsuarioJefe = {};
 				let usuarioIASexiste = getSAPUsuariosArea.find(e=>e.eMail === data.emails[0].value);
 				usuarioIASexiste ? aUserSAPExisteIAS.push(usuarioIASexiste.eMail) : null;
 			})
-			aUserSAPExisteIAS.push("amatienzo@plusap.pe");
-			that.localmodel.setProperty("/oEmpleadoData", getSAPUser[0]);
-			that.localmodel.setProperty("/oUsuariosWorkflow/tUsuariosJefeArea", aUserSAPExisteIAS.length>0 ? aUserSAPExisteIAS.toString() : "");
-			that.localmodel.setProperty("/oUsuariosWorkflow/tAlmacen", "dgutierrez@plusap.pe");
+			if(aUserSAPExisteIAS.length === 0){
+				MessageBox.warning("No se encontraron jefes de área para este solicitante, comuncarse con el Administrador.", {
+					actions: [MessageBox.Action.OK],
+					emphasizedAction: MessageBox.Action.OK,
+					onClose: function (sAction) {
+						top.window.location.href = "https://calidad-sandiego.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=b5eb9010-3fff-43c8-afda-30f99941c637#Shell-home";
+					}
+				});
+			}else{
+				// aUserSAPExisteIAS.push("amatienzo@plusap.pe");
+				that.localmodel.setProperty("/oEmpleadoData", getSAPUser[0]);
+				that.localmodel.setProperty("/oUsuariosWorkflow/tUsuariosJefeArea", aUserSAPExisteIAS.length>0 ? aUserSAPExisteIAS.toString() : "");
+				// that.localmodel.setProperty("/oUsuariosWorkflow/tAlmacen", "dgutierrez@plusap.pe");
+			}
 		},
 		getWFInstances: function () {
 			var that = this;

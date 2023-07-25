@@ -794,6 +794,10 @@ sap.ui.define([
 							}
 							return previousValue;
 						}, [] );
+						if(aUsersAlmReduced.length === 0){
+							MessageBox.warning("No existen usuarios aprobadores de almacen, comunicarse con el administrador.");
+							return;
+						}
 						var dataDraft = {
 							"Comments": comentario ? comentario : "Nueva reserva",
 							"DocObjectCode"	: "oInventoryGenExit",
@@ -855,11 +859,11 @@ sap.ui.define([
 						// 	dataWorkflow.DocumentLines.push(product);
 						// })
 
-						if(!oUsersWorkflow.tUsuariosJefeArea || !oUsersWorkflow.tAlmacen){
-							MessageBox.error("No existe usuario Jefe de Área o usuario de almacén para el solicitante ingresado, comunicarse con el administrador.");
-							oThat.hideBusyIndicator();
-							return;
-						}
+						// if(!oUsersWorkflow.tUsuariosJefeArea || !oUsersWorkflow.tAlmacen){
+						// 	MessageBox.error("No existe usuario Jefe de Área o usuario de almacén para el solicitante ingresado, comunicarse con el administrador.");
+						// 	oThat.hideBusyIndicator();
+						// 	return;
+						// }
 
 						if(error === true){
 							MessageBox.error("Debe llenar los campos para poder realizar la reserva");

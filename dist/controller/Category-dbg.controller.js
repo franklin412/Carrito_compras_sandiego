@@ -165,6 +165,7 @@ sap.ui.define([
 		try{
 			this.onLimpiarCabeceraDetalle();
 			var oBindContext;
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oUserData = this.localModel.getProperty("/oEmpleadoData");
 			if (Device.system.phone) {
 				oBindContext = oEvent.getSource().getBindingContext("localmodel").getObject();
@@ -172,10 +173,11 @@ sap.ui.define([
 				oBindContext = oEvent.getSource().getSelectedItem().getBindingContext("localmodel").getObject();
 			}
             var oModel = this._catalogo;
-			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
-			if(!(oUserData.U_Area === oWarehouse.U_Area)){
-				MessageBox.warning("El área del usuario solicitante es diferente al area de almacén del item seleccionado.");
+			// var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
+			var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMXTIPO?$filter=U_AREA eq '"+oUserData.U_Area+"'");
+			let aSearchWarehouse = oWarehouse.filter(e=>e.U_WhsCode === oBindContext.WarehouseCode);
+			if(aSearchWarehouse.length === 0){
+				MessageBox.warning("El área del usuario solicitante es diferente al área de almacén del item seleccionado.");
 				return;
 			}
 			// oBindContext.DatosCabecera = this.localModel.getProperty("/detallecatalogos");
