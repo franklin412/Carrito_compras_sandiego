@@ -321,7 +321,7 @@ sap.ui.define([
               url: uri,
               data: JSON.stringify(oCambioDatos),
               success: function (result) {
-                resolve(result.value);
+                resolve(result);
               },
               error: function (errMsg) {
                 reject(errMsg);

@@ -795,7 +795,8 @@ sap.ui.define([
 							return previousValue;
 						}, [] );
 						if(aUsersAlmReduced.length === 0){
-							MessageBox.warning("No existen usuarios aprobadores de almacen, comunicarse con el administrador.");
+							MessageBox.warning("No existen usuarios aprobadores de almacén, comunicarse con el administrador.");
+							oThat.hideBusyIndicator();	
 							return;
 						}
 						var dataDraft = {
