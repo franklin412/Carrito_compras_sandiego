@@ -183,17 +183,28 @@ sap.ui.define([
 				}
 				var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMXTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
 				if(aUserxAlm.length > 0){
+					var aUsersAlmReduced = aUserxAlm.reduce(function (previousValue, currentValue) {
+						if (previousValue.indexOf(currentValue.U_TipoAlmacen) === -1) {
+							previousValue.push(currentValue.U_TipoAlmacen);
+						}
+						return previousValue;
+					}, [] );
 					oProduct.arrayUsuariosAlmacen = [];
 					let uIASxTipo = await serviceSL.onObtenerUsersIASxTipo(null,baseuri);
 					let filterCostCenter = uIASxTipo.Resources.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]);
-					for (let i=0; i<aUserxAlm.length; i++) {
-						let object = aUserxAlm[i];
+					for (let i=0; i<aUsersAlmReduced.length; i++) {
+						let object = aUsersAlmReduced[i];
 						if(uIASxTipo.Resources.length > 0){
 							if(filterCostCenter){
-								let aAprobadoresIASAlmacen = filterCostCenter.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].costCenter === object.U_TipoAlmacen);
+								let aAprobadoresIASAlmacen = filterCostCenter.filter(e=>e["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].costCenter === object);
 								if(aAprobadoresIASAlmacen.length > 0){
 									aAprobadoresIASAlmacen.forEach( function(iasData){
-										oProduct.arrayUsuariosAlmacen.push(iasData.emails[0].value);
+										if(iasData.groups){
+											let findGroupDespacho = iasData.groups.find(e=>e.display === "Grp_Aprobar_Despacho_Reserva");
+											if(findGroupDespacho){
+												oProduct.arrayUsuariosAlmacen.push(iasData.emails[0].value);
+											}
+										}
 									})
 								}
 							}
