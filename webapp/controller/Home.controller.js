@@ -16,6 +16,7 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: async function () {
+			try{
 			sap.ui.core.BusyIndicator.show(0);
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
@@ -28,14 +29,6 @@ sap.ui.define([
             var filter = new Filter("Status", FilterOperator.EQ, "A");
             
             this.byId("categoryList").setBusy(true);
-
-            // this._catalogo.read("/catalogosSet", {
-            //     filters: [filter],
-            //     success: function(oData, response) {
-            //         that.byId("categoryList").setBusy(false);
-            //         that.localmodel.setProperty("/catalogosSet", response.data.results);
-            //     }
-            // }); 
 
 			await this.onGetItemServiceLayer();
 			// await this.consultaEmpleados();
@@ -54,11 +47,13 @@ sap.ui.define([
 					getAreasSolicitanteKey = oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].employeeNumber; //employeenumber, es el area del usuario solicitante, ingresado desde el IAS.
 					await this.consultaIdentificador(getAreasSolicitanteKey);
 					let getAreasSolicitante = await serviceSL.onObtenerAreas(baseuri, getAreasSolicitanteKey);
-					for await (const instances of getAreasSolicitante.AREADCollection) {
-						let getCentros = await serviceSL.getCentrosCosto(baseuri, instances.U_Area);
-						var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(getCentros);
-						that.localmodel.setProperty("/CentrosCosto",concatValues);
-						that.localmodel.refresh(true);
+					if(getAreasSolicitante.AREADCollection){
+						for await (const instances of getAreasSolicitante.AREADCollection) {
+							let getCentros = await serviceSL.getCentrosCosto(baseuri, instances.U_Area);
+							var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(getCentros);
+							that.localmodel.setProperty("/CentrosCosto",concatValues);
+							that.localmodel.refresh(true);
+						}
 					}
 					let getAreasSolicitanteName = (oDatosOrdenTrabajo.Resources[0].name.familyName +" "+ oDatosOrdenTrabajo.Resources[0].name.givenName); //employeenumber, es el area del usuario solicitante, ingresado desde el IAS.
 					this.localmodel.setProperty("/oDatosSolicitante/CampoSolicitanteValue", getAreasSolicitanteKey ? getAreasSolicitanteName : "Employee number vacío");
@@ -72,6 +67,10 @@ sap.ui.define([
             // this.localmodel.setProperty("/CentrosCosto", []);
             this.localmodel.setProperty("/placeholder", jQuery.sap.getModulePath(sAppModulePath) + "/img/11030-200.png");
 			sap.ui.core.BusyIndicator.hide();
+		} catch (e){
+			MessageBox.warning("Error al cargar datos maestros, comuncarse con el Administrador.");
+			sap.ui.core.BusyIndicator.hide();
+		}
         },
 		onBeforeRendering: function () {
             
@@ -81,16 +80,7 @@ sap.ui.define([
 			var that = this, aUserSAPExisteIAS = [];
 			let getSAPUser 			=  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
 			let getSAPUsuariosArea 	=  await serviceSL.consultaEmpleado(getSAPUser, baseuri,"EmployeesInfo?$filter=U_Area eq '"+getSAPUser[0].U_Area+"'");
-			// if(getSAPUsuariosArea.length === 20){
-			// 	let contador = getSAPUsuariosArea.length;
-			// 	let skiptoken = 0;
-			// 	while(contador === 20){
-			// 			skiptoken = (skiptoken+20);
-			// 			let getUsuariosArea = await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri,null,skiptoken);
-			// 			getSAPUsuariosArea = getSAPUsuariosArea.concat(getUsuariosArea);
-			// 			contador = getUsuariosArea.length;
-			// 	}
-			// }
+
 			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser[0].U_Area, baseuri, "Group");
 			getIASUsuariosAprobadores.Resources.forEach( function(data){
 				// let oUsuarioJefe = {};
@@ -321,6 +311,9 @@ sap.ui.define([
 					oDatoReserva.length > 0 ? aCollectItems.InStock = aCollectItems.InStock2 - oDatoReserva[0].U_CantReserva : null;
 				}
 			}
+			oCategory.ItemWarehouseInfoCollection.sort(function (a, b) {
+				return parseInt(b.InStock) - parseInt(a.InStock);
+			});
 			var sCategoryId = oCategory.ItemCode;
 
 			this._router.navTo("category", {
