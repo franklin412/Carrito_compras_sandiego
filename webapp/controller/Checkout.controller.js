@@ -821,6 +821,7 @@ sap.ui.define([
 						oEntries.forEach( function(product){
 							var DocumentLines = {
 								"ItemCode": product.ItemCode,
+								"U_StockReserva": product.InStock,
 								"Quantity": product.Quantity,
 								"WarehouseCode": product.WarehouseCode,
 								"CostingCode2": product.CentroCostoSelected,

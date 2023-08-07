@@ -19,10 +19,11 @@
 
                         <StepInput 
                                     visible="{= !${cfg>/notInDelete}}" 
-                                    min="1"
+									displayValuePrecision="6"
+									min="0.000001"
                                     change="onChangeQuantityCart"
                                     validationMode="LiveChange"
-                                    width="6em"
+                                    width="9em"
                                     value="{cartProducts>Quantity}" />                    
                         <ObjectHeader class="" number="{ path : 'cartProducts>Precio_Unit', formatter : '.formatter.price' }" numberUnit="{cartProducts>Waers}" 
                             title="{cartProducts>DatosCabeceraV2/ItemName}" intro="{= ${cfg>/notInDelete} ? ${cartProducts>Quantity} + ' x': ''}" />

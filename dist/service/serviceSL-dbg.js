@@ -246,7 +246,7 @@ sap.ui.define([
 
         onGetCantidadCorrelativo: function(oDataAprobarSL,baseuri){
           return new Promise(function (resolve, reject) {
-            var uri = baseuri+"sb1sl/RESERVAS_BTP/$count";
+            var uri = baseuri+"sb1sl/BTP_RESERVA/$count";
             $.ajax({
               type: "GET",
               dataType: "json",
@@ -266,7 +266,7 @@ sap.ui.define([
         },
         onAddDescuento: function(oDataAprobarSL,baseuri){
           return new Promise(function (resolve, reject) {
-            var uri = baseuri+"sb1sl/RESERVAS_BTP";
+            var uri = baseuri+"sb1sl/BTP_RESERVA";
             var oDataPost = {
                   "Code": oDataAprobarSL.Code,
                   "U_ItemCode": oDataAprobarSL.ItemCode,
@@ -289,7 +289,7 @@ sap.ui.define([
         },
         onObtenerDescuentoReserva: function(baseuri, aCollectItems){
           return new Promise(function (resolve, reject) {
-            var uri = baseuri+"sb1sl/RESERVAS_BTP?$filter=U_ItemCode eq '"+aCollectItems.ItemCode+"' and U_WhsCode eq '"+aCollectItems.WarehouseCode+"'";
+            var uri = baseuri+"sb1sl/BTP_RESERVA?$filter=U_ItemCode eq '"+aCollectItems.ItemCode+"' and U_WhsCode eq '"+aCollectItems.WarehouseCode+"'";
             $.ajax({
               type: "GET",
               dataType: "json",
@@ -314,7 +314,7 @@ sap.ui.define([
             "U_CantReserva":aCollectItems.U_CantReserva
           };
           return new Promise(function (resolve, reject) {
-            var uri = baseuri+"sb1sl/RESERVAS_BTP('"+aCollectItems.Code+"')";
+            var uri = baseuri+"sb1sl/BTP_RESERVA('"+aCollectItems.Code+"')";
             $.ajax({
               type: "PATCH",
               dataType: "json",

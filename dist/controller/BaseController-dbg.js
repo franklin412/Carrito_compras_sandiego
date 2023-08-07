@@ -181,7 +181,7 @@ sap.ui.define([
 					oProduct.NoexisteSeleccionado = false;
 					this.getView().getModel("localmodel").refresh(true);
 				}
-				var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMXTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
+				var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
 				if(aUserxAlm.length > 0){
 					var aUsersAlmReduced = aUserxAlm.reduce(function (previousValue, currentValue) {
 						if (previousValue.indexOf(currentValue.U_TipoAlmacen) === -1) {
@@ -252,7 +252,7 @@ sap.ui.define([
 		onChangeQuantityCart: function(oEvent){
             var oControl = oEvent.getSource();
             var fValue = oEvent.getParameter("value")
-            var iMin = oControl.getMin()
+            var iMin = oControl.getMin();
 			var cantidadReserva = oEvent.getSource().getBindingContext("cartProducts").getObject().InStock;
 			if(fValue > cantidadReserva){
 				oControl.setValue(cantidadReserva);

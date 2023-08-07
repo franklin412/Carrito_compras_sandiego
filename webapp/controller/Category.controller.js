@@ -174,7 +174,7 @@ sap.ui.define([
 			}
             var oModel = this._catalogo;
 			// var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
-			var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMXTIPO?$filter=U_AREA eq '"+oUserData.U_Area+"'");
+			var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMTIPO?$filter=U_AREA eq '"+oUserData.U_Area+"'");
 			let aSearchWarehouse = oWarehouse.filter(e=>e.U_WhsCode === oBindContext.WarehouseCode);
 			if(aSearchWarehouse.length === 0){
 				MessageBox.warning("El área del usuario solicitante es diferente al área de almacén del item seleccionado.");

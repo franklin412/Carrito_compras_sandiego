@@ -3,13 +3,15 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/Device",
 	"../model/formatter",
-	"sap/m/MessageBox"
+	"sap/m/MessageBox",
+	"../service/serviceSL"
 ], function (
 	BaseController,
 	JSONModel,
 	Device,
 	formatter,
-	MessageBox
+	MessageBox,
+	serviceSL
 ) {
 	"use strict";
 
@@ -209,11 +211,24 @@ sap.ui.define([
 		 * Navigates to the checkout wizard
 		 * @public
 		 */
-		onProceedButtonPress: function () {
-			var oCartModel = this.getModel("cartProducts");
-			var cantidadMateriales = (oCartModel.getProperty("/cartEntries")).length;
-			this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", cantidadMateriales);
-			this.getRouter().navTo("checkout");
-		}
+		onProceedButtonPress: async function () {
+			try{
+				sap.ui.core.BusyIndicator.show(0);
+				var oCartModel = this.getModel("cartProducts");
+				await this.consultaActivoFijoWizard();
+				var cantidadMateriales = (oCartModel.getProperty("/cartEntries")).length;
+				this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", cantidadMateriales);
+				this.getRouter().navTo("checkout");
+				sap.ui.core.BusyIndicator.hide();
+			} catch(e){
+				MessageBox.warning("Error al cargar los datos maestros");
+				sap.ui.core.BusyIndicator.hide();
+			}
+		},
+		consultaActivoFijoWizard: async function(){
+			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+			var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			this.getView().getModel("localmodel").setProperty("/ActivoFijo",oDatosActivoFijo);
+		},
 	});
 });

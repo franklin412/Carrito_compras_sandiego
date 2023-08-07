@@ -30,18 +30,10 @@ sap.ui.define([
             
             this.byId("categoryList").setBusy(true);
 
-            // this._catalogo.read("/catalogosSet", {
-            //     filters: [filter],
-            //     success: function(oData, response) {
-            //         that.byId("categoryList").setBusy(false);
-            //         that.localmodel.setProperty("/catalogosSet", response.data.results);
-            //     }
-            // }); 
-
 			await this.onGetItemServiceLayer();
 			// await this.consultaEmpleados();
 			await this.consultaOrdenTrabajo();
-			await this.consultaActivoFijo();
+			// await this.consultaActivoFijo();
 			await this.consultaProjects();
 			//CONSULTA USUARIO IAS
 			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
@@ -88,16 +80,7 @@ sap.ui.define([
 			var that = this, aUserSAPExisteIAS = [];
 			let getSAPUser 			=  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
 			let getSAPUsuariosArea 	=  await serviceSL.consultaEmpleado(getSAPUser, baseuri,"EmployeesInfo?$filter=U_Area eq '"+getSAPUser[0].U_Area+"'");
-			// if(getSAPUsuariosArea.length === 20){
-			// 	let contador = getSAPUsuariosArea.length;
-			// 	let skiptoken = 0;
-			// 	while(contador === 20){
-			// 			skiptoken = (skiptoken+20);
-			// 			let getUsuariosArea = await serviceSL.consultaEmpleado(getSAPUser[0].U_Area, baseuri,null,skiptoken);
-			// 			getSAPUsuariosArea = getSAPUsuariosArea.concat(getUsuariosArea);
-			// 			contador = getUsuariosArea.length;
-			// 	}
-			// }
+
 			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser[0].U_Area, baseuri, "Group");
 			getIASUsuariosAprobadores.Resources.forEach( function(data){
 				// let oUsuarioJefe = {};

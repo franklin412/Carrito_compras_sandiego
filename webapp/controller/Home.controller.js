@@ -33,7 +33,7 @@ sap.ui.define([
 			await this.onGetItemServiceLayer();
 			// await this.consultaEmpleados();
 			await this.consultaOrdenTrabajo();
-			await this.consultaActivoFijo();
+			// await this.consultaActivoFijo();
 			await this.consultaProjects();
 			//CONSULTA USUARIO IAS
 			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
