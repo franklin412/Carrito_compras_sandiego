@@ -16,8 +16,9 @@ server:
             - /test-resources
           url: https://ui5.sap.com
         backend:
-          - path: /sap
-            url: http://localhost
+          - path: /sb1sl
+            url: "http://sandiego.com.gt:43000/b1s/v1/"
+            destination: serviceLayer
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

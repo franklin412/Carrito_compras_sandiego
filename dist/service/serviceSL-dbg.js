@@ -384,13 +384,14 @@ sap.ui.define([
           // var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
           return new Promise( function (resolve, reject) {
             // var uri = baseuri+"sb1sl/ProfitCenters";
-            var uri = baseuri+"sb1sl/U_ACTIVOS?$filter=U_Solicitante eq '"+getAreasSolicitanteKey+"'";
+            // var uri = baseuri+"sb1sl/U_ACTIVOS?$filter=U_Solicitante eq '"+getAreasSolicitanteKey+"'";
+            var uri = baseuri+"sb1sl/U_ACTIVOS";
             $.ajax({
               type: "GET",
               dataType: "json",
               url: uri,
               headers: {
-                "Prefer": "odata.maxpagesize=1000"
+                "Prefer": "odata.maxpagesize=10000"
               },
               success: function (result) {
                 // that.localmodel.setProperty("/CentrosCosto", result.value);
@@ -599,7 +600,28 @@ sap.ui.define([
               }
             });
           });
+        },
+        consultaGeneralB1SL: function (baseuri,sQuery) {
+          var that = this, option;
+          return new Promise( function (resolve, reject) {
+            var uri = baseuri+"sb1sl/"+sQuery;
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: uri,
+              headers: {
+                "Prefer": "odata.maxpagesize=1000"
+              },
+              success: function (result) {
+                resolve(result);
+              },
+              error: function (errMsg) {
+                reject(errMsg.responseJSON);
+              }
+            });
+          });
         }
+
         
 
 

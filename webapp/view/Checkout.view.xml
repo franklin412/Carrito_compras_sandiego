@@ -17,7 +17,7 @@
                 </headerContent>
                 <content>
                     <Wizard id="shoppingCartWizard" complete="checkCompleted" enableBranching="true" finishButtonText="{i18n>checkoutWizardReviewbtn}">
-                        <steps>
+                        <!-- <steps> -->
                             <!--SUCURSAL STEP!-->
                             <WizardStep id="sucursalStep" complete="pricingComplete" nextStep="contentsStep" title="{i18n>datoscabecera}" icon="sap-icon://factory">
                                 <form:SimpleForm id="SimpleFormChange3524" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
@@ -30,55 +30,54 @@
                                 </form:SimpleForm>
                             </WizardStep>
                             <WizardStep id="contentsStep" nextStep="comentarioStep" title="{i18n>checkoutContentsTitle}" icon="sap-icon://activity-items">
-                                <List headerText="{i18n>ListaMateriales} ({= ${localmodel>/listaProductosCantidad/value}})" showNoData="false">
-                                </List>
                                 <ScrollContainer vertical="true" focusable="true">
                                     <Panel class="sapUiResponsiveMargin">
                                         <Table id="idProductsTable" inset="false" fixedLayout="true" mode="Delete" delete="onEliminarProducto" items="{ path : 'cartProducts>/cartEntries'}">
                                             <headerToolbar>
                                                 <OverflowToolbar>
+                                                    <Title text="{i18n>ListaMateriales} ({= ${localmodel>/listaProductosCantidad/value}})" />
                                                     <ToolbarSpacer/>
                                                     <Button icon="sap-icon://delete" text="{i18n>eliminarTodo}" type="Transparent" press="onEliminarTodo"/>
                                                 </OverflowToolbar>
                                             </headerToolbar>
                                             <columns>
-                                                <Column width="20%">
+                                                <Column width="60%">
                                                     <Text text="{i18n>material}" />
                                                 </Column>
-                                                <Column width="20%">
+                                                <Column width="60%">
                                                     <Text text="{i18n>cantStock}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Tablet" demandPopin="true">
                                                     <Text text="{i18n>cantReserva}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Tablet" demandPopin="true">
                                                     <Text text="{i18n>codalmacen}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Tablet" demandPopin="true">
                                                     <Text text="{i18n>UnidMedida}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>Identificador}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>centroCosto}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>ClvLabor}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Tablet" demandPopin="true">
                                                     <Text text="{i18n>campoObjeto}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Tablet" demandPopin="true">
                                                     <Text text="{i18n>Solicitante}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>OrdTrabajo}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>ActivoFijo}" />
                                                 </Column>
-                                                <Column width="20%" minScreenWidth="Tablet" demandPopin="true">
+                                                <Column width="60%" minScreenWidth="Desktop" demandPopin="true">
                                                     <Text text="{i18n>Proyecto}" />
                                                 </Column>
                                             </columns>
@@ -116,15 +115,12 @@
                                         </Table>
                                     </Panel>
                                 </ScrollContainer>
-                                <Bar>
-                                    <contentRight class="rightcsm">                                        <!-- <Text class="cantidadtotal" text="{ path : 'cartProducts>/cartEntries', formatter : '.formatter.totalPrice' } SOL"/> --></contentRight>
-                                </Bar>
                             </WizardStep>
                             <WizardStep id="comentarioStep" title="{i18n>comentarios}" icon="sap-icon://post">
                                 <MessageStrip showIcon="true" text="Ingresa un comentario" class="sapUiMediumMarginTop"/>
                                 <TextArea value="{cartProducts>/lineaCabeceraDetalle/Comentario}" growing="true" growingMaxLines="7" width="100%"/>
                             </WizardStep>
-                        </steps>
+                        <!-- </steps> -->
                     </Wizard>
                 </content>
                 <footer>

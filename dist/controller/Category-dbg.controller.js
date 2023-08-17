@@ -174,12 +174,30 @@ sap.ui.define([
 			}
             var oModel = this._catalogo;
 			// var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
-			var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMTIPO?$filter=U_AREA eq '"+oUserData.U_Area+"'");
-			let aSearchWarehouse = oWarehouse.filter(e=>e.U_WhsCode === oBindContext.WarehouseCode);
-			if(aSearchWarehouse.length === 0){
-				MessageBox.warning("El área del usuario solicitante es diferente al área de almacén del item seleccionado.");
+			var oAreasUsuario = await serviceSL.consultaGeneralB1SL(baseuri,"Area('"+oUserData.U_Areas+"')");
+			if(oAreasUsuario.AREADCollection.length > 0){
+				var aAlmacenes = [];
+				for (var i = 0; i < oAreasUsuario.AREADCollection.length; i++) {
+					let oIndex = oAreasUsuario.AREADCollection[i];
+					var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMTIPO?$filter=U_AREA eq '"+oIndex.U_Area+"'");
+					aAlmacenes = aAlmacenes.concat(oWarehouse);
+				}
+				let aSearchWarehouse = aAlmacenes.filter(e=>e.U_WhsCode === oBindContext.WarehouseCode);
+				if(aSearchWarehouse.length === 0){
+					// MessageBox.warning("El área del usuario solicitante es diferente al área de almacén del item seleccionado.");
+					MessageBox.warning("El área de almacén del item seleccionado no se encuentra configurado en las áreas del usuario solicitante.");
+					return;
+				}
+			}else {
+				MessageBox.warning("El usuario no cuenta con áreas configuradas, comunicarse con el administrador.");
 				return;
 			}
+			// var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMTIPO?$filter=U_AREA eq '"+oUserData.U_Area+"'");
+			// let aSearchWarehouse = oWarehouse.filter(e=>e.U_WhsCode === oBindContext.WarehouseCode);
+			// if(aSearchWarehouse.length === 0){
+			// 	MessageBox.warning("El área del usuario solicitante es diferente al área de almacén del item seleccionado.");
+			// 	return;
+			// }
 			// oBindContext.DatosCabecera = this.localModel.getProperty("/detallecatalogos");
 			var obtenerSeleccionados = this.getView().getModel("cartProducts").getProperty("/cartEntries").find(e=>e.ItemCode === oBindContext.ItemCode && e.WarehouseCode === oBindContext.WarehouseCode);
 			obtenerSeleccionados ? oBindContext.NoexisteSeleccionado = false : oBindContext.NoexisteSeleccionado = true;

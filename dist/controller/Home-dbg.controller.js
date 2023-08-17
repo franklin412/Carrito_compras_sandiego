@@ -23,6 +23,7 @@ sap.ui.define([
 			this._router.getRoute("categories").attachMatched(this._onRouteMatched, this);
             this._catalogo = this.getOwnerComponent().getModel("catalogo");
             this.localmodel = this.getOwnerComponent().getModel("localmodel");
+			this.localmodel.setSizeLimit(10000);
 			// this.getWFInstances();
             
             var that = this;
