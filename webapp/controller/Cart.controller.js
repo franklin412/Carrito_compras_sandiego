@@ -215,7 +215,7 @@ sap.ui.define([
 			try{
 				sap.ui.core.BusyIndicator.show(0);
 				var oCartModel = this.getModel("cartProducts");
-				await this.consultaActivoFijoWizard();
+				// await this.consultaActivoFijoWizard();
 				var cantidadMateriales = (oCartModel.getProperty("/cartEntries")).length;
 				this.getView().getModel("localmodel").setProperty("/listaProductosCantidad/value", cantidadMateriales);
 				this.getRouter().navTo("checkout");
