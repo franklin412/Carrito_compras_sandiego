@@ -131,13 +131,14 @@ sap.ui.define([
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oAlterSelected = oEvent.getSource().getBindingContext("localmodel").getObject();
 			this.getView().getModel("localmodel").setProperty("/AlternativoSeleccionado",oAlterSelected);
-			var oAlternativoSelected = await serviceSL.onObtenerAlternativosDetalle(oAlterSelected.AlternativeItemCode,baseuri);
+			// var oAlternativoSelected = await serviceSL.onObtenerAlternativosDetalle(oAlterSelected.AlternativeItemCode,baseuri);
+			var oAlternativoSelected = await serviceSL.consultaGeneralB1SL(baseuri,"/Items('"+oAlterSelected.AlternativeItemCode+"')");
 			if(oAlternativoSelected){
 				for (let i=0; i< oAlternativoSelected.ItemWarehouseInfoCollection.length; i++) {
 					var aCollectItems = oAlternativoSelected.ItemWarehouseInfoCollection[i];
 					if(aCollectItems.InStock > 0){
-						var oDatoReserva = await serviceSL.onObtenerDescuentoReserva(baseuri,aCollectItems);
-						oDatoReserva.length > 0 ? aCollectItems.InStock = aCollectItems.InStock2 - oDatoReserva[0].U_CantReserva : null;
+						var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri,("/BTP_RESERVA?$filter=U_ItemCode eq '"+aCollectItems.ItemCode+"' and U_WhsCode eq '"+aCollectItems.WarehouseCode+"'"));
+						oDatoReserva.value.length > 0 ? aCollectItems.InStock = aCollectItems.InStock2 - oDatoReserva.value[0].U_CantReserva : null;
 					}
 				}
 				this.getView().getModel("localmodel").setProperty("/AlternativosItems", oAlternativoSelected);

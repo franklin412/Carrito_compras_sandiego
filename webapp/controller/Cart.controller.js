@@ -227,8 +227,9 @@ sap.ui.define([
 		},
 		consultaActivoFijoWizard: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
-			this.getView().getModel("localmodel").setProperty("/ActivoFijo",oDatosActivoFijo);
+			// var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			var oDatosActivoFijo = await serviceSL.consultaGeneralB1SL(baseuri,"/Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			this.getView().getModel("localmodel").setProperty("/ActivoFijo",oDatosActivoFijo.value);
 		},
 	});
 });

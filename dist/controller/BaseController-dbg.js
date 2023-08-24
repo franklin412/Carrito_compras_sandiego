@@ -181,9 +181,10 @@ sap.ui.define([
 					oProduct.NoexisteSeleccionado = false;
 					this.getView().getModel("localmodel").refresh(true);
 				}
-				var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
-				if(aUserxAlm.length > 0){
-					var aUsersAlmReduced = aUserxAlm.reduce(function (previousValue, currentValue) {
+				// var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
+				var aUserxAlm = await serviceSL.consultaGeneralB1SL(baseuri,"/BTP_ALMTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
+				if(aUserxAlm.value.length > 0){
+					var aUsersAlmReduced = aUserxAlm.value.reduce(function (previousValue, currentValue) {
 						if (previousValue.indexOf(currentValue.U_TipoAlmacen) === -1) {
 							previousValue.push(currentValue.U_TipoAlmacen);
 						}

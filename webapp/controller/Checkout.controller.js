@@ -895,14 +895,27 @@ sap.ui.define([
 									await oThat.postWorkflowInstance(dataWorkflow);
 									for (let i=0; i<dataWorkflow.DocumentLinesBatchNumbers.length; i++) {
 										var oItem = dataWorkflow.DocumentLinesBatchNumbers[i];
-										var oDatoReserva = await serviceSL.onObtenerDescuentoReserva(baseuri,oItem);
-										if(oDatoReserva.length == 0){
-											var onGetCantidadCorrelativo = await serviceSL.onGetCantidadCorrelativo(oItem,baseuri);
+										var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri,("/BTP_RESERVA?$filter=U_ItemCode eq '"+oItem.ItemCode+"' and U_WhsCode eq '"+oItem.WarehouseCode+"'"));
+										if(oDatoReserva.value.length == 0){
+											var onGetCantidadCorrelativo = await serviceSL.consultaGeneralB1SL(baseuri,("/BTP_RESERVA/$count"));
 											oItem.Code = parseInt(onGetCantidadCorrelativo) + 1;
-											await serviceSL.onAddDescuento(oItem,baseuri);
+											// await serviceSL.onAddDescuento(oItem,baseuri);
+											var oDataPost = {
+												"Code": oItem.Code,
+												"U_ItemCode": oItem.ItemCode,
+												"U_WhsCode": oItem.WarehouseCode,
+												"U_CantReserva": oItem.Quantity
+											  };
+											await serviceSL.onPostGeneralDataServiceLayer(baseuri,("/BTP_RESERVA"),oDataPost);
 										} else{
-											oDatoReserva[0].U_CantReserva = oItem.Quantity + oDatoReserva[0].U_CantReserva;
-											await serviceSL.onEditDescuento(baseuri,oDatoReserva[0]);
+											oDatoReserva.value[0].U_CantReserva = oItem.Quantity + oDatoReserva.value[0].U_CantReserva;
+											var oCambioDatos = {
+												"U_ItemCode":oDatoReserva.value[0].U_ItemCode,
+												"U_WhsCode":oDatoReserva.value[0].U_WhsCode,
+												"U_CantReserva":oDatoReserva.value[0].U_CantReserva
+											  };
+											// await serviceSL.onEditDescuento(baseuri,oDatoReserva.value[0]);
+											await serviceSL.onPatchGeneralDataServiceLayer(baseuri,("/BTP_RESERVA('"+oDatoReserva.value[0].Code+"')"),oCambioDatos);
 										}
 									}
 									resolve(result.value);

@@ -40,18 +40,24 @@ sap.ui.define([
 			usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
 			baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oDatosOrdenTrabajo = await serviceSL.onConsultaIAS(usuarioLogeado, baseuri);
-			let projAccountRules = await serviceSL.consultaAccountRulesProject(baseuri);
-			this.localmodel.setProperty("/AccountRules",projAccountRules[0].DecreasingAccount);
+			// let projAccountRules = await serviceSL.consultaAccountRulesProject(baseuri);
+			let projAccountRules = await serviceSL.consultaGeneralB1SL(baseuri,("/GLAccountAdvancedRules?$filter=Code eq 'PROYECTOS'"));
+			projAccountRules.value.sort(function (a, b) {
+				return parseInt(b.PeriodName) - parseInt(a.PeriodName);
+			});
+			this.localmodel.setProperty("/AccountRules",projAccountRules.value[0].DecreasingAccount);
 			if(oDatosOrdenTrabajo.Resources){
 				let getAreasSolicitanteKey = null;
 				if(oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]){
 					getAreasSolicitanteKey = oDatosOrdenTrabajo.Resources[0]["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"].employeeNumber; //employeenumber, es el area del usuario solicitante, ingresado desde el IAS.
 					await this.consultaIdentificador(getAreasSolicitanteKey);
-					let getAreasSolicitante = await serviceSL.onObtenerAreas(baseuri, getAreasSolicitanteKey);
+					// let getAreasSolicitante = await serviceSL.onObtenerAreas(baseuri, getAreasSolicitanteKey);
+					let getAreasSolicitante = await serviceSL.consultaGeneralB1SL(baseuri, ("/Area('"+ getAreasSolicitanteKey + "')"));
 					if(getAreasSolicitante.AREADCollection){
 						for await (const instances of getAreasSolicitante.AREADCollection) {
-							let getCentros = await serviceSL.getCentrosCosto(baseuri, instances.U_Area);
-							var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(getCentros);
+							// let getCentros = await serviceSL.getCentrosCosto(baseuri, instances.U_Area);
+							let getCentros = await serviceSL.consultaGeneralB1SL(baseuri, ("/ProfitCenters?$filter= U_Area eq '"+instances.U_Area+"'"));
+							var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(getCentros.value);
 							that.localmodel.setProperty("/CentrosCosto",concatValues);
 							that.localmodel.refresh(true);
 						}
@@ -79,13 +85,15 @@ sap.ui.define([
 		},       
 		onGetUsuariosPorArea: async function(getAreasSolicitanteKey,baseuri){
 			var that = this, aUserSAPExisteIAS = [];
-			let getSAPUser 			=  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
-			let getSAPUsuariosArea 	=  await serviceSL.consultaEmpleado(getSAPUser, baseuri,"EmployeesInfo?$filter=U_Area eq '"+getSAPUser[0].U_Area+"'");
+			// let getSAPUser 			=  await serviceSL.consultaEmpleado(getAreasSolicitanteKey, baseuri, "EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
+			// let getSAPUsuariosArea 	=  await serviceSL.consultaEmpleado(getSAPUser, baseuri,"EmployeesInfo?$filter=U_Area eq '"+getSAPUser[0].U_Area+"'");
+			let getSAPUser 			=  await serviceSL.consultaGeneralB1SL(baseuri, "/EmployeesInfo?$filter=ExternalEmployeeNumber eq '"+getAreasSolicitanteKey+"'");
+			let getSAPUsuariosArea 	=  await serviceSL.consultaGeneralB1SL(baseuri,"/EmployeesInfo?$filter=U_Area eq '"+getSAPUser.value[0].U_Area+"'");
 
-			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser[0].U_Area, baseuri, "Group");
+			let getIASUsuariosAprobadores =  await serviceSL.onConsultaIAS(getSAPUser.value[0].U_Area, baseuri, "Group");
 			getIASUsuariosAprobadores.Resources.forEach( function(data){
 				// let oUsuarioJefe = {};
-				let usuarioIASexiste = getSAPUsuariosArea.find(e=>e.eMail === data.emails[0].value);
+				let usuarioIASexiste = getSAPUsuariosArea.value.find(e=>e.eMail === data.emails[0].value);
 				usuarioIASexiste ? aUserSAPExisteIAS.push(usuarioIASexiste.eMail) : null;
 			})
 			if(aUserSAPExisteIAS.length === 0){
@@ -98,7 +106,7 @@ sap.ui.define([
 				});
 			}else{
 				// aUserSAPExisteIAS.push("amatienzo@plusap.pe");
-				that.localmodel.setProperty("/oEmpleadoData", getSAPUser[0]);
+				that.localmodel.setProperty("/oEmpleadoData", getSAPUser.value[0]);
 				that.localmodel.setProperty("/oUsuariosWorkflow/tUsuariosJefeArea", aUserSAPExisteIAS.length>0 ? aUserSAPExisteIAS.toString() : "");
 				// that.localmodel.setProperty("/oUsuariosWorkflow/tAlmacen", "dgutierrez@plusap.pe");
 			}
@@ -180,23 +188,28 @@ sap.ui.define([
 		},
 		consultaOrdenTrabajo: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oDatosOrdenTrabajo = await serviceSL.onConsultaServiceLayer(baseuri,"U_ORDENESTRABAJO?$filter=U_Valido eq '1'");
-			this.localmodel.setProperty("/OrdenTrabajo",oDatosOrdenTrabajo);
+			// var oDatosOrdenTrabajo = await serviceSL.onConsultaServiceLayer(baseuri,"U_ORDENESTRABAJO?$filter=U_Valido eq '1'");
+			var oDatosOrdenTrabajo = await serviceSL.consultaGeneralB1SL(baseuri,"/U_ORDENESTRABAJO?$filter=U_Valido eq '1'");
+			this.localmodel.setProperty("/OrdenTrabajo",oDatosOrdenTrabajo.value);
 		},
 		consultaActivoFijo: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
-			this.localmodel.setProperty("/ActivoFijo",oDatosActivoFijo);
+			// var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			var oDatosActivoFijo = await serviceSL.consultaGeneralB1SL(baseuri,"/Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
+			this.localmodel.setProperty("/ActivoFijo",oDatosActivoFijo.value);
 		},
 		consultaIdentificador: async function(getAreasSolicitanteKey){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oDatosIdentificador = await serviceSL.onConsultaServiceLayerIdentificador(baseuri,"U_ACTIVOS",getAreasSolicitanteKey );
-			this.localmodel.setProperty("/Identificador",oDatosIdentificador);
+			// var oDatosIdentificador = await serviceSL.onConsultaServiceLayerIdentificador(baseuri,"U_ACTIVOS",getAreasSolicitanteKey );
+			var oDatosIdentificador = await serviceSL.consultaGeneralB1SL(baseuri,"/U_ACTIVOS" );
+			this.localmodel.setProperty("/Identificador",oDatosIdentificador.value);
 		},
 		consultaProjects: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			var oDatosProjects = await serviceSL.consultaProjects(baseuri,new Date() );
-			this.localmodel.setProperty("/Proyect",oDatosProjects);
+			// var oDatosProjects = await serviceSL.consultaProjects(baseuri,new Date() );
+			var date = ((new Date()).getUTCFullYear()+"-"+((new Date()).getUTCMonth()+1).toString().padStart(2, '0')+"-"+(new Date()).getDate().toString().padStart(2, '0'));
+			var oDatosProjects = await serviceSL.consultaGeneralB1SL(baseuri,("/Projects?$filter=ValidFrom lt '"+date+"' and ValidTo gt '"+date+"'") );
+			this.localmodel.setProperty("/Proyect",oDatosProjects.value);
 		},
 		onCentrosDeCosto: function () {
 			var that = this;
@@ -308,8 +321,8 @@ sap.ui.define([
 			for (let i=0; i< oCategory.ItemWarehouseInfoCollection.length; i++) {
 				var aCollectItems = oCategory.ItemWarehouseInfoCollection[i];
 				if(aCollectItems.InStock > 0){
-					var oDatoReserva = await serviceSL.onObtenerDescuentoReserva(baseuri,aCollectItems);
-					oDatoReserva.length > 0 ? aCollectItems.InStock = aCollectItems.InStock2 - oDatoReserva[0].U_CantReserva : null;
+					var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri,("/BTP_RESERVA?$filter=U_ItemCode eq '"+aCollectItems.ItemCode+"' and U_WhsCode eq '"+aCollectItems.WarehouseCode+"'"));
+					oDatoReserva.value.length > 0 ? aCollectItems.InStock = aCollectItems.InStock2 - oDatoReserva.value[0].U_CantReserva : null;
 				}
 			}
 			oCategory.ItemWarehouseInfoCollection.sort(function (a, b) {
