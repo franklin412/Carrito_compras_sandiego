@@ -166,7 +166,13 @@ sap.ui.define([
 			try{
 				sap.ui.core.BusyIndicator.show(0);
 				var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+				var iQuantity = parseFloat(sap.ui.getCore().byId("sInpQuantity").getValue());
+				if(iQuantity === 0 ){
+					MessageBox.warning("La cantidad registrada debe ser mayor a 0.");
+					return;
+				}
 				var oCartModel = this.getModel("cartProducts"), oProduct;
+
 				if(dataAlternativoDetalle && dataAlternativoCabecera){
 					oProduct = dataAlternativoDetalle;
 					var DatosCabecera = dataAlternativoCabecera;
@@ -212,7 +218,6 @@ sap.ui.define([
 						}
 					}
 				}
-				var iQuantity = sap.ui.getCore().byId("sInpQuantity").getValue() * 1;
 				var oResourceBundle = this.getModel("i18n").getResourceBundle();
 				// var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
 				cart.addToCart(oResourceBundle, oProduct, oCartModel, iQuantity, DatosCabecera, this.getView().getModel("localmodel"));

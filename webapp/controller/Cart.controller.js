@@ -68,7 +68,16 @@ sap.ui.define([
         },
 
 		_toggleCfgModel: function () {
+			let fCantidad = false;
 			var oCfgModel = this.getView().getModel("cfg");
+            var oCartModel = this.getOwnerComponent().getModel("cartProducts");
+			oCartModel.cartEntries.forEach( function(e){
+				parseFloat(e.Quantity) === 0 ? fCantidad = true : null;
+			})
+			if(fCantidad){
+				MessageBox.warning("Las cantidades registradas en las solicitudes deben ser mayores a 0.");
+				return;
+			}
 			var oData = oCfgModel.getData();
 			var oBundle = this.getResourceBundle();
 			var bDataNoSetYet = !oData.hasOwnProperty("inDelete");
@@ -83,8 +92,6 @@ sap.ui.define([
 				listItemType: (bInDelete ? sPhoneType : "Inactive"),
 				pageTitle: (bInDelete ? oBundle.getText("appTitle") : oBundle.getText("cartTitleEdit"))
             });
-            
-            var oCartModel = this.getOwnerComponent().getModel("cartProducts");
             oCartModel.refresh(true);
 		},
 
