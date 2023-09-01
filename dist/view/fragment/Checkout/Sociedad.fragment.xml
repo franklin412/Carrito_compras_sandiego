@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Sociedad" liveChange="_handleValueHelpSearchSociedad" class="sapUiPopupWithPadding"
+		items="{ path: 'localmodel>/Sociedad' }" search="_handleValueHelpSearchSociedad" confirm="_handleValueHelpCloseSociedad"
+		cancel="_handleValueHelpCloseSociedad">
+		<StandardListItem title="{localmodel>codigosociedad}" description="{localmodel>descripcionSociedad}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

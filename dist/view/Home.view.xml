@@ -1,0 +1,61 @@
+<mvc:View 
+    controllerName="zsandiego.crearreserva.controller.Home" 
+    xmlns="sap.m" 
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc">
+
+  <f:DynamicPage fitContent="false" preserveHeaderStateOnScroll="true" toggleHeaderOnTitleClick="false" class="sapUiNoContentPadding">
+    <f:header>
+      <f:DynamicPageHeader pinnable="true">
+        <f:content>
+          <OverflowToolbar width="100%" design="Transparent" style="Clear">
+            <!-- <Image id="imgLogo" width="15%"/> -->
+            <ToolbarSpacer/>
+            <Title text="{i18n>homeTitle} "/>
+            <ToolbarSpacer/>
+            <OverflowToolbarButton icon="sap-icon://refresh" type="Transparent" press="onRefresh"/>
+          </OverflowToolbar>
+        </f:content>
+      </f:DynamicPageHeader>
+    </f:header>
+    <f:content>
+      <Panel class="sapFDynamicPageAlignContent" width="auto">
+        <SearchField id="searchField" search="onBuscar" placeholder="{i18n>homeSearchPlaceholder}" tooltip="{i18n>homeSearchTooltip}"
+					width="100%"></SearchField>
+			<!-- This list shows the product categories -->
+            <Table id="categoryList"
+                inset="false"
+                itemPress=".onCategoryListItemPress"
+                items="{ path : 'localmodel>/catalogosSet'}">
+
+                <columns>
+                    <Column
+                        width="6em">
+                        <Text text="{i18n>codigo}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+				                demandPopin="true">
+                        <Text text="{i18n>descripcion}" />
+                    </Column>                    
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation">
+                        <cells>
+
+                            <Text
+                                text="{localmodel>ItemCode}" />
+                            <Text
+                                text="{localmodel>ItemName}" />
+
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>            
+			
+      </Panel>
+    </f:content>
+  </f:DynamicPage>
+	
+</mvc:View>

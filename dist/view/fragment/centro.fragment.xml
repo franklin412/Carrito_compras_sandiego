@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Centro" liveChange="_handleValueHelpSearchWerks" class="sapUiPopupWithPadding"
+		items="{ path: 'matchcode>/ZCDSMM_WERKS_TXT' }" search="_handleValueHelpSearchWerks" confirm="_handleValueHelpCloseWerks"
+		cancel="_handleValueHelpCloseWerks">
+		<StandardListItem title="{matchcode>werks}" description="{matchcode>name1}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

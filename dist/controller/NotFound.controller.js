@@ -1,0 +1,1 @@
+sap.ui.define(["./BaseController","sap/ui/core/UIComponent"],function(e,o){"use strict";return e.extend("zsandiego.crearreserva.controller.NotFound",{onInit:function(){this._router=o.getRouterFor(this)}})});
