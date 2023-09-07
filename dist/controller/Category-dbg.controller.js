@@ -173,13 +173,11 @@ sap.ui.define([
 					oBindContext = oEvent.getSource().getSelectedItem().getBindingContext("localmodel").getObject();
 				}
 				var oModel = this._catalogo;
-				// var oWarehouse = await serviceSL.onObtenerAlmacen(oBindContext.WarehouseCode,baseuri);
 				var oAreasUsuario = await serviceSL.consultaGeneralB1SL(baseuri, ("/Area('" + oUserData.U_Areas + "')"));
 				if (oAreasUsuario.AREADCollection.length > 0) {
 					var aAlmacenes = [];
 					for (var i = 0; i < oAreasUsuario.AREADCollection.length; i++) {
 						let oIndex = oAreasUsuario.AREADCollection[i];
-						// var oWarehouse = await serviceSL.onObtenerALMXTIPO(oBindContext,baseuri,"BTP_ALMTIPO?$filter=U_AREA eq '"+oIndex.U_Area+"'");
 						var oWarehouse = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_ALMTIPO?$filter=U_AREA eq '" + oIndex.U_Area + "'"));
 						aAlmacenes = aAlmacenes.concat(oWarehouse.value);
 					}
@@ -226,7 +224,7 @@ sap.ui.define([
 				BusyIndicator.hide();
 			}
 		},
-		onObtenerAlternativos: function (ItemCode) {
+		onObtenerAlternativos: async function (ItemCode) {
 			try {
 				var that = this;
 				var sendData = {
@@ -236,59 +234,75 @@ sap.ui.define([
 				};
 				var ord = 0;
 				var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-				return new Promise(function (resolve, reject) {
-					var uri = baseuri + "sb1sl/AlternativeItemsService_GetItem";
-					$.ajax({
-						type: "POST",
-						dataType: "json",
-						url: uri,
-						data: JSON.stringify(sendData),
-						success: function (result) {
-							var cantTotal = result.AlternativeItems.length;
-							result.AlternativeItems.forEach(function (e) {
-								// e.orden = ord++;
-								that.onGetItemAlternativoServiceLayer(e, cantTotal);
-							})
-							// that.localModel.setProperty("/Alternativos",result.AlternativeItems);
-							// that.localModel.refresh(true);
-							// resolve(result);
-						},
-						error: function (errMsg) {
-							// MessageBox.error("Ha sucedido un error al obtener datos alternativos");
-							reject(errMsg.responseJSON);
-						}
-					});
-				});
+				var aAlternativos = await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/AlternativeItemsService_GetItem"),sendData);
+				if(aAlternativos){
+					var cantTotal = aAlternativos.AlternativeItems.length;
+					if(aAlternativos.AlternativeItems){
+						aAlternativos.AlternativeItems.forEach(function (e) {
+							// e.orden = ord++;
+							that.onGetItemAlternativoServiceLayer(e, cantTotal);
+						})
+					}
+				}
+				// return new Promise(function (resolve, reject) {
+				// 	var uri = baseuri + "sb1sl/AlternativeItemsService_GetItem";
+				// 	$.ajax({
+				// 		type: "POST",
+				// 		dataType: "json",
+				// 		url: uri,
+				// 		data: JSON.stringify(sendData),
+				// 		success: function (result) {
+				// 			var cantTotal = result.AlternativeItems.length;
+				// 			result.AlternativeItems.forEach(function (e) {
+				// 				// e.orden = ord++;
+				// 				that.onGetItemAlternativoServiceLayer(e, cantTotal);
+				// 			})
+				// 			// that.localModel.setProperty("/Alternativos",result.AlternativeItems);
+				// 			// that.localModel.refresh(true);
+				// 			// resolve(result);
+				// 		},
+				// 		error: function (errMsg) {
+				// 			// MessageBox.error("Ha sucedido un error al obtener datos alternativos");
+				// 			reject(errMsg.responseJSON);
+				// 		}
+				// 	});
+				// });
 			} catch (e) {
 				sap.ui.core.BusyIndicator.hide();
 			}
 		},
-		onGetItemAlternativoServiceLayer: function (oAlternativo, cantTotal) {
+		onGetItemAlternativoServiceLayer: async function (oAlternativo, cantTotal) {
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise(function (resolve, reject) {
-				var uri = baseuri + "sb1sl/Items('" + oAlternativo.AlternativeItemCode + "')";
-				// url: oManifestObject.resolveUri(uri),
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					// data: JSON.stringify(loginInfo),
-					success: function (result) {
-						cantBusqueda++;
-						oAlternativo.itemObject = result.ItemName;
-						that.localModel.getProperty("/Alternativos").push(oAlternativo);
-						that.localModel.refresh(true);
-						that.closeBusy(cantBusqueda, cantTotal);
-						resolve(result);
-					},
-					error: function (errMsg) {
-						cantBusqueda++;
-						reject(errMsg.responseJSON);
-						that.closeBusy(cantBusqueda, cantTotal);
-					}
-				});
-			});
+			var aAlternativosItems = await serviceSL.consultaGeneralB1SL(baseuri, ("/Items('" + oAlternativo.AlternativeItemCode + "')"),sendData);
+			cantBusqueda++;
+			oAlternativo.itemObject = aAlternativosItems.ItemName;
+			that.localModel.getProperty("/Alternativos").push(oAlternativo);
+			that.localModel.refresh(true);
+			that.closeBusy(cantBusqueda, cantTotal);
+			// return new Promise(function (resolve, reject) {
+			// 	var uri = baseuri + "sb1sl/Items('" + oAlternativo.AlternativeItemCode + "')";
+			// 	// url: oManifestObject.resolveUri(uri),
+			// 	$.ajax({
+			// 		type: "GET",
+			// 		dataType: "json",
+			// 		url: uri,
+			// 		// data: JSON.stringify(loginInfo),
+			// 		success: function (result) {
+			// 			cantBusqueda++;
+			// 			oAlternativo.itemObject = result.ItemName;
+			// 			that.localModel.getProperty("/Alternativos").push(oAlternativo);
+			// 			that.localModel.refresh(true);
+			// 			that.closeBusy(cantBusqueda, cantTotal);
+			// 			resolve(result);
+			// 		},
+			// 		error: function (errMsg) {
+			// 			cantBusqueda++;
+			// 			reject(errMsg.responseJSON);
+			// 			that.closeBusy(cantBusqueda, cantTotal);
+			// 		}
+			// 	});
+			// });
 		},
 		closeBusy(cantBusquedaC, cantTotal) {
 			if (cantBusquedaC === cantTotal) {

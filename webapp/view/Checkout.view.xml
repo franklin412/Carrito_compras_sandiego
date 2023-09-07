@@ -35,7 +35,8 @@
                                         <Table id="idProductsTable" inset="false" fixedLayout="true" mode="Delete" delete="onEliminarProducto" items="{ path : 'cartProducts>/cartEntries'}">
                                             <headerToolbar>
                                                 <OverflowToolbar>
-                                                    <Title text="{i18n>ListaMateriales} ({= ${localmodel>/listaProductosCantidad/value}})" />
+                                                    <!-- <Title text="{i18n>ListaMateriales} ({= ${localmodel>/listaProductosCantidad/value}})" /> -->
+                                                    <Title text="{i18n>ListaMateriales} ({= ${cartProducts>/cartEntries}.length})" />
                                                     <ToolbarSpacer/>
                                                     <Button icon="sap-icon://delete" text="{i18n>eliminarTodo}" type="Transparent" press="onEliminarTodo"/>
                                                 </OverflowToolbar>

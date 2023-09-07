@@ -72,8 +72,6 @@ sap.ui.define([
 			// var dateCheckout = tday.getUTCFullYear()+"/"+ (tday.getUTCMonth()+1) +"/"+tday.getDate();
 			var dateCheckout = tday.getDate() + "-" + (tday.getUTCMonth() + 1) + "-" + tday.getUTCFullYear();
 			this._oCart.setProperty("/TodayDate", dateCheckout);
-			// var empleados = await this.consultaEmpleados();
-			// this._oCart.setProperty("/empleados",empleados);
 
 			this.localmodel.setProperty("/pruebav1", proveedores);
 
@@ -422,69 +420,6 @@ sap.ui.define([
 			})
 			oThat._oCart.refresh(true);
 		},
-		// onSelectSolicitante: function(oEvent){
-		// 	try{
-		// 		var that = this;
-		// 		var aArticulos = that._oCart.getProperty("/cartEntries");
-		// 		this.onClearCentroCosto(aArticulos);
-		// 		this.onClearClaveLabor(aArticulos);
-		// 		this.onClearCampoObjeto(aArticulos);
-		// 		this.onClearCampoSolicitante(aArticulos);
-		// 		this.onClearCampoIdentificador(aArticulos);
-		// 		var solicitanteKey = oEvent.getSource().getSelectedKey();
-		// 		if(solicitanteKey){
-		// 			this.showBusyIndicator();
-		// 			var empleados = this.localmodel.getProperty("/empleados");
-		// 			var solicitanteKeyAreas = empleados.find(e=> e.EmployeeID === parseInt(solicitanteKey));
-		// 			this.localmodel.setProperty("/CentrosCosto",[]);
-		// 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-		// 			this.onSetSolicianteValues(solicitanteKeyAreas,aArticulos);
-		// 			return new Promise( function (resolve, reject) {
-		// 				var uri = baseuri+"sb1sl/Area('"+ solicitanteKeyAreas.U_Areas + "')";
-		// 				$.ajax({
-		// 					type: "GET",
-		// 					dataType: "json",
-		// 					url: uri,
-		// 					success: function (result) {
-		// 						result.AREADCollection.forEach( function(instances){
-		// 							that.getCentrosCosto(instances.U_Area);
-		// 						})
-		// 						that.hideBusyIndicator();
-		// 					},
-		// 					error: function (errMsg) {
-		// 						reject(errMsg.responseJSON);
-		// 					}
-		// 				});
-		// 			});
-		// 		}
-		// 	} catch(e){
-		// 		MessageBox.error("Ha sucedido un error al seleccionar el solicitante");
-		// 		this.hideBusyIndicator();
-		// 	}
-		// },
-
-		// getCentrosCosto: function(areaId){
-		// 	var that = this;
-		// 	var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-		// 	return new Promise(function (resolve, reject) {
-		// 		var uri = baseuri+"sb1sl/ProfitCenters?$filter= U_Area eq '"+areaId+"'";
-		// 		$.ajax({
-		// 			type: "GET",
-		// 			dataType: "json",
-		// 			url: uri,
-		// 			success: function (data) {
-		// 				var concatValues = that.localmodel.getProperty("/CentrosCosto").concat(data.value);
-		// 				that.localmodel.setProperty("/CentrosCosto",concatValues);
-		// 				that.localmodel.refresh(true);
-		// 				that.hideBusyIndicator();
-		// 				resolve(data);
-		// 			},
-		// 			error: function (data) {
-		// 				resolve(data);
-		// 			}
-		// 		});
-		// 	});
-		// },
 
 		onSelectCentro: function (oEvent) {
 			try {
@@ -582,55 +517,29 @@ sap.ui.define([
 				this.hideBusyIndicator();
 			}
 		},
-		onObtenerClaveLabor: function (selectedObject, selectedCentro) {
+		onObtenerClaveLabor: async function (selectedObject, selectedCentro) {
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise(function (resolve, reject) {
-				var uri = baseuri + "sb1sl/Mapeo?$filter=U_CeCo eq '" + selectedCentro + "'";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (result) {
-						that._oCart.setProperty(selectedObject.getPath() + "/ClaveLabor", result.value);
-						that._oCart.refresh(true);
-						resolve(result);
-						that.hideBusyIndicator();
-					},
-					error: function (errMsg) {
-						reject(errMsg.responseJSON);
-					}
-				});
-			});
+			let aClaveLavor = await serviceSL.consultaGeneralB1SL(baseuri, ("/Mapeo?$filter=U_CeCo eq '" + selectedCentro + "'"));
+			that._oCart.setProperty(selectedObject.getPath() + "/ClaveLabor", aClaveLavor.value);
+			that._oCart.refresh(true);
+			that.hideBusyIndicator();
 		},
-		onObtenerCampoObjeto: function (selectedObjectClvLabor, selectedCentro) {
+		onObtenerCampoObjeto: async function (selectedObjectClvLabor, selectedCentro) {
 			var that = this;
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			return new Promise(function (resolve, reject) {
-				var uri = baseuri + "sb1sl/Mapeo?$filter=U_CeCo eq '" + selectedCentro + "' and U_Clave eq '" + selectedObjectClvLabor.getObject().ClaveLaborSelected + "'";
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: uri,
-					success: function (result) {
-						if (result.value.length > 0) {
-							var oLineCart = that._oCart.getProperty(selectedObjectClvLabor.getPath());
-							oLineCart.CampoObjetoValue = result.value[0].U_ObjetoN;
-							oLineCart.SelectedKeyCampoObj = result.value[0].U_Objeto;
-							oLineCart.CampoObjetoSelected = result.value[0].U_Objeto;
-							that._oCart.refresh(true);
-							if (!result.value[0].U_Objeto) {
-								MessageBox.warning("No tiene el campo Objeto predefinido debe contactarse con el administrador de SAP B1");
-							}
-						}
-						resolve(result);
-						that.hideBusyIndicator();
-					},
-					error: function (errMsg) {
-						reject(errMsg.responseJSON);
-					}
-				});
-			});
+			let oCampoObjeto = await serviceSL.consultaGeneralB1SL(baseuri, ("/Mapeo?$filter=U_CeCo eq '" + selectedCentro + "' and U_Clave eq '" + selectedObjectClvLabor.getObject().ClaveLaborSelected + "'"));
+			if (oCampoObjeto.value.length > 0) {
+				var oLineCart = that._oCart.getProperty(selectedObjectClvLabor.getPath());
+				oLineCart.CampoObjetoValue = oCampoObjeto.value[0].U_ObjetoN;
+				oLineCart.SelectedKeyCampoObj = oCampoObjeto.value[0].U_Objeto;
+				oLineCart.CampoObjetoSelected = oCampoObjeto.value[0].U_Objeto;
+				that._oCart.refresh(true);
+				if (!oCampoObjeto.value[0].U_Objeto) {
+					MessageBox.warning("No tiene el campo Objeto predefinido debe contactarse con el administrador de SAP B1");
+				}
+			}
+			that.hideBusyIndicator();
 		},
 		onSelectClaveLabor: function (oEvent) {
 			try {
@@ -650,20 +559,6 @@ sap.ui.define([
 				this.hideBusyIndicator();
 			}
 		},
-		// onSelectCampoObjeto: function(oEvent){
-		// 	try {
-		// 		var that = this;
-		// 		var selectedCampoObjeto = oEvent.getSource().getSelectedKey();
-		// 		var selectedObjectCampoObjeto = oEvent.getSource().getBindingContext("cartProducts");
-		// 		selectedObjectCampoObjeto.getObject().CampoObjetoSelected = selectedCampoObjeto;
-		// 		if(!selectedCampoObjeto){
-		// 			selectedObjectCampoObjeto.getObject().CampoObjetoValue = null;
-		// 		}
-		// 	} catch(e){
-		// 		MessageBox.error("Ha sucedido un error al seleccionar campo objeto");
-		// 		this.hideBusyIndicator();
-		// 	}
-		// },
 		onSelectIdentificador: function (oEvent) {
 			try {
 				var that = this;
@@ -773,172 +668,225 @@ sap.ui.define([
 					actions: [MessageBox.Action.YES,
 					MessageBox.Action.NO
 					],
-					onClose: function (oAction) {
+					onClose: async function (oAction) {
 						if (oAction === "YES") {
-							oThat.showBusyIndicator();
-							// var comboselectedkey = parseInt(this.getView().byId("comboSalesPerson").getSelectedKey());
-							var comboselectedkey = oThat.localmodel.getProperty("/oDatosSolicitante");
-							var oUsersWorkflow = oThat.localmodel.getProperty("/oUsuariosWorkflow");
-							var oUserData = oThat.localmodel.getProperty("/oEmpleadoData");
-							var accountRules = oThat.localmodel.getProperty("/AccountRules");
-							var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
-							var error = false;
-							!comboselectedkey.CampoSolicitanteKey ? error = true : null;
-							var aUsersAlm = [];
-							oEntries.forEach(function (item) {
-								aUsersAlm = aUsersAlm.concat(item.arrayUsuariosAlmacen);
-							})
-							var aUsersAlmReduced = aUsersAlm.reduce(function (previousValue, currentValue) {
-								if (previousValue.indexOf(currentValue) === -1) {
-									previousValue.push(currentValue);
+							try{
+								oThat.showBusyIndicator();
+								var comboselectedkey = oThat.localmodel.getProperty("/oDatosSolicitante");
+								var oUsersWorkflow = oThat.localmodel.getProperty("/oUsuariosWorkflow");
+								var oUserData = oThat.localmodel.getProperty("/oEmpleadoData");
+								var accountRules = oThat.localmodel.getProperty("/AccountRules");
+								var comentario = oThat._oCart.getProperty("/lineaCabeceraDetalle/Comentario");
+								var error = false;
+								!comboselectedkey.CampoSolicitanteKey ? error = true : null;
+								var aUsersAlm = [];
+								if(oEntries.length === 0){
+									MessageBox.warning("No existen datos en la lista de materiales para realizar la reserva.");
+									oThat.hideBusyIndicator();
+									return;
 								}
-								return previousValue;
-							}, []);
-							if (aUsersAlmReduced.length === 0) {
-								MessageBox.warning("No existen usuarios aprobadores de almacén, comunicarse con el administrador.");
-								oThat.hideBusyIndicator();
-								return;
-							}
-							var dataDraft = {
-								"Comments": comentario ? comentario : "Nueva reserva",
-								"DocObjectCode": "oInventoryGenExit",
-								"ESTADO_A1": "P",
-								"U_SOLICITANTE": oUserData.EmployeeID, // se modifica, se cambia ell external por el employeeid
-								"DocumentLines": []
-							};
-
-							var dataWorkflow = {
-								"UsuarioJefeArea": oUsersWorkflow.tUsuariosJefeArea ? oUsersWorkflow.tUsuariosJefeArea : null,
-								// "UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
-								"UsuarioAlmacen": aUsersAlmReduced.length > 0 ? aUsersAlmReduced.toString() : "",
-								"estadoAprob": false,
-								"Comments": comentario ? comentario : "Nueva reserva",
-								"DocObjectCode": "oInventoryGenExit",
-								"U_SOLICITANTE": oUserData.EmployeeID,
-								"DocumentLinesBatchNumbers": []
-							};
-
-							oEntries.forEach(function (product) {
-								var DocumentLines = {
-									"ItemCode": product.ItemCode,
-									"U_StockReserva": product.InStock,
-									"Quantity": product.Quantity,
-									"WarehouseCode": product.WarehouseCode,
-									"CostingCode2": product.CentroCostoSelected,
-									"CostingCode": product.CampoObjetoSelected,
-									"U_ClaveLabor": product.ClaveLaborSelected,
-									"U_Solicitante": product.CampoSolicitanteKey, // campo de ExternalEmployeeNumber
-									"U_DescSolicitante": product.CampoSolicitanteValue, // Nombre concatenado
-									"U_NoOT": product.OrdenTrabajoSelected, // Orden de trabajo -> Name o Code
-									"U_Activo": product.ActivoFijoSelected, // Activo fijo (combo) ItemCode
-									"ProjectCode": product.ProyectoSelected, // Activo fijo (combo) ItemCode
-									"U_Identificador": product.CampoIdentificadorSelected,//identificador (combo) U_Identificador
-									"DocumentLinesBinAllocations": []
-								}
-								if (product.ProyectoSelected) {
-									!product.CampoSolicitanteKey ? error = true : null;
-									// DocumentLines.AccountCode = "_SYS00000013197";
-									DocumentLines.AccountCode = accountRules;
-								} else {
-									!product.CentroCostoSelected ||
-										!product.CampoObjetoSelected ||
-										!product.ClaveLaborSelected ||
-										// !product.CampoObjetoValue || 
-										// !product.OrdenTrabajoSelected || 
-										!product.CampoSolicitanteKey ? error = true : null;
-								}
-
-								dataDraft.DocumentLines.push(DocumentLines);
-								DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
-								DocumentLines.InventoryUOM = product.DatosCabeceraV2.InventoryUOM;
-								dataWorkflow.DocumentLinesBatchNumbers.push(DocumentLines);
-							})
-
-							// oEntries.forEach( function(product){
-							// 	!product.CentroCostoSelected || 
-							// 	!product.CampoObjetoSelected || 
-							// 	!product.ClaveLaborSelected ? error = true : null ;
-							// 	dataWorkflow.DocumentLines.push(product);
-							// })
-
-							// if(!oUsersWorkflow.tUsuariosJefeArea || !oUsersWorkflow.tAlmacen){
-							// 	MessageBox.error("No existe usuario Jefe de Área o usuario de almacén para el solicitante ingresado, comunicarse con el administrador.");
-							// 	oThat.hideBusyIndicator();
-							// 	return;
-							// }
-
-							if (error === true) {
-								MessageBox.error("Debe llenar los campos para poder realizar la reserva");
-								oThat.hideBusyIndicator();
-								return;
-							}
-							var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-							return new Promise(function (resolve, reject) {
-								var uri = baseuri + "sb1sl/Drafts";
-								$.ajax({
-									type: "POST",
-									dataType: "json",
-									url: uri,
-									data: JSON.stringify(dataDraft),
-									success: async function (result) {
-										// var comboselectedNombre = oThat.getView().byId("comboSalesPerson").getValue();
-										var comboselectedNombre = oThat.localmodel.getProperty("/oDatosSolicitante");
-										//NRO DE RESERVA|| U_AREASOL || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
-										dataWorkflow.DocEntry = (result.DocEntry.toString()
-											+ "|" + oUserData.U_Area
-											+ "|" + oThat._oCart.getProperty("/TodayDate")
-											+ "|" + comboselectedNombre.CampoSolicitanteValue
-											+ "|" + "CREADO"
-											+ "|" + dataWorkflow.Comments);
-										dataWorkflow.UsuarioRegistro = comboselectedNombre.CampoSolicitanteValue;
-										dataWorkflow.FechaRegistro = oThat._oCart.getProperty("/TodayDate");
-										await oThat.postWorkflowInstance(dataWorkflow);
-										for (let i = 0; i < dataWorkflow.DocumentLinesBatchNumbers.length; i++) {
-											var oItem = dataWorkflow.DocumentLinesBatchNumbers[i];
-											var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA?$filter=U_ItemCode eq '" + oItem.ItemCode + "' and U_WhsCode eq '" + oItem.WarehouseCode + "'"));
-											if (oDatoReserva.value.length == 0) {
-												var onGetCantidadCorrelativo = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA/$count"));
-												oItem.Code = parseInt(onGetCantidadCorrelativo) + 1;
-												// await serviceSL.onAddDescuento(oItem,baseuri);
-												var oDataPost = {
-													"Code": oItem.Code,
-													"U_ItemCode": oItem.ItemCode,
-													"U_WhsCode": oItem.WarehouseCode,
-													"U_CantReserva": oItem.Quantity
-												};
-												await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA"), oDataPost);
-											} else {
-												oDatoReserva.value[0].U_CantReserva = oItem.Quantity + oDatoReserva.value[0].U_CantReserva;
-												var oCambioDatos = {
-													"U_ItemCode": oDatoReserva.value[0].U_ItemCode,
-													"U_WhsCode": oDatoReserva.value[0].U_WhsCode,
-													"U_CantReserva": oDatoReserva.value[0].U_CantReserva
-												};
-												// await serviceSL.onEditDescuento(baseuri,oDatoReserva.value[0]);
-												await serviceSL.onPatchGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA('" + oDatoReserva.value[0].Code + "')"), oCambioDatos);
-											}
-										}
-										resolve(result.value);
-									},
-									error: function (errMsg) {
-										if (errMsg.responseJSON) {
-											errMsg.responseJSON.error ? MessageBox.error(errMsg.responseJSON.error.message.value) : null;
-										}
-										oThat.hideBusyIndicator()
-										reject(errMsg);
+								oEntries.forEach(function (item) {
+									aUsersAlm = aUsersAlm.concat(item.arrayUsuariosAlmacen);
+								})
+								var aUsersAlmReduced = aUsersAlm.reduce(function (previousValue, currentValue) {
+									if (previousValue.indexOf(currentValue) === -1) {
+										previousValue.push(currentValue);
 									}
-								});
-							});
+									return previousValue;
+								}, []);
+								if (aUsersAlmReduced.length === 0) {
+									MessageBox.warning("No existen usuarios aprobadores de almacén, comunicarse con el administrador.");
+									oThat.hideBusyIndicator();
+									return;
+								}
+								var dataDraft = {
+									"Comments": comentario ? comentario : "Nueva reserva",
+									"DocObjectCode": "oInventoryGenExit",
+									"ESTADO_A1": "P",
+									"U_SOLICITANTE": oUserData.EmployeeID, // se modifica, se cambia ell external por el employeeid
+									"DocumentLines": []
+								};
+	
+								var dataWorkflow = {
+									"UsuarioJefeArea": oUsersWorkflow.tUsuariosJefeArea ? oUsersWorkflow.tUsuariosJefeArea : null,
+									// "UsuarioAlmacen": oUsersWorkflow.tAlmacen ? oUsersWorkflow.tAlmacen : null,
+									"UsuarioAlmacen": aUsersAlmReduced.length > 0 ? aUsersAlmReduced.toString() : "",
+									"estadoAprob": false,
+									"Comments": comentario ? comentario : "Nueva reserva",
+									"DocObjectCode": "oInventoryGenExit",
+									"U_SOLICITANTE": oUserData.EmployeeID,
+									"DocumentLinesBatchNumbers": []
+								};
+	
+								oEntries.forEach(function (product) {
+									var DocumentLines = {
+										"ItemCode": product.ItemCode,
+										"U_StockReserva": product.InStock,
+										"Quantity": product.Quantity,
+										"WarehouseCode": product.WarehouseCode,
+										"CostingCode2": product.CentroCostoSelected,
+										"CostingCode": product.CampoObjetoSelected,
+										"U_ClaveLabor": product.ClaveLaborSelected,
+										"U_Solicitante": product.CampoSolicitanteKey, // campo de ExternalEmployeeNumber
+										"U_DescSolicitante": product.CampoSolicitanteValue, // Nombre concatenado
+										"U_NoOT": product.OrdenTrabajoSelected, // Orden de trabajo -> Name o Code
+										"U_Activo": product.ActivoFijoSelected, // Activo fijo (combo) ItemCode
+										"ProjectCode": product.ProyectoSelected, // Activo fijo (combo) ItemCode
+										"U_Identificador": product.CampoIdentificadorSelected,//identificador (combo) U_Identificador
+										"DocumentLinesBinAllocations": []
+									}
+									if (product.ProyectoSelected) {
+										!product.CampoSolicitanteKey ? error = true : null;
+										// DocumentLines.AccountCode = "_SYS00000013197";
+										DocumentLines.AccountCode = accountRules;
+									} else {
+										!product.CentroCostoSelected ||
+											!product.CampoObjetoSelected ||
+											!product.ClaveLaborSelected ||
+											// !product.CampoObjetoValue || 
+											// !product.OrdenTrabajoSelected || 
+											!product.CampoSolicitanteKey ? error = true : null;
+									}
+	
+									dataDraft.DocumentLines.push(DocumentLines);
+									DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
+									DocumentLines.InventoryUOM = product.DatosCabeceraV2.InventoryUOM;
+									dataWorkflow.DocumentLinesBatchNumbers.push(DocumentLines);
+								})
+	
+								// oEntries.forEach( function(product){
+								// 	!product.CentroCostoSelected || 
+								// 	!product.CampoObjetoSelected || 
+								// 	!product.ClaveLaborSelected ? error = true : null ;
+								// 	dataWorkflow.DocumentLines.push(product);
+								// })
+	
+								// if(!oUsersWorkflow.tUsuariosJefeArea || !oUsersWorkflow.tAlmacen){
+								// 	MessageBox.error("No existe usuario Jefe de Área o usuario de almacén para el solicitante ingresado, comunicarse con el administrador.");
+								// 	oThat.hideBusyIndicator();
+								// 	return;
+								// }
+	
+								if (error === true) {
+									MessageBox.error("Debe llenar los campos para poder realizar la reserva");
+									oThat.hideBusyIndicator();
+									return;
+								}
+								var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
+								var result = await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/Drafts"), dataDraft);
+	
+								var comboselectedNombre = oThat.localmodel.getProperty("/oDatosSolicitante");
+								//NRO DE RESERVA|| U_AREASOL || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
+								dataWorkflow.DocEntry = (result.DocEntry.toString()
+									+ "|" + oUserData.U_Area
+									+ "|" + oThat._oCart.getProperty("/TodayDate")
+									+ "|" + comboselectedNombre.CampoSolicitanteValue
+									+ "|" + "CREADO"
+									+ "|" + dataWorkflow.Comments);
+								dataWorkflow.UsuarioRegistro = comboselectedNombre.CampoSolicitanteValue;
+								dataWorkflow.FechaRegistro = oThat._oCart.getProperty("/TodayDate");
+								await oThat.postWorkflowInstance(dataWorkflow);
+								for (let i = 0; i < dataWorkflow.DocumentLinesBatchNumbers.length; i++) {
+									var oItem = dataWorkflow.DocumentLinesBatchNumbers[i];
+									var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA?$filter=U_ItemCode eq '" + oItem.ItemCode + "' and U_WhsCode eq '" + oItem.WarehouseCode + "'"));
+									if (oDatoReserva.value.length == 0) {
+										var onGetCantidadCorrelativo = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA/$count"));
+										oItem.Code = parseInt(onGetCantidadCorrelativo) + 1;
+										var oDataPost = {
+											"Code": oItem.Code,
+											"U_ItemCode": oItem.ItemCode,
+											"U_WhsCode": oItem.WarehouseCode,
+											"U_CantReserva": oItem.Quantity
+										};
+										await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA"), oDataPost);
+									} else {
+										oDatoReserva.value[0].U_CantReserva = oItem.Quantity + oDatoReserva.value[0].U_CantReserva;
+										var oCambioDatos = {
+											"U_ItemCode": oDatoReserva.value[0].U_ItemCode,
+											"U_WhsCode": oDatoReserva.value[0].U_WhsCode,
+											"U_CantReserva": oDatoReserva.value[0].U_CantReserva
+										};
+										await serviceSL.onPatchGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA('" + oDatoReserva.value[0].Code + "')"), oCambioDatos);
+									}
+								}
+							} catch(e){
+								if (e.responseJSON) {
+									e.responseJSON.error ? MessageBox.error(e.responseJSON.error.message.value) : null;
+								}else {
+									MessageBox.error("Ha sucedido un error al realizar la reserva");
+								}
+								this.hideBusyIndicator();
+							}
+
+							// return new Promise(function (resolve, reject) {
+							// 	var uri = baseuri + "sb1sl/Drafts";
+							// 	$.ajax({
+							// 		type: "POST",
+							// 		dataType: "json",
+							// 		url: uri,
+							// 		data: JSON.stringify(dataDraft),
+							// 		success: async function (result) {
+							// 			var comboselectedNombre = oThat.localmodel.getProperty("/oDatosSolicitante");
+							// 			//NRO DE RESERVA|| U_AREASOL || FECHA || USUARIO SOLICITANTE || Estado de Reserva (Al solicitante) || Estado de Aprobación ( al aprobador) || motivo
+							// 			dataWorkflow.DocEntry = (result.DocEntry.toString()
+							// 				+ "|" + oUserData.U_Area
+							// 				+ "|" + oThat._oCart.getProperty("/TodayDate")
+							// 				+ "|" + comboselectedNombre.CampoSolicitanteValue
+							// 				+ "|" + "CREADO"
+							// 				+ "|" + dataWorkflow.Comments);
+							// 			dataWorkflow.UsuarioRegistro = comboselectedNombre.CampoSolicitanteValue;
+							// 			dataWorkflow.FechaRegistro = oThat._oCart.getProperty("/TodayDate");
+							// 			await oThat.postWorkflowInstance(dataWorkflow);
+							// 			for (let i = 0; i < dataWorkflow.DocumentLinesBatchNumbers.length; i++) {
+							// 				var oItem = dataWorkflow.DocumentLinesBatchNumbers[i];
+							// 				var oDatoReserva = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA?$filter=U_ItemCode eq '" + oItem.ItemCode + "' and U_WhsCode eq '" + oItem.WarehouseCode + "'"));
+							// 				if (oDatoReserva.value.length == 0) {
+							// 					var onGetCantidadCorrelativo = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_RESERVA/$count"));
+							// 					oItem.Code = parseInt(onGetCantidadCorrelativo) + 1;
+							// 					// await serviceSL.onAddDescuento(oItem,baseuri);
+							// 					var oDataPost = {
+							// 						"Code": oItem.Code,
+							// 						"U_ItemCode": oItem.ItemCode,
+							// 						"U_WhsCode": oItem.WarehouseCode,
+							// 						"U_CantReserva": oItem.Quantity
+							// 					};
+							// 					await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA"), oDataPost);
+							// 				} else {
+							// 					oDatoReserva.value[0].U_CantReserva = oItem.Quantity + oDatoReserva.value[0].U_CantReserva;
+							// 					var oCambioDatos = {
+							// 						"U_ItemCode": oDatoReserva.value[0].U_ItemCode,
+							// 						"U_WhsCode": oDatoReserva.value[0].U_WhsCode,
+							// 						"U_CantReserva": oDatoReserva.value[0].U_CantReserva
+							// 					};
+							// 					// await serviceSL.onEditDescuento(baseuri,oDatoReserva.value[0]);
+							// 					await serviceSL.onPatchGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA('" + oDatoReserva.value[0].Code + "')"), oCambioDatos);
+							// 				}
+							// 			}
+							// 			resolve(result.value);
+							// 		},
+							// 		error: function (errMsg) {
+							// 			if (errMsg.responseJSON) {
+							// 				errMsg.responseJSON.error ? MessageBox.error(errMsg.responseJSON.error.message.value) : null;
+							// 			}
+							// 			oThat.hideBusyIndicator()
+							// 			reject(errMsg);
+							// 		}
+							// 	});
+							// });
 						}
 					}.bind(this)
 				});
 
 			} catch (e) {
-				MessageBox.error("Ha sucedido un error al realizar la reserva");
+				if (e.responseJSON) {
+					e.responseJSON.error ? MessageBox.error(e.responseJSON.error.message.value) : null;
+				}else {
+					MessageBox.error("Ha sucedido un error al realizar la reserva");
+				}
 				this.hideBusyIndicator();
 			}
 		},
-		postWorkflowInstance: function (dataDraft) {
+		postWorkflowInstance: async function (dataDraft) {
 			try {
 				var that = this;
 				var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
@@ -948,35 +896,43 @@ sap.ui.define([
 					"definitionId": "workflowmodulev1.myworkflowapproval",
 					"context": dataDraft
 				};
-				return new Promise(function (resolve, reject) {
-					$.ajax({
-						url: appModulePath + "/wfrest/v1/workflow-instances",
-						type: "POST",
-						data: JSON.stringify(dataPost),
-						contentType: "application/json",
-						// headers: {
-						//     "X-CSRF-Token": token
-						// },
-						async: false,
-						success: function (data) {
-							// MessageBox.success("La reserva se registro correctamente con el numero: "+result.DocEntry);
-							MessageBox.success("La reserva se registro correctamente con el numero: " + dataDraft.DocEntry.split("|")[0], {
-								actions: [MessageBox.Action.OK],
-								emphasizedAction: MessageBox.Action.OK,
-								onClose: function (sAction) {
-									that._oCart.setProperty("/cartEntries", []);
-									that._oCart.setProperty("/lineaCabeceraDetalle/Comentario", null);
-									that.onReturnToShopButtonPress();
-								}
-							});
-							that.hideBusyIndicator();
-							resolve(data);
-						},
-						error: function (data) {
-							resolve(data);
-						}
-					});
+				await serviceSL.onPOSTWorkflowInstances(appModulePath, ("/workflow-instances"), dataPost);
+				MessageBox.success("La reserva se registro correctamente con el numero: " + dataDraft.DocEntry.split("|")[0], {
+					actions: [MessageBox.Action.OK],
+					emphasizedAction: MessageBox.Action.OK,
+					onClose: function (sAction) {
+						that._oCart.setProperty("/cartEntries", []);
+						that._oCart.setProperty("/lineaCabeceraDetalle/Comentario", null);
+						that.onReturnToShopButtonPress();
+					}
 				});
+				that.hideBusyIndicator();
+
+				// return new Promise(function (resolve, reject) {
+				// 	$.ajax({
+				// 		url: appModulePath + "/wfrest/v1/workflow-instances",
+				// 		type: "POST",
+				// 		data: JSON.stringify(dataPost),
+				// 		contentType: "application/json",
+				// 		async: false,
+				// 		success: function (data) {
+				// 			MessageBox.success("La reserva se registro correctamente con el numero: " + dataDraft.DocEntry.split("|")[0], {
+				// 				actions: [MessageBox.Action.OK],
+				// 				emphasizedAction: MessageBox.Action.OK,
+				// 				onClose: function (sAction) {
+				// 					that._oCart.setProperty("/cartEntries", []);
+				// 					that._oCart.setProperty("/lineaCabeceraDetalle/Comentario", null);
+				// 					that.onReturnToShopButtonPress();
+				// 				}
+				// 			});
+				// 			that.hideBusyIndicator();
+				// 			resolve(data);
+				// 		},
+				// 		error: function (data) {
+				// 			resolve(data);
+				// 		}
+				// 	});
+				// });
 			} catch (e) {
 				MessageBox.error("Ha sucedido un error al realizar la reserva");
 				this.hideBusyIndicator();
@@ -1319,42 +1275,6 @@ sap.ui.define([
 			this.byId(this.inputId)._bSelectingItem = true;
 			this.byId(this.inputId).fireChange();
 		},
-		// onOpenCentroCosto: function(oEvent){
-		// 	var that = this;
-		// 	// this.inputId = oEvent.getSource().getId();
-		// 	let oSelItem = oEvent.getSource().getBindingContext("cartProducts").getObject();
-		// 	this.localmodel.setProperty("/oSelDetalleMashcode",oSelItem);
-		// 	if (!that._valueHelpDialogCentroCosto) {
-		// 		that._valueHelpDialogCentroCosto = sap.ui.xmlfragment(
-		// 			"zsandiego.crearreserva.view.fragment.MashcodeReservas.CentroCosto",
-		// 			that
-		// 		);
-		// 		that.getView().addDependent(that._valueHelpDialogCentroCosto);
-		// 	}
-		// 	that._valueHelpDialogCentroCosto.open();
-		// },
-		// onConfirmCentroCosto: function(oEvent){
-		// 	var that = this;
-		// 	let oSelectCS = oEvent.getParameters().selectedItem.getBindingContext("localmodel").getObject();
-		// 	let oDatoMainSel = this.localmodel.getProperty("/oSelDetalleMashcode");
-		// 	let searchDatoSel = this._oCart.getProperty("/cartEntries").find(e=>e.ItemCode === oDatoMainSel.ItemCode && e.WarehouseCode === oDatoMainSel.WarehouseCode );
-		// 	searchDatoSel.CentroCostoSelected =  oSelectCS.CenterCode;
-		// 	searchDatoSel.CentroCostoValue =  oSelectCS.CenterCode+" - "+oSelectCS.CenterName;
-		// 	searchDatoSel.ClaveLaborValue 			= null;
-		// 	searchDatoSel.ClaveLaborSelected 		= null;
-		// 	searchDatoSel.CampoObjetoValue 			= null;
-		// 	searchDatoSel.CampoObjetoSelected 		= null;
-		// 	searchDatoSel.SelectedKeyClave 			= null;
-		// 	searchDatoSel.SelectedKeyCampoObj 		= null;
-		// 	searchDatoSel.ClaveLabor 				= [];
-		// 	searchDatoSel.CampoObjeto 				= [];
-		// 	that.onObtenerClaveLabor(searchDatoSel,oSelectCS.CenterCode);
-		// 	this.localmodel.refresh(true);
-		// },
-		// onCloseCentroCosto: function(){
-		// 	var that = this;
-		// 	that._valueHelpDialogCentroCosto.close();
-		// },
 		openFragNumOrden: function (oEvent) {
 			this.inputId = oEvent.getSource().getId();
 			if (!this._oDialogNumOrden) {

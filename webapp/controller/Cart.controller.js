@@ -72,7 +72,7 @@ sap.ui.define([
 			var oCfgModel = this.getView().getModel("cfg");
             var oCartModel = this.getOwnerComponent().getModel("cartProducts");
 			oCartModel.getData().cartEntries.forEach( function(e){
-				parseFloat(e.Quantity) === 0 ? fCantidad = true : null;
+				parseFloat(e.Quantity) === 0 || !e.Quantity? fCantidad = true : null;
 			})
 			if(fCantidad){
 				MessageBox.warning("Las cantidades registradas en las solicitudes deben ser mayores a 0.");
@@ -234,7 +234,6 @@ sap.ui.define([
 		},
 		consultaActivoFijoWizard: async function(){
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
-			// var oDatosActivoFijo = await serviceSL.onConsultaServiceLayer(baseuri,"Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
 			var oDatosActivoFijo = await serviceSL.consultaGeneralB1SL(baseuri,"/Items?$filter=ItemType eq 'itFixedAssets' and Valid eq 'tYES'");
 			this.getView().getModel("localmodel").setProperty("/ActivoFijo",oDatosActivoFijo.value);
 		},

@@ -131,7 +131,6 @@ sap.ui.define([
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
 			var oAlterSelected = oEvent.getSource().getBindingContext("localmodel").getObject();
 			this.getView().getModel("localmodel").setProperty("/AlternativoSeleccionado", oAlterSelected);
-			// var oAlternativoSelected = await serviceSL.onObtenerAlternativosDetalle(oAlterSelected.AlternativeItemCode,baseuri);
 			var oAlternativoSelected = await serviceSL.consultaGeneralB1SL(baseuri, "/Items('" + oAlterSelected.AlternativeItemCode + "')");
 			if (oAlternativoSelected) {
 				for (let i = 0; i < oAlternativoSelected.ItemWarehouseInfoCollection.length; i++) {

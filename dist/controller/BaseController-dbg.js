@@ -193,7 +193,6 @@ sap.ui.define([
 					sap.ui.core.BusyIndicator.hide();
 					return;
 				}
-				// var aUserxAlm = await serviceSL.onObtenerALMXTIPO(oProduct,baseuri,"BTP_ALMTIPO?$filter=U_WhsCode eq '"+oProduct.WarehouseCode+"'");
 				var aUserxAlm = await serviceSL.consultaGeneralB1SL(baseuri, "/BTP_ALMTIPO?$filter=U_WhsCode eq '" + oProduct.WarehouseCode + "'");
 				if (aUserxAlm.value.length > 0) {
 					var aUsersAlmReduced = aUserxAlm.value.reduce(function (previousValue, currentValue) {
@@ -279,52 +278,6 @@ sap.ui.define([
 				// }
 			}
 		},
-		// onChangeQuantity: function (oEvent) {
-		// 	var oControl = oEvent.getSource();
-		// 	var fValue = oEvent.getParameter("value")
-		// 	var iMin = oControl.getMin();
-		// 	if (dataAlternativoDetalle) {
-		// 		var oStockDetalle = dataAlternativoDetalle.InStock;
-		// 	} else {
-		// 		var oStockDetalle = this.getView().getModel("localmodel").getProperty("/ProductData").InStock;
-		// 	}
-		// 	if (fValue > oStockDetalle) {
-		// 		oControl.setValue(oStockDetalle);
-		// 		MessageBox.warning("La cantidad excede la cantidad de stock.");
-		// 	}
-		// 	if (fValue < iMin) {
-		// 		MessageBox.warning("La cantidad m\u00EDnima permitida es " + oControl.getMin() + ".");
-		// 		oControl.setValue(iMin);
-		// 		var oBinding = oControl.getBinding("value");
-		// 		if (oBinding) {
-		// 			setTimeout(function () {
-		// 				oBinding.setValue(iMin)
-		// 			}, 1000)
-
-		// 		}
-		// 	}
-		// },
-		// onChangeQuantityCart: function (oEvent) {
-		// 	var oControl = oEvent.getSource();
-		// 	var fValue = oEvent.getParameter("value")
-		// 	var iMin = oControl.getMin();
-		// 	var cantidadReserva = oEvent.getSource().getBindingContext("cartProducts").getObject().InStock;
-		// 	if (fValue > cantidadReserva) {
-		// 		oControl.setValue(cantidadReserva);
-		// 		MessageBox.warning("La cantidad excede la cantidad de stock.");
-		// 	}
-		// 	if (fValue < iMin) {
-		// 		MessageBox.warning("La cantidad m\u00EDnima permitida es " + oControl.getMin() + ".");
-		// 		oControl.setValue(iMin);
-		// 		var oBinding = oControl.getBinding("value");
-		// 		if (oBinding) {
-		// 			setTimeout(function () {
-		// 				oBinding.setValue(iMin)
-		// 			}, 1000)
-
-		// 		}
-		// 	}
-		// },
 		onCancelQuantity: function (oEvent) {
 			if (this.oDialogQuantity) {
 				this.oDialogQuantity.close();
