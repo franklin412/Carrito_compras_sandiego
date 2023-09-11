@@ -225,8 +225,11 @@ sap.ui.define([
 		onBuscar: async function (oEvent) {
 			// add filter for search
 			var sQuery = oEvent.getSource().getValue();
+			var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 			if (sQuery) {
-				if (!!parseInt(sQuery)) {
+				if(!!(format.test(sQuery))){
+					await this.onGetItemServiceLayer(sQuery);
+				}else if (!!parseInt(sQuery)) {
 					await this.onGetItemServiceLayer(sQuery, true);
 				} else {
 					await this.onGetItemServiceLayer(sQuery);
