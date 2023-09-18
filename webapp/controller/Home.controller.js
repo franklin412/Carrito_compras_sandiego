@@ -30,7 +30,7 @@ sap.ui.define([
 				this.byId("categoryList").setBusy(true);
 
 				await this.onGetItemServiceLayer();
-				await this.consultaOrdenTrabajo();
+				// await this.consultaOrdenTrabajo();
 				await this.consultaProjects();
 				//CONSULTA USUARIO IAS
 				usuarioLogeado = new sap.ushell.Container.getService("UserInfo").getUser().getEmail();
@@ -106,19 +106,32 @@ sap.ui.define([
 			if (ItemCode) {
 				uri = "/Items?$filter=contains(ItemCode,'" + checkItem + "')";
 			} else if (checkItem) {
-				uri = "/Items?$filter=contains(ItemName,'" + checkItem + "')";
+				let aRevisarValores = checkItem.split(" ");
+				if(aRevisarValores.length > 1){
+					for (let i = 0; i < aRevisarValores.length; i++) {
+						let item = aRevisarValores[i];
+						if(i === 0){
+							uri = "/Items?$filter=contains(ItemName,'" + item + "')";
+						}else{
+							uri = (uri +" and contains(ItemName,'" + item + "')");
+						}
+					}
+				}else {
+					uri = "/Items?$filter=contains(ItemName,'" + checkItem + "')";
+				}
 			} else {
 				uri = "/Items?$skip=50000";
 			}
-			let aGetItems = await serviceSL.consultaGeneralB1SL(baseuri, uri,"","",true);
+			let aGetDataQuery = await serviceSL.consultaGeneralB1SL(baseuri, uri,"","",true);
+			let aGetItems = await this.onRecuentoPalabras(aGetDataQuery.value,checkItem);
 			if (!checkItem || checkItem) {
-				for (let i = 0; i < aGetItems.value.length; i++) {
-					let object = aGetItems.value[i].ItemWarehouseInfoCollection;
+				for (let i = 0; i < aGetItems.length; i++) {
+					let object = aGetItems[i].ItemWarehouseInfoCollection;
 					object.forEach(function (e) {
 						e.InStock2 = e.InStock;
 					})
 				}
-				that.localmodel.setProperty("/catalogosSet", aGetItems.value);
+				that.localmodel.setProperty("/catalogosSet", aGetItems);
 			} else {
 				aGetItems.ItemWarehouseInfoCollection.forEach(function (e) {
 					e.InStock2 = e.InStock;
@@ -127,47 +140,61 @@ sap.ui.define([
 				that.localmodel.getProperty("/catalogosSet").push(aGetItems);
 			}
 			that.byId("categoryList").setBusy(false);
-
-			// return new Promise(function (resolve, reject) {
-				// var uri = null;
-				// if (ItemCode) {
-				// 	uri = baseuri + "sb1sl/Items?$filter=contains(ItemCode,'" + checkItem + "')";
-				// } else if (checkItem) {
-				// 	uri = baseuri + "sb1sl/Items?$filter=contains(ItemName,'" + checkItem + "')";
-				// } else {
-				// 	uri = baseuri + "sb1sl/Items?$skip=50000";
+		},
+		onRecuentoPalabras: async function(oraciones,palabras){
+			// const oraciones = [
+			// "Lamina negra 3/8",
+			// "Lamina verde 3/8",
+			// "Lamina negra 5/2",
+			// "Lamina",
+			// "Lamina negra"
+			// ];
+			
+			// Paso 2: Definir un array de palabras a buscar
+			// const palabras = "Lamina negra 3/8";
+			let palabrasABuscar;
+			palabras ? palabrasABuscar = palabras.split(" ") : palabrasABuscar = [];
+			if(palabrasABuscar.length>0){
+				// Paso 3: Contar las ocurrencias de cada palabra en cada oración
+				const conteoOraciones = {};
+				oraciones.forEach(oracion => {
+					oracion.recuento = 0;
+					palabrasABuscar.forEach(palabra => {
+						const palabraRegExp = new RegExp(palabra, "gi");
+						// const ocurrencias = (oracion.ItemName.match(palabraRegExp) || []).length;
+						const ocurrencias = oracion.ItemName.match(palabraRegExp);
+						if(ocurrencias){
+							oracion.recuento = ++oracion.recuento;
+						}
+					
+						// if (conteoOraciones[oracion.ItemName]) {
+						// 	conteoOraciones[oracion.ItemName] += ocurrencias;
+						// 	oracion.recuento = conteoOraciones[oracion.ItemName];
+						// } else {
+						// 	conteoOraciones[oracion.ItemName] = ocurrencias;
+						// 	oracion.recuento = conteoOraciones[oracion.ItemName];
+						// }
+					});
+				});
+				
+				// Paso 4: Almacenar las oraciones y sus recuentos en un array
+				// const resultadoArray = [];
+				// for (let oracion in conteoOraciones) {
+				// 	resultadoArray.push({ oracion: oracion, recuento: conteoOraciones[oracion] });
 				// }
-				// $.ajax({
-				// 	type: "GET",
-				// 	dataType: "json",
-				// 	headers: {
-				// 		"B1S-CaseInsensitive": true
-				// 	},
-				// 	url: uri,
-				// 	success: function (result) {
-				// 		if (!checkItem || checkItem) {
-				// 			for (let i = 0; i < result.value.length; i++) {
-				// 				let object = result.value[i].ItemWarehouseInfoCollection;
-				// 				object.forEach(function (e) {
-				// 					e.InStock2 = e.InStock;
-				// 				})
-				// 			}
-				// 			that.localmodel.setProperty("/catalogosSet", result.value);
-				// 		} else {
-				// 			result.ItemWarehouseInfoCollection.forEach(function (e) {
-				// 				e.InStock2 = e.InStock;
-				// 			})
-				// 			that.localmodel.setProperty("/catalogosSet", []);
-				// 			that.localmodel.getProperty("/catalogosSet").push(result);
-				// 		}
-				// 		that.byId("categoryList").setBusy(false);
-				// 		resolve(result.value);
-				// 	},
-				// 	error: function (errMsg) {
-				// 		reject(errMsg.responseJSON);
-				// 	}
+				
+				// Paso 5: Ordenar el array por recuento en orden descendente
+				oraciones.sort((a, b) => b.recuento - a.recuento);
+				
+				// Paso 6: Mostrar los resultados
+				// resultadoArray.forEach(item => {
+				// 	console.log(`${item.oracion}: ${item.recuento}`);
 				// });
-			// });
+				return oraciones;
+			}else {
+				return oraciones;
+			}
+			
 		},
 		consultaOrdenTrabajo: async function () {
 			var baseuri = sap.ui.component(sap.ui.core.Component.getOwnerIdFor(this.getView()))._oManifest._oBaseUri._parts.path;
