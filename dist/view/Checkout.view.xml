@@ -107,7 +107,7 @@
                                                         <!-- <ComboBox width="25em" required="true" value="{cartProducts>OrdenTrabajoValue}" selectedKey="{cartProducts>SelectedOrdenTrabajoKey}" change="onSelectOrdenTrabajo" enabled="{=${localmodel>/OrdenTrabajo}.length > 0}" items="{localmodel>/OrdenTrabajo}" placeholder="Seleccione Orden de trabajo">
                                                             <core:Item key="{localmodel>Name}" text="{localmodel>Name} - {localmodel>U_TipoOT}" />
                                                         </ComboBox> -->
-                                                        <Input value="{cartProducts>OrdenTrabajoSelected}" change="onChangeActivoFijo"/>
+                                                        <Input value="{cartProducts>OrdenTrabajoSelected}" change="onChangeOrdenTrabajo"/>
                                                         <!-- <ComboBox width="25em" required="true" value="{cartProducts>ActivoFijoValue}" selectedKey="{cartProducts>SelectedActivoFijoKey}" change="onSelectActivoFijo" enabled="{=${localmodel>/ActivoFijo}.length > 0}" items="{localmodel>/ActivoFijo}" placeholder="Seleccione Activo Fijo">
                                                             <core:Item key="{localmodel>ItemCode}" text="{localmodel>ItemCode} - {localmodel>ItemName}" />
                                                         </ComboBox> -->

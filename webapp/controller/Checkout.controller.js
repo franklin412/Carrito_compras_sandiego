@@ -737,7 +737,9 @@ sap.ui.define([
 									"DocumentLinesBatchNumbers": []
 								};
 	
-								oEntries.forEach(async function (product) {
+								// oEntries.forEach(async function (product) {
+								for (let i = 0; i < oEntries.length; i++) {
+									var product = oEntries[i];
 									var DocumentLines = {
 										"ItemCode": product.ItemCode,
 										"U_StockReserva": product.InStock,
@@ -779,7 +781,8 @@ sap.ui.define([
 									DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
 									DocumentLines.InventoryUOM = product.DatosCabeceraV2.InventoryUOM;
 									dataWorkflow.DocumentLinesBatchNumbers.push(DocumentLines);
-								})
+								// })
+								}
 	
 								if (fErrorCampos === true) {
 									// MessageBox.error("Debe llenar los campos para poder realizar la reserva");
