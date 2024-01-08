@@ -96,7 +96,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
+				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : true}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
 			</Toolbar>
 		</footer>
 	</Page>

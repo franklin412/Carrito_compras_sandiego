@@ -176,7 +176,8 @@ sap.ui.define([
 				var oAreasUsuario = await serviceSL.consultaGeneralB1SL(baseuri, ("/Area('" + oUserData.U_Areas + "')"));
 				if (oAreasUsuario.AREADCollection.length > 0) {
 					var aAlmacenes = [];
-					for (var i = 0; i < oAreasUsuario.AREADCollection.length; i++) {
+					for (var i = 0; i < oAreasUsuario.AREADCollection.length; i++) {https://calidad-sandiego.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=b5eb9010-3fff-43c8-afda-30f99941c637#Shell-home
+
 						let oIndex = oAreasUsuario.AREADCollection[i];
 						var oWarehouse = await serviceSL.consultaGeneralB1SL(baseuri, ("/BTP_ALMTIPO?$filter=U_AREA eq '" + oIndex.U_Area + "'"));
 						aAlmacenes = aAlmacenes.concat(oWarehouse.value);

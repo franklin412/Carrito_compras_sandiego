@@ -91,7 +91,13 @@ sap.ui.define([
 					actions: [MessageBox.Action.OK],
 					emphasizedAction: MessageBox.Action.OK,
 					onClose: function (sAction) {
-						top.window.location.href = "https://calidad-sandiego.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=b5eb9010-3fff-43c8-afda-30f99941c637#Shell-home";
+						// top.window.location.href = "https://calidad-sandiego.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=b5eb9010-3fff-43c8-afda-30f99941c637#Shell-home";
+						var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation");
+						oCrossAppNavigator.toExternal({
+							target: {
+							shellHash: ""
+							}
+						});
 					}
 				});
 			} else {

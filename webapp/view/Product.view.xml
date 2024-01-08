@@ -17,7 +17,7 @@
 				</contentMiddle>
 				<contentRight>
 					<!-- <Button icon="sap-icon://header" press=".onAvatarPress" tooltip="{i18n>avatarButtonTooltip}"/> -->
-					<ToggleButton icon="sap-icon://activity-items" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
+					<ToggleButton class="myButtonSizeContador" icon="sap-icon://activity-items" pressed="{= ${appView>/layout}.startsWith('ThreeColumns') }" tooltip="{i18n>toCartButtonTooltip}"
 						press=".onToggleCart" text="{ path: 'cartProducts>/cartEntries', formatter: '.formatter.countItems' }"></ToggleButton>
                     
 				</contentRight>
@@ -27,7 +27,7 @@
 			<ObjectHeader title="{localmodel>/itemSelected/ItemName}" titleLevel="H3" >
 				<attributes>
 					<ObjectAttribute title="{i18n>codigo}" text="{localmodel>/ProductData/ItemCode}"/>
-                    <ObjectAttribute title="{i18n>productSupplierAttributeText}" text="{localmodel>/ProductData/WarehouseCode}"/>
+                    <ObjectAttribute title="{i18n>productSupplierAttributeText}" text="{localmodel>/ProductData/WarehouseCode} - {localmodel>/ProductData/WarehouseName}"/>
 					<ObjectAttribute title="{i18n>cantidadMinima}" text="{localmodel>/ProductData/InStock}"/>
 					<!-- <ObjectAttribute title="{i18n>cantidadMinima}" text="{ path : 'localmodel>/ProductData/InStock', formatter : '.formatter.cantidad' }"/>
                     <ObjectAttribute visible="true" text="{i18n>precio}: { path : 'localmodel>Precio_Unit_Bukrs', formatter : '.formatter.price' } {localmodel>Waers_Bukrs}"/> -->
@@ -96,7 +96,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : false}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
+				<Button enabled="{= ${localmodel>/ProductData/InStock} > 0 &amp;&amp; ${localmodel>/ProductData/NoexisteSeleccionado} ? true : true}" text="{i18n>addToCartShort}" icon="sap-icon://activity-items" type="Emphasized" press=".onAddToCart"/>
 			</Toolbar>
 		</footer>
 	</Page>

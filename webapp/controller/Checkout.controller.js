@@ -776,6 +776,16 @@ sap.ui.define([
 									// 	// !product.OrdenTrabajoSelected || 
 									// 	!product.CampoSolicitanteKey ? error = true : null;
 									// }
+
+									
+									///// CAMBIOS MULTIPLE SELECCION
+									//// CREACION DE VARIABLES NUEVA
+									let oExisteObjEnvio = dataWorkflow.DocumentLinesBatchNumbers.filter(e=> e.ItemCode === DocumentLines.ItemCode && e.WarehouseCode === DocumentLines.WarehouseCode);
+									if(oExisteObjEnvio.length > 0){
+										DocumentLines.U_LineNumBTP = oExisteObjEnvio.length +1;
+									}else {
+										DocumentLines.U_LineNumBTP = 1;
+									}
 	
 									dataDraft.DocumentLines.push(DocumentLines);
 									DocumentLines.ManageBatchNumbers = product.DatosCabeceraV2.ManageBatchNumbers;
@@ -818,7 +828,7 @@ sap.ui.define([
 										};
 										await serviceSL.onPostGeneralDataServiceLayer(baseuri, ("/BTP_RESERVA"), oDataPost);
 									} else {
-										oDatoReserva.value[0].U_CantReserva = oItem.Quantity + oDatoReserva.value[0].U_CantReserva;
+										oDatoReserva.value[0].U_CantReserva = parseFloat(oItem.Quantity) + parseFloat(oDatoReserva.value[0].U_CantReserva);
 										var oCambioDatos = {
 											"U_ItemCode": oDatoReserva.value[0].U_ItemCode,
 											"U_WhsCode": oDatoReserva.value[0].U_WhsCode,

@@ -178,7 +178,8 @@ sap.ui.define([
 					// 	return;
 					// }
 				} else {
-					oProduct = oEvent.getSource().getParent().data("oProduct");
+					// oProduct = oEvent.getSource().getParent().data("oProduct");
+					oProduct = oEvent.getSource().getParent().getParent().getParent().data("oProduct");
 					var DatosCabecera = this.getView().getModel("localmodel").getData().itemSelected;
 					oProduct.NoexisteSeleccionado = false;
 					this.getView().getModel("localmodel").refresh(true);
@@ -193,6 +194,21 @@ sap.ui.define([
 					sap.ui.core.BusyIndicator.hide();
 					return;
 				}
+				///// CAMBIOS MULTIPLE SELECCION
+				//se suman las cantidades en la tabla de entries, y se valida que no tenga mas cantidades seleccionadas que el stock del item
+				let sumaTotales = 0;
+				oCartModel.getProperty("/cartEntries").forEach( function(e){
+					if(e.ItemCode === oProduct.ItemCode && oProduct.WarehouseCode === e.WarehouseCode){
+						sumaTotales = sumaTotales + parseFloat(e.Quantity);
+					}
+				})
+
+				if(sumaTotales >= oProduct.InStock){
+					MessageBox.warning("Éste item ya alcanzó el limite de stock para reservar.");
+					sap.ui.core.BusyIndicator.hide();
+					return;
+				}
+
 				var aUserxAlm = await serviceSL.consultaGeneralB1SL(baseuri, "/BTP_ALMTIPO?$filter=U_WhsCode eq '" + oProduct.WarehouseCode + "'");
 				if (aUserxAlm.value.length > 0) {
 					var aUsersAlmReduced = aUserxAlm.value.reduce(function (previousValue, currentValue) {
@@ -261,14 +277,17 @@ sap.ui.define([
 			var oControl = oEvent.getSource();
 			var fValue = oEvent.getParameter("value");
 			var iMin = 0.000001;
-			var cantidadReserva = oEvent.getSource().getBindingContext("cartProducts").getObject().InStock;
+			let ObjectSelected = oEvent.getSource().getBindingContext("cartProducts").getObject()
+			var cantidadReserva = ObjectSelected.InStock;
 			if (fValue > cantidadReserva) {
-				oControl.setValue(cantidadReserva);
+				oControl.setValue("");
 				MessageBox.warning("La cantidad ingresada excede la cantidad de stock.");
+				return;
 			}
 			if (fValue < iMin) {
 				MessageBox.warning("La cantidad m\u00EDnima permitida es "+iMin);
 				oControl.setValue("");
+				return;
 				// var oBinding = oControl.getBinding("value");
 				// if (oBinding) {
 				// 	setTimeout(function () {
@@ -276,6 +295,22 @@ sap.ui.define([
 				// 	}, 1000)
 
 				// }
+			}
+
+			///// CAMBIOS MULTIPLE SELECCION
+			//se suman las cantidades en la tabla de entries, y se valida que no tenga mas cantidades seleccionadas que el stock del item
+			let sumaTotales = 0;
+			this.getModel("cartProducts").getProperty("/cartEntries").forEach( function(e){
+				if(e.ItemCode === ObjectSelected.ItemCode && e.WarehouseCode === ObjectSelected.WarehouseCode){
+					sumaTotales = sumaTotales + parseFloat(e.Quantity);
+				}
+			})
+
+			if(sumaTotales > ObjectSelected.InStock){
+				oControl.setValue("");
+				MessageBox.warning("Éste item ya alcanzó el limite de stock para reservar.");
+				sap.ui.core.BusyIndicator.hide();
+				return;
 			}
 		},
 		onCancelQuantity: function (oEvent) {

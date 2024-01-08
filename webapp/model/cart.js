@@ -22,31 +22,6 @@ sap.ui.define([
 				oProduct = oProduct.Product;
 			}
 			switch (oProduct.Status) {
-			// case "D":
-			// 	//show message dialog
-			// 	MessageBox.show(
-			// 		oBundle.getText("productStatusDiscontinuedMsg"), {
-			// 			icon: MessageBox.Icon.ERROR,
-			// 			titles: oBundle.getText("productStatusDiscontinuedTitle"),
-			// 			actions: [MessageBox.Action.CLOSE]
-			// 		});
-			// 	break;
-			// case "O":
-			// 	// show message dialog
-			// 	MessageBox.show(
-			// 		oBundle.getText("productStatusOutOfStockMsg"), {
-			// 			icon: MessageBox.Icon.QUESTION,
-			// 			title: oBundle.getText("productStatusOutOfStockTitle"),
-			// 			actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-			// 			onClose: function (oAction) {
-			// 				// order
-			// 				if (MessageBox.Action.OK === oAction) {
-			// 					this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity);
-			// 				}
-			// 			}.bind(this)
-			// 		});
-			// 	break;
-			// case "A":
 			default:
 				this._updateCartItem(oBundle, oProduct, oCartModel, iQuantity, DatosCabecera,localmodel);
 				break;
@@ -60,7 +35,7 @@ sap.ui.define([
 			var oCartEntry = oCollectionEntries.find(e=>e.WarehouseCode === oProductToBeAdded.WarehouseCode && e.ItemCode === oProductToBeAdded.ItemCode );
 			// var oCartEntry = oCollectionEntries[oProductToBeAdded.WarehouseCode];
 
-			if (!oCartEntry) {
+			// if (!oCartEntry) {
 				// create new entry
 				oCartEntry = Object.assign({}, oProductToBeAdded);
 				oCartEntry.Quantity = iQuantity;
@@ -77,10 +52,10 @@ sap.ui.define([
 
 				// oCollectionEntries[oProductToBeAdded.ItemCode] = oCartEntry;
 				oCartModel.getProperty("/cartEntries").push(oCartEntry);
-			} else {
+			// } else {
 				// update existing entry
-				oCartEntry.Quantity += iQuantity;
-			}
+				// oCartEntry.Quantity += iQuantity;
+			// }
 			//update the cart model
 			// oCartModel.setProperty("/cartEntries", Object.assign({}, oCollectionEntries));
 			oCartModel.refresh(true);
